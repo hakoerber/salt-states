@@ -1,0 +1,14 @@
+{% set bind = salt['grains.filter_by']({
+    'default': {
+        'package': 'bind',
+        'service': 'named',
+        'conf_file' : '/etc/named.conf',
+        'user': 'bind',
+        'group': 'bind',
+        'main_directory': '/var/named',
+        'port': '53',
+        'logfile': '/var/log/named/named.log',
+        'loglevel': 'info',
+        'rfc1912zones': '/etc/named.rfc1912.zones',
+    },
+}, base='default') %}

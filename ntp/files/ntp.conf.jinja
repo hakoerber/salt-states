@@ -1,0 +1,52 @@
+{% from 'states/ntp/map.jinja' import ntp as ntp_map with context %}
+{# --- #}
+{% macro use_external_servers() %}
+{% if params.external_servers != None %}
+{% set external_servers = params.external_servers %}
+{% else %}
+{% set external_servers = ntp_map.default_servers %}
+{% endif %}
+# external servers
+{% for server in external_servers %}
+server {{ server }} iburst
+{% endfor %}
+{% endmacro %}
+{##}
+{##}
+restrict -4 default limited nomodify nopeer noquery notrap
+restrict -6 default limited nomodify nopeer noquery notrap
+
+restrict -4 127.0.0.1
+restrict -6 ::1
+
+{% if params.is_server %}
+# allow synchonizing from network
+restrict {{ params.network.ip }} mask {{ params.network.netmask }} limited noquery nopeer nomodify notrap
+
+{% if not params.authorative %}
+# local servers
+{% for server in params.authorative_servers %}
+server {{ server.ip }} iburst prefer
+{% endfor %}
+
+{% endif %}
+{{ use_external_servers() }}
+{% elif params.get('servers') == [] %}
+{{ use_external_servers() }}
+{% else %}
+{% for server in params.servers %}
+server {{ server.ip }} iburst
+{% endfor %}
+{% endif %}
+{##}
+{% if params.is_server %}
+# fall back to the local clock when there is no network connection
+server 127.127.1.1
+fudge  127.127.1.1 stratum 12
+{% endif %}
+
+tinker panic 0
+
+driftfile {{ ntp_map.driftfile }}
+
+logfile {{ ntp_map.logfile }}

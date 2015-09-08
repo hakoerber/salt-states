@@ -1,0 +1,40 @@
+{% set ssh = salt['grains.filter_by']({
+    'RedHat': {
+        'server': {
+            'package': 'openssh-server',
+            'service': 'sshd',
+            'sftp_binary': '/usr/libexec/openssh/sftp-server',
+        },
+    },
+    'Debian': {
+        'server': {
+            'package': 'openssh-server',
+            'service': 'ssh',
+            'sftp_binary': '/usr/lib/openssh/sftp-server',
+        },
+    },
+    'FreeBSD': {
+        'rootgroup': 'wheel',
+        'server': {
+            'package': None,
+            'service': 'sshd',
+            'sftp_binary': '/usr/libexec/sftp-server',
+        },
+    },
+    'Arch': {
+        'server': {
+            'package': 'openssh',
+            'service': 'sshd',
+            'sftp_binary': '/usr/lib/ssh/sftp-server',
+        },
+    },
+    'default': {
+        'rootgroup': 'root',
+        'server': {
+            'ports': [22],
+            'keytypes': ['rsa'],
+            'conf_file': '/etc/ssh/sshd_config',
+            'listen_address': ['localhost'],
+        }
+    }
+}, base='default') %}

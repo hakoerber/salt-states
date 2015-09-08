@@ -1,0 +1,22 @@
+        allow-transfer {
+                {% for slave in params.slaves %} 
+                {{ slave.ip }};
+                {% endfor %}
+        };
+
+        notify explicit;
+        also-notify {
+                {%+ for slave in params.slaves %} 
+                {{ slave.ip }};
+                {% endfor %}
+        };
+
+        zone "{{ params.domain }}" IN {
+                type master;
+                file "forward.{{ params.domain }}";
+        };
+
+        zone "{{ params.domain_reverse }}" IN {
+                type master;
+                file "reverse.{{ params.domain }}";
+        };

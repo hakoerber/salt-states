@@ -1,0 +1,19 @@
+$TTL {{ params.zoneinfo.ttl }}
+@	{{ params.zoneinfo.class }}	SOA	{{ params.zoneinfo.masterdns.name }}. {{ params.zoneinfo.hostmaster }}.{{ params.domain }}. (
+        {{ params.zoneinfo.serial }}	;Serial
+        {{ params.zoneinfo.refresh }}	;Refresh
+        {{ params.zoneinfo.retry }}	;Retry
+        {{ params.zoneinfo.expire }}	;Expire
+        {{ params.zoneinfo.ttl }}	;Minimum TTL
+)
+
+; nameservers
+@	IN	NS	{{ params.zoneinfo.masterdns.name }}.
+
+@	IN	PTR	{{ params.domain }}.
+
+{% for record in params.records|sort(attribute='reverse') %}
+{% for arecord in record.arecords %}
+{{ record.get('reverse') }}	IN	PTR	{{ arecord }}.{{ params.domain }}.
+{% endfor %}
+{% endfor %}

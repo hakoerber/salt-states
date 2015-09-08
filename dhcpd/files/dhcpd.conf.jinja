@@ -1,0 +1,68 @@
+{% from 'states/dhcpd/map.jinja' import dhcpd as dhcpd_map with context %}
+{% if params.role == 'primary' %}
+{% set me = params.primary %}
+{% set peer = params.secondary %}
+{% else %}
+{% set me = params.secondary %}
+{% set peer = params.primary %}
+{% endif %}
+authorative;
+default-lease-time 3600;
+max-lease-time     86400;
+
+failover peer "failover" {
+    {{ params.role }};
+
+    address {{ me.ip }};
+    port {{ me.port|default(dhcpd_map.failover.port) }};
+    peer address {{ peer.ip }};
+    peer port {{ peer.port|default(dhcpd_map.failover.port) }};
+
+    max-response-delay 60;
+    max-unacked-updates 10;
+    mclt 3600;
+
+    {% if params.role == 'primary' %}
+    split 128;
+    {% endif %}
+
+    load balance max seconds 3;
+}
+
+{% set nameservers = [] %}
+{% for nameserver in params.nameservers %}
+{% do nameservers.append(nameserver.name ~ '.' ~ params.domain) %}
+{% endfor %}
+
+{% set ntpservers = [] %}
+{% for ntpserver in params.ntpservers %}
+{% do ntpservers.append(ntpserver.name ~ '.' ~ params.domain) %}
+{% endfor %}
+
+subnet {{ params.network.ip }} netmask {{ params.network.netmask }} {
+    option routers             {{ params.network.default_gateway }};
+    option subnet-mask         {{ params.network.netmask }};
+
+    option domain-name         "{{ params.domain }}";
+
+    option domain-name-servers {{ nameservers|join(', ') }};
+    option ntp-servers         {{ ntpservers|join(', ') }};
+
+    {% for option, value in params.dhcpoptions.items() %}
+    {{ option }}        {{ value }};
+    {% endfor %}
+
+    pool {
+        failover peer "failover";
+        deny dynamic bootp clients;
+        range {{ params.range.start }} {{ params.range.end }};
+    }
+}
+
+{% for reservation in params.reservations|sort(attribute='name') %}
+host {{ reservation.name }}.{{ params.domain }} {
+    hardware ethernet {{ reservation.mac|upper }};
+    fixed-address {{ reservation.ip }};
+}
+
+{% endfor %}

@@ -1,0 +1,82 @@
+{% from 'states/bind/map.jinja' import bind as bind_map with context %}
+{% set rfc1912zones = '/etc/named.rfc1912.zones' %}
+
+acl "internal" {
+        localhost;
+        {{ params.network.ip }}/{{ params.network.prefix }};
+};
+
+options {
+        directory "{{ bind_map.main_directory }}";
+
+        listen-on port 53 {
+                127.0.0.1;
+                {{ params.listen }};
+        };
+
+        listen-on-v6 port 53 {
+                none;
+        };
+
+        allow-query {
+                internal;
+        };
+
+        {% if params.dnssec %}
+        dnssec-enable yes;
+        dnssec-validation yes;
+        {% else %}
+        dnssec-enable no;
+        dnssec-validation no;
+        {% endif %}
+        dnssec-lookaside auto;
+};
+
+logging {
+        channel default_file {
+                file "{{ bind_map.logfile }}" size 10m;
+                severity {{ bind_map.loglevel }};
+                print-time yes;
+                print-severity yes;
+                print-category yes;
+        };
+
+        channel default_debug {
+                file "data/named.run";
+                severity dynamic;
+        };
+
+        category default {
+                default_file;
+                default_debug;
+        };
+};
+
+
+view "internal" {
+        match-clients {
+                internal;
+        };
+
+        recursion yes;
+
+        forward only;
+        forwarders {
+                {% for forwarder in params.forwarders %}
+                {{ forwarder }};
+                {% endfor %}
+        };
+
+        {% if params.role == 'master' %}
+        {% include 'states/bind/files/master_snippet.jinja' with context %}
+        {% else %}
+        {% include 'states/bind/files/slave_snippet.jinja' with context %}
+        {% endif %}
+
+        zone "." IN {
+                type hint;
+                file "/var/named/named.ca";
+        };
+
+        include "{{ bind_map.rfc1912zones }}";
+};

@@ -1,0 +1,14 @@
+{% set defaults = salt['grains.filter_by']({
+    'RedHat': {
+    },
+    'Debian': {
+    },
+    'FreeBSD': {
+        'rootgroup': 'wheel',
+    },
+    'Arch': {
+    },
+    'default': {
+        'rootgroup': 'root',
+    }
+}, base='default') %}

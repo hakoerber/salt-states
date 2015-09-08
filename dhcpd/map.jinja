@@ -1,0 +1,15 @@
+{% set dhcpd = salt['grains.filter_by']({
+    'default': {
+        'package': 'dhcp',
+        'service': 'dhcpd',
+        'conf_file': '/etc/dhcp/dhcpd.conf',
+        'ports': ['67'],
+        'failover': {
+            'port': '647',
+        },
+    },
+    'Arch': {
+        'conf_file': '/etc/dhcpd.conf',
+        'service': 'dhcpd4',
+    },
+}, base='default') %}
