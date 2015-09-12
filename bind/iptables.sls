@@ -5,12 +5,12 @@
     stateconf.set: []
 # --- end of state config ---
 
-{% for family in ['ipv4', 'ipv6'] %}
+{% for family in ['ipv4'] %}
 {% for proto in ['tcp', 'udp'] %}
 bind-iptables-{{ family }}-{{ proto }}:
   iptables.append:
     - table: filter
-    - chain: TCPUDPLOCAL
+    - chain: ZONE_LOCAL
     - proto: {{ proto }}
     - jump: ACCEPT
     - dport: {{ bind_map.port }}
@@ -18,5 +18,7 @@ bind-iptables-{{ family }}-{{ proto }}:
     - save: true
     - match: comment
     - comment: BIND DNS server
+    - require:
+      - iptables: chain_zone_local_ipv4
 {% endfor %}
 {% endfor %}

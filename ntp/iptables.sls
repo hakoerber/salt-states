@@ -9,7 +9,7 @@
 ntp-iptables-ipv4-udp:
   iptables.append:
     - table: filter
-    - chain: TCPUDPLOCAL
+    - chain: ZONE_LOCAL
     - proto: udp
     - jump: ACCEPT
     - dport: 123
@@ -17,5 +17,7 @@ ntp-iptables-ipv4-udp:
     - save: true
     - match: comment
     - comment: NTP Server
+    - require:
+      - iptables: chain_zone_local_ipv4
 {% endif %}
 

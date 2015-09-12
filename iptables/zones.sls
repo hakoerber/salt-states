@@ -7,15 +7,7 @@
 {# currently no support for ipv6 zones #}
 {% set families = ['ipv4'] %}
 
-{% set zones = {
-    'public': {
-      'source': '0.0.0.0/0',
-    },
-  }
-%}
-{% do zones.update(params.zones) %}
-
-{% for zone, zoneinfo in zones.items() %}
+{% for zone, zoneinfo in params.zones.items() %}
 {% set zonechain = "ZONE_" ~ zone|upper %}
 
 {% for family in families %}
@@ -24,7 +16,11 @@ chain_zone_{{ zone }}_{{ family }}:
     - name: {{ zonechain }}
     - family: {{ family }}
 
-tcp_jump_to_zone_{{ zone }}_{{ family }}:
+{% set sourceid = 0 %}
+{% for source in zoneinfo.sources %}
+{% set sourceid = sourceid + 1 %}
+
+tcp_jump_to_zone_{{ zone }}_{{ family }}_source_{{ sourceid }}:
   iptables.append:
     - table: filter
     - chain: TCPUDP
@@ -32,7 +28,7 @@ tcp_jump_to_zone_{{ zone }}_{{ family }}:
     - family: {{ family }}
     - proto: tcp
     - tcp-flags: SYN,RST,ACK,FIN SYN
-    - source: {{ zoneinfo.source }}
+    - source: {{ source }}
     - match: state
     - connstate: NEW
     - save: true
@@ -40,19 +36,20 @@ tcp_jump_to_zone_{{ zone }}_{{ family }}:
       - iptables: chain_zone_{{ zone }}_{{ family }}
       - iptables: chain_tcpudp_{{ family }}
 
-udp_jump_to_zone_{{ zone }}_{{ family }}:
+udp_jump_to_zone_{{ zone }}_{{ family }}_source_{{ sourceid }}:
   iptables.append:
     - table: filter
     - chain: TCPUDP
     - jump: {{ zonechain }}
     - family: {{ family }}
     - proto: udp
-    - source: {{ zoneinfo.source }}
+    - source: {{ source }}
     - match: state
     - connstate: NEW
     - save: true
     - require:
       - iptables: chain_zone_{{ zone }}_{{ family }}
       - iptables: chain_tcpudp_{{ family }}
+{% endfor %}
 {% endfor %}
 {% endfor %}

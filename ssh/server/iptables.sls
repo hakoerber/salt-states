@@ -5,12 +5,11 @@
     stateconf.set: []
 # --- end of state config ---
 
-{% if grains['os_family'] != 'FreeBSD' %}
-{% for family in ['ipv4', 'ipv6'] %}
+{% for family in ['ipv4'] %}
 ssh-server-iptables-{{ family }}:
   iptables.append:
     - table: filter
-    - chain: TCPUDPPUBLIC
+    - chain: ZONE_PUBLIC
     - proto: tcp
     - jump: ACCEPT
     - dports: {{ ssh_map.server.ports }}
@@ -18,5 +17,6 @@ ssh-server-iptables-{{ family }}:
     - save: true
     - match: comment
     - comment: ssh-server
+    - require:
+      - iptables: chain_zone_public_ipv4
 {% endfor %}
-{% endif %}

@@ -8,7 +8,7 @@
 dhcpd-iptables-ipv4:
   iptables.append:
     - table: filter
-    - chain: TCPUDPLOCAL
+    - chain: ZONE_LOCAL
     - proto: udp
     - jump: ACCEPT
     - dports: {{ dhcpd_map.ports }}
@@ -16,6 +16,8 @@ dhcpd-iptables-ipv4:
     - save: true
     - match: comment
     - comment: DHCP server
+    - require:
+      - iptables: chain_zone_local_ipv4
 
 {% if params.role == 'primary' %}
 {% set peer_ip = params.secondary.ip %}
@@ -26,7 +28,7 @@ dhcpd-iptables-ipv4:
 dhcpd-iptables-ipv4-failover:
   iptables.append:
     - table: filter
-    - chain: TCPUDPLOCAL
+    - chain: ZONE_LOCAL
     - proto: tcp
     - jump: ACCEPT
     - source: {{ peer_ip }}
