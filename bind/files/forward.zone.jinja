@@ -22,7 +22,7 @@ $TTL {{ params.zoneinfo.ttl }}
 ; common records
 {% for record in params.records|sort(attribute='reverse') %}
 {% for arecord in record.get('arecords') %}
-{{ arecord }}.{{ params.domain }}	IN	A	{{ record.ip }}
+{{ arecord }}.{{ params.domain }}.	IN	A	{{ record.ip }}
 {% for subdomain in record.get('subdomains', []) %}
 {{ subdomain }}.{{ arecord }}.{{ params.domain }}.	IN	A	{{ record.ip }}
 {% endfor %}
