@@ -1,0 +1,25 @@
+{% set iptables = salt['grains.filter_by']({
+    'default': {
+        'packages': [
+            'iptables',
+        ],
+        'services': [],
+    },
+    'RedHat': {
+        'packages': [
+            'iptables',
+            'iptables-services',
+        ],
+        'services': [
+            'iptables',
+            'ip6tables',
+        ],
+    },
+    'Debian': {
+        'packages': [
+            'iptables',
+            'iptables-persistent',
+        ],
+        'services': [],
+    },
+}, merge=salt['pillar.get']('iptables:lookup'), base='default') %}
