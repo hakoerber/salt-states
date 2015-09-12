@@ -1,0 +1,8 @@
+{% from 'states/rsyslog/map.jinja' import rsyslog as rsyslog_map with context %}
+
+global(
+    workDirectory="{{ rsyslog_map.workdir }}"
+    preserveFQDN="on"
+)
+
+$IncludeConfig {{ rsyslog_map.include_basedir }}/*.conf

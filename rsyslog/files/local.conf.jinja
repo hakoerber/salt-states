@@ -1,0 +1,7 @@
+{% from 'states/rsyslog/map.jinja' import rsyslog as rsyslog_map with context %}
+module(load="imuxsock")
+module(load="imklog")
+
+{% for selector, logfile in rsyslog_map.client.logs.items() %}
+{{ selector }} action(type="omfile" file="{{ logfile }}")
+{% endfor %}
