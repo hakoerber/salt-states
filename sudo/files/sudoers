@@ -1,0 +1,10 @@
+Defaults requiretty
+Defaults !visiblepw
+Defaults always_set_home
+
+Defaults secure_path = /sbin:/bin:/usr/sbin:/usr/bin
+
+root ALL=(ALL) ALL
+
+%{{ group_nopw }} ALL=(ALL) NOPASSWD: ALL
+%{{ group }} ALL=(ALL) ALL

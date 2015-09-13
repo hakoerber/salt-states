@@ -1,0 +1,15 @@
+{% set sudo = salt['grains.filter_by']({
+    'RedHat': {
+    },
+    'Debian': {
+    },
+    'FreeBSD': {
+        'sudoers': '/usr/local/etc/sudoers',
+    },
+    'Arch': {
+    },
+    'default': {
+        'package': 'sudo',
+        'sudoers': '/etc/sudoers',
+    }
+}, base='default') %}
