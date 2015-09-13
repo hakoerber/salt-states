@@ -1,5 +1,6 @@
 #!stateconf
 {% from 'states/ssh/map.jinja' import ssh as ssh_map with context %}
+{% from 'states/defaults.map.jinja' import defaults with context %}
 
 .params:
     stateconf.set: []
@@ -11,7 +12,7 @@ hostkey-{{ keytype }}:
     - name: /etc/ssh/ssh_host_{{ keytype }}_key
     - mode: 600
     - user: root
-    - group: {{ ssh_map.rootgroup }}
+    - group: {{ defaults.rootgroup }}
     - source: salt://files/ssh/hostkeys/{{ grains['id'] }}/ssh_host_{{ keytype }}_key
     - show_diff: false
 
@@ -20,7 +21,7 @@ hostkey-{{ keytype }}-pub:
     - name: /etc/ssh/ssh_host_{{ keytype }}_key.pub
     - mode: 644
     - user: root
-    - group: {{ ssh_map.rootgroup }}
+    - group: {{ defaults.rootgroup }}
     - source: salt://files/ssh/hostkeys/{{ grains['id'] }}//ssh_host_{{ keytype }}_key.pub
     - show_diff: false
 {% endfor %}

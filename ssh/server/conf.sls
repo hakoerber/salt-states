@@ -1,5 +1,6 @@
 #!stateconf
 {% from 'states/ssh/map.jinja' import ssh as ssh_map with context %}
+{% from 'states/defaults.map.jinja' import defaults with context %}
 
 .params:
     stateconf.set: []
@@ -9,7 +10,7 @@ sshd_config:
   file.managed:
     - name: {{ ssh_map.server.conf_file }}
     - user: root
-    - group: {{ ssh_map.rootgroup }}
+    - group: {{ defaults.rootgroup }}
     - mode: 644
     - source: salt://states/ssh/files/sshd_config.jinja
     - template: jinja
