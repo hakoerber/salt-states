@@ -1,0 +1,31 @@
+{% set packages = salt['grains.filter_by']({
+    'RedHat': {
+      'vim': 'vim-enhanced',
+    },
+    'Arch': {
+    },
+    'Debian': {
+    },
+    'FreeBSD': {
+  },
+  'default': {
+      'tmux': 'tmux',
+      'vim': 'vim',
+      'zsh': 'zsh',
+  }
+}, base='default') %}
+
+{% set shells = salt['grains.filter_by']({
+    'RedHat': {
+    },
+    'Arch': {
+    },
+    'Debian': {
+    },
+    'FreeBSD': {
+        'zsh': '/usr/local/bin/zsh',
+  },
+  'default': {
+      'zsh': '/usr/bin/zsh',
+  }
+}, base='default') %}
