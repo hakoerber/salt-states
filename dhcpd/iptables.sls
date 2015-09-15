@@ -37,3 +37,5 @@ dhcpd-iptables-ipv4-failover:
     - save: true
     - match: comment
     - comment: DHCP server failover
+    - require:
+      - iptables: chain_zone_local_ipv4
