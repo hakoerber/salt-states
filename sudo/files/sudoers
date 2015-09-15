@@ -2,7 +2,7 @@ Defaults requiretty
 Defaults !visiblepw
 Defaults always_set_home
 
-Defaults secure_path = /sbin:/bin:/usr/sbin:/usr/bin
+Defaults secure_path = {{ secure_path }}
 
 root ALL=(ALL) ALL
 

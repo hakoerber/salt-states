@@ -5,11 +5,13 @@
     },
     'FreeBSD': {
         'sudoers': '/usr/local/etc/sudoers',
+        'secure_path': '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
     },
     'Arch': {
     },
     'default': {
         'package': 'sudo',
         'sudoers': '/etc/sudoers',
+        'secure_path': '/sbin:/bin:/usr/sbin:/usr/bin'
     }
 }, base='default') %}

@@ -23,6 +23,7 @@ sudoers:
     - defaults:
         group: {{ params.group }}
         group_nopw: {{ params.group_nopw }}
+        secure_path: {{ sudo_map.secure_path }}
     - require:
       - pkg: sudo
       {% for group in [params.group, params.group_nopw] %}
