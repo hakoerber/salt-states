@@ -50,8 +50,8 @@ user-{{ user.name }}:
     {% endif %}
 
     - require:
-      - group: {{ groupname }}
+      - group: user-{{ user.name }}
       {% for group in groups %}
-      - group: {{ group }}
+      - group: group-{{ group }}
       {% endfor %}
 {% endfor %}
