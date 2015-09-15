@@ -6,6 +6,12 @@
     stateconf.set: []
 # --- end of state config ---
 
+{% for group in [params.group, params.group_nopw] %}
+sudo-group-{{ group }}:
+  group.present:
+    - name: {{ group }}
+{% endfor %}
+
 sudoers:
   file.managed:
     - name: {{ sudo_map.sudoers }}
@@ -19,3 +25,6 @@ sudoers:
         group_nopw: {{ params.group_nopw }}
     - require:
       - pkg: sudo
+      {% for group in [params.group, params.group_nopw] %}
+      - group: sudo-group-{{ group }}
+      {% endfor %}
