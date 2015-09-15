@@ -1,0 +1,52 @@
+{% set nagios = salt['grains.filter_by']({
+    'RedHat': {
+    },
+    'Debian': {
+        'check_mk': {
+            'agent': {
+                'conf': {
+                    'xinetd': {
+                        'path': '/etc/xinetd.d/check_mk',
+                    },
+                },
+            },
+        },
+    },
+    'FreeBSD': {
+        'check_mk': {
+            'agent': {
+                'service': 'inetd',
+                'script': {
+                    'path': '/usr/local/bin/check_mk_agent',
+                    'source': 'salt://states/nagios/check_mk/agent/files/check_mk_agent.freebsd',
+                },
+                'conf': {
+                    'inetd': {
+                        'path': '/etc/inetd.conf',
+                    },
+                    'services': {
+                        'path': '/etc/services',
+                    },
+                    'hosts_allow': {
+                        'path': '/etc/hosts.allow',
+                    },
+                },
+            },
+        },
+    },
+    'default': {
+        'check_mk': {
+            'agent': {
+                'package': 'check-mk-agent',
+                'service': 'xinetd',
+                'conf': {
+                    'xinetd': {
+                        'path': '/etc/xinetd.d/check-mk-agent',
+                        'template': 'salt://states/nagios/check_mk/agent/files/check-mk-agent.jinja',
+                    },
+                },
+                'port': 6556,
+            },
+        },
+    }
+}, base='default') %}
