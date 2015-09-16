@@ -1,0 +1,22 @@
+// Automatically upgrade packages from these origin patterns
+Unattended-Upgrade::Origins-Pattern {
+        // Archive or Suite based matching:
+        // Note that this will silently match a different release after
+        // migration to the specified archive (e.g. testing becomes the
+        // new stable).
+//      "o=Debian,a=stable";
+//      "o=Debian,a=stable-updates";
+//      "o=Debian,a=proposed-updates";
+        "origin=Debian,archive=stable,label=Debian-Security";
+        "origin=Debian,archive=oldstable,label=Debian-Security";
+};
+
+Unattended-Upgrade::Package-Blacklist { };
+Unattended-Upgrade::AutoFixInterruptedDpkg "true";
+Unattended-Upgrade::MinimalSteps "true";
+Unattended-Upgrade::InstallOnShutdown "false";
+//Unattended-Upgrade::Mail "root";
+//Unattended-Upgrade::MailOnlyOnError "true";
+Unattended-Upgrade::Remove-Unused-Dependencies "true";
+Unattended-Upgrade::Automatic-Reboot "false";
+//Acquire::http::Dl-Limit "70";

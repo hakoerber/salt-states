@@ -1,0 +1,33 @@
+{% set package = salt['grains.filter_by']({
+    'default': {
+    },
+    'RedHat': {
+        'autoupdate': {
+            'package': 'yum-cron',
+            'service': 'yum-cron',
+            'conf_path': '/etc/yum/yum-cron.conf',
+            'conf_source': 'salt://states/package/files/yum-cron.conf.jinja',
+        },
+    },
+    'Debian': {
+        'autoupdate': {
+            'package': 'unattended-upgrades',
+            'conf': {
+                'conf_20auto_upgrades': {
+                    'path': '/etc/apt/apt.conf.d/20auto-upgrades',
+                    'source': 'salt://states/package/files/20auto-upgrades',
+                },
+                'conf_50unattended_upgrades': {
+                    'path': '/etc/apt/apt.conf.d/50unattended-upgrades',
+                    'source': 'salt://states/package/files/50unattended-upgrades',
+                },
+            },
+        },
+    },
+    'default': {
+        'autoupdate': {
+            'default_mode': 'all',
+        },
+    },
+
+}, base='default') %}
