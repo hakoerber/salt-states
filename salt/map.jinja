@@ -1,0 +1,14 @@
+{% set salt = salt['grains.filter_by']({
+    'FreeBSD': {
+        'minion': {
+            'service': 'salt_minion',
+            'conf_file': '/usr/local/etc/salt/minion',
+        },
+    },
+    'default': {
+        'minion': {
+            'service': 'salt-minion',
+            'conf_file': '/etc/salt/minion',
+        },
+    },
+}, base='default') %}
