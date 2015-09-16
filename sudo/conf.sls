@@ -17,7 +17,7 @@ sudoers:
     - name: {{ sudo_map.sudoers }}
     - user: root
     - group: {{ defaults.rootgroup }}
-    - mode: 600
+    - mode: 440
     - source: salt://states/sudo/files/sudoers
     - template: jinja
     - defaults:

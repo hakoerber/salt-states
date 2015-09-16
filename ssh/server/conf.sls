@@ -11,7 +11,7 @@ sshd_config:
     - name: {{ ssh_map.server.conf_file }}
     - user: root
     - group: {{ defaults.rootgroup }}
-    - mode: 644
+    - mode: 600
     - source: salt://states/ssh/files/sshd_config.jinja
     - template: jinja
     - context:

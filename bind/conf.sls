@@ -10,8 +10,8 @@ named.conf:
   file.managed:
     - name: {{ bind_map.conf_file }}
     - user: root
-    - group: {{ defaults.rootgroup }}
-    - mode: 644
+    - group: named
+    - mode: 640
     - source: 'salt://states/bind/files/named.conf.jinja'
     - template: jinja
     - defaults:
