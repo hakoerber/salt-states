@@ -1,5 +1,4 @@
 #!stateconf
-{% from 'ntp/map.jinja' import ntp as ntp_map with context %}
 
 .params:
     stateconf.set: []
