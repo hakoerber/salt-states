@@ -141,7 +141,7 @@ log_rejects_{{ family }}:
     - limit: 60/minute
     - limit-burst: 60
     - jump: LOG
-    - log-prefix: '[iptables] '
+    - log-prefix: '[iptables-reject] '
     - family: {{ family }}
     - save: true
     - require:

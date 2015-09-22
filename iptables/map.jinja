@@ -4,6 +4,12 @@
             'iptables',
         ],
         'services': [],
+        'logging': {
+            'files': [{
+                'path': '/var/log/iptables-reject.log',
+                'tag': 'block'
+            }]
+        },
     },
     'RedHat': {
         'packages': [
