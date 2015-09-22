@@ -24,8 +24,17 @@ sudoers:
         group: {{ params.group }}
         group_nopw: {{ params.group_nopw }}
         secure_path: {{ sudo_map.secure_path }}
+        logfile: {{ sudo_map.logfile }}
     - require:
       - pkg: sudo
+      - file: sudo-logfile
       {% for group in [params.group, params.group_nopw] %}
       - group: sudo-group-{{ group }}
       {% endfor %}
+
+sudo-logfile:
+  file.managed:
+    - name: {{ sudo_map.logfile }}
+    - user: root
+    - group: {{ defaults.rootgroup }}
+    - mode: 600

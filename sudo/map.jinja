@@ -12,6 +12,12 @@
     'default': {
         'package': 'sudo',
         'sudoers': '/etc/sudoers',
-        'secure_path': '/sbin:/bin:/usr/sbin:/usr/bin'
+        'secure_path': '/sbin:/bin:/usr/sbin:/usr/bin',
+        'logfile': '/var/log/sudo.log',
+        'logging': {
+            'files': [{
+                'path': '/var/log/sudo.log'
+            }]
+        },
     }
 }, base='default') %}
