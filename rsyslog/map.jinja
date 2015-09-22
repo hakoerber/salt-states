@@ -3,8 +3,8 @@
         'client': {
             'logs': [
                 {
-                    'selector': ':msg, contains, "[iptables] "',
-                    'file': '/var/log/iptables.log',
+                    'selector': ':msg, contains, "[iptables-reject] "',
+                    'file': '/var/log/iptables-reject.log',
                     'stop': True
                 },
                 {
@@ -47,8 +47,8 @@
         'client': {
             'logs': [
                 {
-                    'selector': ':msg, contains, "[iptables] "',
-                    'file': '/var/log/iptables.log',
+                    'selector': ':msg, contains, "[iptables-reject] "',
+                    'file': '/var/log/iptables-reject.log',
                     'stop': True
                 },
                 {
@@ -162,7 +162,7 @@
         'workdir': '/var/lib/rsyslog',
         'conf': '/etc/rsyslog.conf',
         'include_basedir': '/etc/rsyslog.d',
-        'applications_conf': 'applications.conf',
+        'applications_conf': '40_applications.conf',
         'client': {
             'include': [
                 'syslog_forward.conf',

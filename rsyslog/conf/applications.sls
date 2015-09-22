@@ -12,7 +12,7 @@ rsyslog-applications:
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 644
-    - source: salt://states/rsyslog/files/application.conf.jinja
+    - source: salt://states/rsyslog/files/40_applications.conf.jinja
     - template: jinja
     - require:
       - pkg: rsyslog

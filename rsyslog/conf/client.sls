@@ -7,14 +7,14 @@
 # --- end of state config ---
 
 {% if params.local %}
-{% set filename = 'local.conf' %}
+{% set filename = '20_local.conf' %}
 rsyslog_{{ filename }}:
   file.managed:
     - name: {{ rsyslog_map.include_basedir }}/{{ filename }}
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 644
-    - source: salt://states/rsyslog/files/local.conf.jinja
+    - source: salt://states/rsyslog/files/{{ filename }}.jinja
     - template: jinja
     - require:
       - pkg: rsyslog
@@ -31,11 +31,11 @@ rsyslog_{{ filename }}:
 {% set filename = 'forward_' + fqdn + '_' + protocol + '_' + port|string + '.conf' %}
 rsyslog_{{ filename }}:
   file.managed:
-    - name: {{ rsyslog_map.include_basedir }}/{{ filename }}
+    - name: {{ rsyslog_map.include_basedir }}/30_{{ filename }}
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 644
-    - source: salt://states/rsyslog/files/forward.conf.jinja
+    - source: salt://states/rsyslog/files/30_forward.conf.jinja
     - template: jinja
     - defaults:
         target: {{ fqdn }}
