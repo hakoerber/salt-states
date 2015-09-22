@@ -1,6 +1,11 @@
 {% set families = ['ipv4', 'ipv6'] %}
 
 {% for family in families %}
+chain_log_reject_{{ family }}:
+  iptables.chain_present:
+    - name: LOG_REJECT
+    - family: {{ family }}
+
 policy_allow_output_{{ family }}:
   iptables.set_policy:
     - table: filter
@@ -117,6 +122,30 @@ udp_jump_to_tcpudp_{{ family }}:
     - match: state
     - connstate: NEW
     - save: true
+
+jump_to_log_reject_{{ family }}:
+  iptables.append:
+    - table: filter
+    - chain: INPUT
+    - jump: LOG_REJECT
+    - family: {{ family }}
+    - save: true
+    - require:
+      - iptables: chain_log_reject_{{ family }}
+
+log_rejects_{{ family }}:
+  iptables.append:
+    - table: filter
+    - chain: LOG_REJECT
+    - match: limit
+    - limit: 60/minute
+    - limit-burst: 60
+    - jump: LOG
+    - log-prefix: '[iptables] '
+    - family: {{ family }}
+    - save: true
+    - require:
+      - iptables: jump_to_log_reject_{{ family }}
 {% endfor %}
 
 reject_tcp_gracefully_ipv4:
