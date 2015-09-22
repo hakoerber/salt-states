@@ -46,6 +46,8 @@ zone-{{ params.domain }}-forward:
         params: {{ params }}
     - require:
       - pkg: bind
+    - require_in:
+      - file: named.conf
     - watch_in:
       - cmd: reload_zones
 
@@ -61,6 +63,8 @@ zone-{{ params.domain }}-reverse:
         params: {{ params }}
     - require:
       - pkg: bind
+    - require_in:
+      - file: named.conf
     - watch_in:
       - cmd: reload_zones
 {% endif %}
