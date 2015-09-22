@@ -9,6 +9,7 @@
 authorative;
 default-lease-time 3600;
 max-lease-time     86400;
+log-facility       local1;
 
 failover peer "failover" {
     {{ params.role }};
