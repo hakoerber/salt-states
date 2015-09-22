@@ -9,6 +9,11 @@
         'minion': {
             'service': 'salt-minion',
             'conf_file': '/etc/salt/minion',
+            'logging': {
+                'files': [{
+                    'path': '/var/log/salt/minion'
+                }]
+            },
         },
     },
 }, base='default') %}
