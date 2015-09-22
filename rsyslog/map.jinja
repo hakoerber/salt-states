@@ -2,7 +2,7 @@
     'RedHat': {
         'client': {
             'logs': {
-                '*.info;mail.none;authpriv.none;cron.none,local1.none': '/var/log/messages',
+                '*.info;mail.none;authpriv.none;cron.none,local1.none,local2.none': '/var/log/messages',
                 'authpriv.*': '/var/log/secure',
                 'mail.*': '/var/log/maillog',
                 'cron.*': '/var/log/cron',
@@ -10,6 +10,7 @@
                 'uucp,news.crit': '/var/log/spooler',
                 'local7.*': '/var/log/boot.log',
                 'local1.*': '/var/log/dhcpd.log',
+                'local2.*': '/var/log/sshd.log',
             },
         },
     },
@@ -18,7 +19,7 @@
         'client': {
             'logs': {
                 'autm,authpriv.*': '/var/log/auth.log',
-                '*.*;auth,authpriv.none,local1.none': '/var/log/syslog',
+                '*.*;auth,authpriv.none,local1.none,local2.none': '/var/log/syslog',
                 'daemon.*': '/var/log/daemon.log',
                 'kern.*': '/var/log/kern.log',
                 'lpr.*': '/var/log/lpr.log',
@@ -28,6 +29,7 @@
                 '*.=info;*.=notice;*.=warn;auth,authpriv.none;cron,daemon.none;mail,news.none': '/var/log/messages',
                 '*.emerg': ':omusrmsg:*',
                 'local1.*': '/var/log/dhcpd.log',
+                'local2.*': '/var/log/sshd.log',
             },
         },
     },
@@ -39,7 +41,7 @@
         'client': {
             'logs': {
                 '*.err;kern.warning;auth.notice;mail.crit': '/dev/console',
-                '*.notice;authpriv.none;kern.debug;lpr.info;mail.crit;news.err,local1.none': '/var/log/messages',
+                '*.notice;authpriv.none;kern.debug;lpr.info;mail.crit;news.err,local1.none,local2.none': '/var/log/messages',
                 'security.*': '/var/log/security',
                 'auth.info;authpriv.info': '/var/log/auth.log',
                 'mail.info': '/var/log/maillog',
@@ -49,6 +51,7 @@
                 '*.=debug': '/var/log/debug.log',
                 '*.emerg': '*',
                 'local1.*': '/var/log/dhcpd.log',
+                'local2.*': '/var/log/sshd.log',
             },
         },
     },
