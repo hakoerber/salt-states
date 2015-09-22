@@ -5,6 +5,11 @@
         'conf_file' : '/etc/ntp.conf',
         'driftfile' : '/var/lib/ntp/ntp.drift',
         'logfile' : '/var/log/ntp.log',
+        'logging': {
+            'files': [{
+                'path': '/var/log/ntp.log',
+            }],
+        }
     },
     'Arch': {
         'service': 'ntpd',

@@ -10,5 +10,10 @@
         'logfile': '/var/log/named/named.log',
         'loglevel': 'info',
         'rfc1912zones': '/etc/named.rfc1912.zones',
+        'logging': {
+            'files': [{
+                'path': '/var/log/named/named.log'
+            }]
+        },
     },
 }, base='default') %}
