@@ -1,6 +1,6 @@
 module(load="imfile")
 {% if accumulator is defined %}
-{% for application_name, application in accumulator.items() %}
+{% for application_name, application in accumulator|dictsort() %}
 {% set name = application_name|replace('-log', '') %}
 {% for file in application[0].files %}
 {% if file.tag is defined %}
