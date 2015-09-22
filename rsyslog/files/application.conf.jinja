@@ -1,0 +1,45 @@
+module(load="imfile")
+{% if accumulator is defined %}
+{% for application_name, application in accumulator.items() %}
+{% set name = application_name|replace('-log', '') %}
+{% for file in application[0].files %}
+{% if file.tag is defined %}
+{% set identifier = 'application-' + name + '-' + file.tag %}
+{% else %}
+{% set identifier = 'application-' + name %}
+{% endif %}
+
+# application: {{ name }} --- file: {{ file.path }}
+
+template(name="{{ identifier }}-json" type="list") {
+    constant(value="{")
+        constant(value="\"logtype\":\"")          constant(value="{{ identifier }}")
+        constant(value="\",\"content\":{")
+            constant(value="\"message\":\"")       property(name="msg" format="json")
+        constant(value="\"}")
+        constant(value=",\"hostinfo\":{")
+            constant(value="\"hostname\":\"")       property(name="$myhostname")
+        constant(value="\"}")
+    constant(value="}")
+}
+
+ruleset(name="forward-{{ identifier }}") {
+    action(
+        name="forward-tcp"
+        type="omfwd"
+        Template="{{ identifier }}-json"
+        Target="log.lab"
+        Port="514"
+        Protocol="tcp"
+    )
+}
+
+input(type="imfile"
+    File="{{ file.path }}"
+    Tag="{{ identifier }}"
+    StateFile="{{ file.path|replace('/', '-') }}.state"
+    ruleset="forward-{{ identifier }}"
+)
+{% endfor %}
+{% endfor %}
+{% endif %}
