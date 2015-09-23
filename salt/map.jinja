@@ -15,5 +15,17 @@
                 }]
             },
         },
+        'master': {
+            'service': 'salt-master',
+            'ports': [
+                4505,
+                4506,
+            ],
+            'logging': {
+                'files': [{
+                    'path': '/var/log/salt/master'
+                }]
+            },
+        },
     },
 }, base='default') %}
