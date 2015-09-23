@@ -1,0 +1,22 @@
+{% set nginx = salt['grains.filter_by']({
+    'default': {
+        'package': 'nginx',
+        'service': 'nginx',
+        'user': 'nginx',
+        'group': 'nginx',
+        'ports': {
+            'http': '80',
+            'https': '443',
+        },
+        'logging': {
+            'files': [{
+                'path': '/var/log/nginx/access.log',
+                'tag': 'access'
+            },
+            {
+                'path': '/var/log/nginx/error.log',
+                'tag': 'error'
+            }]
+        },
+    },
+}, base='default') %}
