@@ -4,21 +4,22 @@ module(load="imfile")
 {% set name = application_name|replace('-log', '') %}
 {% for file in application[0].files %}
 {% if file.tag is defined %}
-{% set identifier = 'application-' + name + '-' + file.tag %}
+{% set identifier = name + '-' + file.tag %}
 {% else %}
-{% set identifier = 'application-' + name %}
+{% set identifier = name %}
 {% endif %}
 
 # application: {{ name }} --- file: {{ file.path }}
 
 template(name="{{ identifier }}-json" type="list") {
     constant(value="{")
-        constant(value="\"logtype\":\"")          constant(value="{{ identifier }}")
+        constant(value="\"logtype\":\"")          constant(value="application")
+        constant(value="\",\"application\":\"")   constant(value="{{ identifier }}")
         constant(value="\",\"content\":{")
-            constant(value="\"message\":\"")       property(name="msg" format="json")
+            constant(value="\"message\":\"")      property(name="msg" format="json")
         constant(value="\"}")
         constant(value=",\"hostinfo\":{")
-            constant(value="\"hostname\":\"")       property(name="$myhostname")
+            constant(value="\"hostname\":\"")     property(name="$myhostname")
         constant(value="\"}")
     constant(value="}")
 }
