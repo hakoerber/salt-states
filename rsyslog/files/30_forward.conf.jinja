@@ -1,5 +1,4 @@
 {% from 'states/rsyslog/map.jinja' import rsyslog as rsyslog_map with context %}
-
 template(name="syslog-json" type="list") {
     constant(value="{")
       constant(value="\"logtype\":\"")          constant(value="syslog")
@@ -17,12 +16,16 @@ template(name="syslog-json" type="list") {
       constant(value="\"}")
     constant(value="}")
 }
+{% for server in servers %}
+{% for listener in server.listeners %}
 
 action(
   name="send_syslog"
   type="omfwd"
   Template="syslog-json"
-  Target="{{ target }}"
-  Port="{{ port }}"
-  Protocol="{{ protocol }}"
+  Target="{{ server.name + "." + server.domain }}"
+  Port="{{ listener.port }}"
+  Protocol="{{ listener.protocol }}"
 )
+{% endfor %}
+{% endfor %}

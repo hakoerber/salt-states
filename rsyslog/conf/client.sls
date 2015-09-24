@@ -23,28 +23,19 @@ rsyslog_{{ filename }}:
       - service: rsyslog
 {% endif %}
 
-{% for server in params.servers %}
-{% set fqdn = server.name + "." + server.domain %}
-{% for listener in server.listeners %}
-{% set protocol = listener.protocol %}
-{% set port = listener.port %}
-{% set filename = 'forward_' + fqdn + '_' + protocol + '_' + port|string + '.conf' %}
+{% set filename = '30_forward.conf' %}
 rsyslog_{{ filename }}:
   file.managed:
-    - name: {{ rsyslog_map.include_basedir }}/30_{{ filename }}
+    - name: {{ rsyslog_map.include_basedir }}/{{ filename }}
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 644
-    - source: salt://states/rsyslog/files/30_forward.conf.jinja
+    - source: salt://states/rsyslog/files/{{ filename }}.jinja
     - template: jinja
     - defaults:
-        target: {{ fqdn }}
-        port: {{ port }}
-        protocol: {{ protocol }}
+        servers: {{ params.servers }}
     - require:
       - pkg: rsyslog
       - file: rsyslog.d
     - watch_in:
       - service: rsyslog
-{% endfor %}
-{% endfor %}
