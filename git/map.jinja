@@ -1,0 +1,15 @@
+{% set git = salt['grains.filter_by']({
+    'RedHat': {
+    },
+    'Debian': {
+    },
+    'FreeBSD': {
+    },
+    'Arch': {
+    },
+    'default': {
+        'package': 'git',
+        'user': 'git',
+        'home': '/home/git',
+    }
+}, base='default') %}
