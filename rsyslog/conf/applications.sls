@@ -14,8 +14,8 @@ rsyslog-applications:
     - mode: 644
     - source: salt://states/rsyslog/files/40_applications.conf.jinja
     - template: jinja
+    - makedirs: True
     - require:
       - pkg: rsyslog
-      - file: rsyslog.d
     - watch_in:
       - service: rsyslog

@@ -16,9 +16,9 @@ rsyslog_{{ filename }}:
     - mode: 644
     - source: salt://states/rsyslog/files/{{ filename }}.jinja
     - template: jinja
+    - makedirs: True
     - require:
       - pkg: rsyslog
-      - file: rsyslog.d
     - watch_in:
       - service: rsyslog
 {% endif %}
@@ -32,10 +32,10 @@ rsyslog_{{ filename }}:
     - mode: 644
     - source: salt://states/rsyslog/files/{{ filename }}.jinja
     - template: jinja
+    - makedirs: True
     - defaults:
         servers: {{ params.servers }}
     - require:
       - pkg: rsyslog
-      - file: rsyslog.d
     - watch_in:
       - service: rsyslog

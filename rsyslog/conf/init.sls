@@ -21,3 +21,8 @@ rsyslog.d:
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 755
+    - clean: True
+    - require:
+      - file: /etc/rsyslog.d/40_applications.conf
+      - file: /etc/rsyslog.d/20_local.conf
+      - file: /etc/rsyslog.d/30_forward.conf
