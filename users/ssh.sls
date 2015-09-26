@@ -5,20 +5,20 @@
     stateconf.set: []
 # --- end of state config ---
 
-{% for user in params.users %}
+{% for username, user in params.users.items() %}
 {% for authorized_key in user.get('ssh', {}).get('authorized_keys', []) %}
 authorized-keys-{{ authorized_key.comment }}:
   ssh_auth.present:
     - name: {{ authorized_key.key }}
-    - user: {{ user.name }}
+    - user: {{ username }}
     - enc: {{ authorized_key.type }}
     - comment: {{ authorized_key.comment }}
 {% endfor %}
 
 {% for authorized_user in user.get('ssh', {}).get('authorized_users', []) %}
-authorized-keys-{{ authorized_user.name }}
+authorized-keys-{{ authorized_username }}
   ssh_auth.present:
-    - user: {{ user.name }}
-    - source: salt://users/{{ authorized_user.name }}/ssh/id_rsa.pub
+    - user: {{ username }}
+    - source: salt://users/{{ authorized_username }}/ssh/id_rsa.pub
 {% endfor %}
 {% endfor %}

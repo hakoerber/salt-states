@@ -6,7 +6,7 @@
     stateconf.set: []
 # --- end of state config ---
 
-{% for user in params.users %}
+{% for username, user in params.users.items() %}
 
 {% set groups = user.get('groups', []) %}
 {% for group in groups %}
@@ -15,17 +15,17 @@ group-{{ group }}:
     - name: {{ group }}
 {% endfor %}
 
-user-{{ user.name }}:
-  {% if user.name == 'root' %}
+user-{{ username }}:
+  {% if username == 'root' %}
   {% set groupname = defauts.rootgroup %}
   {% else %}
-  {% set groupname = user.name %}
+  {% set groupname = username %}
   {% endif %}
   group.present:
     - name: {{ groupname }}
 
   user.present:
-    - name: {{ user.name }}
+    - name: {{ username }}
 
     {% if user.uid is defined %}
     - uid: {{ user.uid }}
@@ -50,7 +50,7 @@ user-{{ user.name }}:
     {% endif %}
 
     - require:
-      - group: user-{{ user.name }}
+      - group: user-{{ username }}
       {% for group in groups %}
       - group: group-{{ group }}
       {% endfor %}

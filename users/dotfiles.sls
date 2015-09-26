@@ -6,7 +6,7 @@
     stateconf.set: []
 # --- end of state config ---
 
-{% for user in params.users %}
+{% for username, user in params.users.items() %}
 {% for application in user.dotfiles %}
 
 {% if application.packages is defined %}
@@ -24,11 +24,11 @@ dotfiles-packages-{{ application.name }}:
 dotfiles-{{ application.name }}-{{ file.name }}:
   file.managed:
     - name: {{ user.home }}/.{{ file.name }}
-    - user: {{ user.name }}
-    - group: {{ user.name }}
+    - user: {{ username }}
+    - group: {{ username }}
     - makedirs: True
     - mode: 600
-    - source: salt://files/users/{{ user.name }}/dotfiles/{{ file.name }}
+    - source: salt://files/users/{{ username }}/dotfiles/{{ file.name }}
     {% if template %}
     - template: jinja
     - defaults:
