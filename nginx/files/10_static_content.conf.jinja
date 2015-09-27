@@ -1,0 +1,13 @@
+{% from 'states/nginx/map.jinja' import nginx as nginx_map with context %}
+server {
+    {% if content.protocol == 'http' %}
+    listen {{ nginx_map.ports.http }} default_server;
+    {% else %}
+    listen {{ nginx_map.ports.https }} ssl default_server;
+    {% endif %}
+    server_name {{ content.get('server_name', '_') }};
+    root {{ content.path }};
+
+    location / {
+    }
+}

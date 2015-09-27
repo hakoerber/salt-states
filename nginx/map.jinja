@@ -8,6 +8,14 @@
             'http': '80',
             'https': '443',
         },
+        'conf': {
+            'main': {
+                'path': '/etc/nginx/nginx.conf',
+                'template': 'salt://states/nginx/files/nginx.conf.jinja',
+            },
+            'include_dir': '/etc/nginx/conf.d',
+            'mime_types': '/etc/nginx/mime.types',
+        },
         'logging': {
             'files': [{
                 'path': '/var/log/nginx/access.log',
