@@ -1,0 +1,26 @@
+{% from 'states/nginx/map.jinja' import nginx as nginx_map with context %}
+
+proxy_set_header Host              $host;
+proxy_set_header X-Real-IP         $remote_addr;
+proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+proxy_set_header X-Forwarded-Proto $scheme;
+proxy_set_header X-Scheme          $scheme;
+
+proxy_buffering on;
+
+{% for target in reverse_proxy.upstream %}
+server {
+    {% if reverse_proxy.protocol == 'http' %}
+    listen {{ nginx_map.ports.http }};
+    {% else %}
+    listen {{ nginx_map.ports.https }} ssl;
+    {% endif %}
+
+    server_name {{ target.subdomain }}.*;
+
+    location / {
+        proxy_pass {{ target.url }};
+    }
+}
+
+{% endfor %}

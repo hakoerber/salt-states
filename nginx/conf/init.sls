@@ -54,3 +54,26 @@ nginx-10_static_content.conf-absent:
   file.absent:
     - name: {{ name }}
 {% endif %}
+
+
+{% set name = nginx_map.conf.include_dir + '/20_reverse_proxy.conf' %}
+{% if params.get('reverse_proxy', None) is not none %}
+nginx-20_reverse_proxy.conf:
+  file.managed:
+    - name: {{ nginx_map.conf.include_dir }}/20_reverse_proxy.conf
+    - user: root
+    - group: {{ defaults.rootgroup }}
+    - mode: 644
+    - source: 'salt://states/nginx/files/20_reverse_proxy.conf.jinja'
+    - template: jinja
+    - defaults:
+        reverse_proxy: {{ params.reverse_proxy }}
+    - require:
+      - file: nginx-conf.d
+    - watch_in:
+      - service: nginx
+{% else %}
+nginx-10_reverse-proxy.conf-absent:
+  file.absent:
+    - name: {{ name }}
+{% endif %}
