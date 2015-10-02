@@ -77,3 +77,15 @@ nginx-10_reverse-proxy.conf-absent:
   file.absent:
     - name: {{ name }}
 {% endif %}
+
+nginx-30_local_status.conf:
+  file.managed:
+    - name: {{ nginx_map.conf.include_dir }}/30_local_status.conf
+    - user: root
+    - group: {{ defaults.rootgroup }}
+    - mode: 644
+    - source: 'salt://states/nginx/files/30_local_status.conf'
+    - require:
+      - file: nginx-conf.d
+    - watch_in:
+      - service: nginx
