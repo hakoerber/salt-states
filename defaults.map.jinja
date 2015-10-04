@@ -2,6 +2,7 @@
     'RedHat': {
     },
     'Debian': {
+        'nogroup': 'nogroup',
     },
     'FreeBSD': {
         'rootgroup': 'wheel',
@@ -10,5 +11,7 @@
     },
     'default': {
         'rootgroup': 'root',
+        'nobody': 'nobody',
+        'nogroup': 'nobody',
     }
 }, base='default') %}

@@ -1,0 +1,28 @@
+{% set openvpn = salt['grains.filter_by']({
+    'Debian': {
+        'client': {
+            'service': 'openvpn',
+        },
+    },
+    'default': {
+        'default_port': '1194',
+        'confdir': '/etc/openvpn',
+        'pkidir': 'pki',
+        'package': 'openvpn',
+        'default_compress': 'True',
+        'default_cipher': 'AES-256-CBC',
+        'default_digest': 'SHA256',
+        'tls_ciphers': [
+            'TLS-DHE-RSA-WITH-AES-256-CBC-SHA256',
+            'TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256',
+            'TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256',
+            'TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384',
+        ],
+        'client': {
+            'service': 'openvpn@%s',
+        },
+        'server': {
+            'service': 'openvpn@%s',
+        },
+    },
+}, base='default') %}

@@ -1,0 +1,55 @@
+port {{ vpn.port|default(openvpn.default_port) }}
+proto {{ vpn.protocol }}
+dev {{ vpn.devname }}
+dev-type {{ vpn.dev }}
+
+# files
+ca keys-{{ vpn.name}}/ca.crt
+cert keys-{{ vpn.name}}/server.crt
+key keys-{{ vpn.name}}/server.key
+tls-auth keys-{{ vpn.name}}/ta.key 0
+dh keys-{{ vpn.name}}/dh2048.pem
+#crl-verify keys-{{ vpn.name}}/crl.pem
+
+# mode and addressing
+mode server
+tls-server
+topology subnet
+push "topology subnet"
+ifconfig {{ vpn.gateway }} {{ vpn.netmask }}
+push "route-gateway {{ vpn.gateway }}"
+{% if vpn.dhcp_pool is defined %}
+ifconfig-pool {{ vpn.dhcp_pool.start }} {{ vpn.dhcp_pool.end }} {{ vpn.netmask }}
+ifconfig-pool-persist /var/run/openvpn/ipp-{{ vpn.name }}.txt
+{% endif %}
+client-config-dir /etc/openvpn/ccd-{{ vpn.name }}
+client-to-client
+
+# advertised client subnets
+{% for name, conf in vpn.clients.items() %}
+{% if conf.advertise_subnet is defined %}
+# {{ name }}
+route {{ conf.advertise_subnet.ip }} {{ conf.advertise_subnet.mask }} {{ conf.ip }}
+push "route {{ conf.advertise_subnet.ip }} {{ conf.advertise_subnet.mask }}"
+{% endif %}
+{% endfor %}
+
+# connection specifics
+keepalive 10 120
+{% if vpn.compress %}
+comp-lzo
+{% endif %}
+max-clients 100
+cipher {{ vpn.cipher }}
+
+# logging
+log /var/log/openvpn-{{ vpn.name }}.log
+status /var/run/openvpn/status-{{ vpn.name }} 10
+verb 4
+mute 20
+
+# misc
+user {{ nobody }}
+group {{ nogroup }}
+persist-key
+persist-tun

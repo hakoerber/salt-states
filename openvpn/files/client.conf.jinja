@@ -1,0 +1,45 @@
+{% from 'states/openvpn/map.jinja' import openvpn as openvpn_map with context %}
+{% from 'states/defaults.map.jinja' import defaults with context %}
+
+port {{ vpn.port|default(openvpn_map.default_port) }}
+proto {{ vpn.protocol }}
+dev {{ vpn.devname }}
+dev-type {{ vpn.dev }}
+
+# files
+ca {{ openvpn_map.pkidir }}/{{ vpnname }}/ca.crt
+cert {{ openvpn_map.pkidir }}/{{ vpnname }}/client.crt
+key {{ openvpn_map.pkidir }}/{{ vpnname }}/client.key
+tls-auth {{ openvpn_map.pkidir }}/{{ vpnname }}/ta.key 1
+
+# mode and addressing
+client
+topology subnet
+nobind
+
+# connections
+<connection>
+remote {{ vpn.server.ip }}
+</connection>
+
+# connection specificy
+resolv-retry infinite
+{% if vpn.compress|default(openvpn_map.default_compress) %}
+comp-lzo
+{% endif %}
+cipher {{ vpn.cipher|default(openvpn_map.default_cipher) }}
+auth {{ vpn.digest|default(openvpn_map.default_digest) }}
+tls-cipher {{ openvpn_map.tls_ciphers|join(':') }}
+ns-cert-type server
+
+# logging
+log /var/log/openvpn-{{ vpnname }}.log
+verb 4
+mute 20
+mute-replay-warnings
+
+# misc
+user {{ defaults.nobody }}
+group {{ defaults.nogroup }}
+persist-key
+persist-tun

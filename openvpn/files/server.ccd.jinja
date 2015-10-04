@@ -1,0 +1,6 @@
+{% if client_conf.ip != "dhcp" %}
+ifconfig-push {{ client_conf.ip }} {{ vpn.netmask }}
+{% endif %}
+{% if client_conf.advertise_subnet is defined and vpn.dev == 'tun' %}
+iroute {{ client_conf.advertise_subnet.ip }} {{ client_conf.advertise_subnet.mask }}
+{% endif %}
