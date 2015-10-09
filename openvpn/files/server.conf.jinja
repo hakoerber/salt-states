@@ -7,11 +7,11 @@ dev {{ vpn.devname }}
 dev-type {{ vpn.dev }}
 
 # files
-ca keys-{{ vpn.name }}/ca.crt
-cert keys-{{ vpn.name }}/server.crt
-key keys-{{ vpn.name }}/server.key
-tls-auth keys-{{ vpn.name }}/ta.key 0
-dh keys-{{ vpn.name }}/dh2048.pem
+ca {{ openvpn_map.pkidir }}/{{ vpnname }}/ca.crt
+cert {{ openvpn_map.pkidir }}/{{ vpnname }}/server.crt
+key {{ openvpn_map.pkidir }}/{{ vpnname }}/server.key
+tls-auth {{ openvpn_map.pkidir }}/{{ vpnname }}/ta.key 0
+dh {{ openvpn_map.pkidir }}/{{ vpnname }}/dh2048.pem
 
 # mode and addressing
 mode server
@@ -28,7 +28,8 @@ client-config-dir /etc/openvpn/{{ vpnname }}.ccd
 client-to-client
 
 # advertised client subnets
-{% for clientname, conf in vpn.clients.items() %}
+{% for clientname, clientinfo in vpn.get('clients', {}).items() %}
+{% set conf = clientinfo.options %}
 {% if conf.advertise_subnet is defined %}
 # client {{ clientname }}
 route {{ conf.advertise_subnet.ip }} {{ conf.advertise_subnet.mask }} {{ conf.ip }}
