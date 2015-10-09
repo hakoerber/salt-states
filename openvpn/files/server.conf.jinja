@@ -1,15 +1,17 @@
-port {{ vpn.port|default(openvpn.default_port) }}
+{% from 'states/openvpn/map.jinja' import openvpn as openvpn_map with context %}
+{% from 'states/defaults.map.jinja' import defaults with context %}
+
+port {{ vpn.port|default(openvpn_map.default_port) }}
 proto {{ vpn.protocol }}
 dev {{ vpn.devname }}
 dev-type {{ vpn.dev }}
 
 # files
-ca keys-{{ vpn.name}}/ca.crt
-cert keys-{{ vpn.name}}/server.crt
-key keys-{{ vpn.name}}/server.key
-tls-auth keys-{{ vpn.name}}/ta.key 0
-dh keys-{{ vpn.name}}/dh2048.pem
-#crl-verify keys-{{ vpn.name}}/crl.pem
+ca keys-{{ vpn.name }}/ca.crt
+cert keys-{{ vpn.name }}/server.crt
+key keys-{{ vpn.name }}/server.key
+tls-auth keys-{{ vpn.name }}/ta.key 0
+dh keys-{{ vpn.name }}/dh2048.pem
 
 # mode and addressing
 mode server
@@ -20,15 +22,15 @@ ifconfig {{ vpn.gateway }} {{ vpn.netmask }}
 push "route-gateway {{ vpn.gateway }}"
 {% if vpn.dhcp_pool is defined %}
 ifconfig-pool {{ vpn.dhcp_pool.start }} {{ vpn.dhcp_pool.end }} {{ vpn.netmask }}
-ifconfig-pool-persist /var/run/openvpn/ipp-{{ vpn.name }}.txt
+ifconfig-pool-persist /var/run/openvpn/ipp-{{ vpnname }}.txt
 {% endif %}
-client-config-dir /etc/openvpn/ccd-{{ vpn.name }}
+client-config-dir /etc/openvpn/{{ vpnname }}.ccd
 client-to-client
 
 # advertised client subnets
-{% for name, conf in vpn.clients.items() %}
+{% for clientname, conf in vpn.clients.items() %}
 {% if conf.advertise_subnet is defined %}
-# {{ name }}
+# client {{ clientname }}
 route {{ conf.advertise_subnet.ip }} {{ conf.advertise_subnet.mask }} {{ conf.ip }}
 push "route {{ conf.advertise_subnet.ip }} {{ conf.advertise_subnet.mask }}"
 {% endif %}
@@ -36,20 +38,22 @@ push "route {{ conf.advertise_subnet.ip }} {{ conf.advertise_subnet.mask }}"
 
 # connection specifics
 keepalive 10 120
-{% if vpn.compress %}
+{% if vpn.compress|default(openvpn_map.default_compress) %}
 comp-lzo
 {% endif %}
-max-clients 100
-cipher {{ vpn.cipher }}
+cipher {{ vpn.cipher|default(openvpn_map.default_cipher) }}
+auth {{ vpn.digest|default(openvpn_map.default_digest) }}
+tls-cipher {{ openvpn_map.tls_ciphers|sort|join(':') }}
 
 # logging
-log /var/log/openvpn-{{ vpn.name }}.log
-status /var/run/openvpn/status-{{ vpn.name }} 10
+log /var/log/openvpn-{{ vpnname }}.log
+status /var/run/openvpn/status-{{ vpnname }} 10
 verb 4
 mute 20
+mute-replay-warnings
 
 # misc
-user {{ nobody }}
-group {{ nogroup }}
+user {{ defaults.nobody }}
+group {{ defaults.nogroup }}
 persist-key
 persist-tun

@@ -29,7 +29,7 @@ comp-lzo
 {% endif %}
 cipher {{ vpn.cipher|default(openvpn_map.default_cipher) }}
 auth {{ vpn.digest|default(openvpn_map.default_digest) }}
-tls-cipher {{ openvpn_map.tls_ciphers|join(':') }}
+tls-cipher {{ openvpn_map.tls_ciphers|sort|join(':') }}
 ns-cert-type server
 
 # logging

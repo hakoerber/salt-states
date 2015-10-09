@@ -15,8 +15,6 @@ openvpn-client-{{ vpnname }}.conf:
     - mode: 644
     - source: salt://states/openvpn/files/client.conf.jinja
     - template: jinja
-    - require:
-      - pkg: openvpn-client
     - defaults:
         vpnname: {{ vpnname }}
         vpn: {{ vpn }}

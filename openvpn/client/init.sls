@@ -9,10 +9,10 @@
 {% for vpnname, vpn in params.vpns.items() %}
 openvpn-client-{{ vpnname }}-service:
   service.running:
-    {% if '%s' in openvpn.server.service %}
+    {% if '%s' in openvpn_map.client.service %}
     - name: {{ openvpn_map.client.service|format('client-' + vpnname) }}
     {% else %}
-    - name: {{ openvpn.server.service }}
+    - name: {{ openvpn_map.client.service }}
     {% endif %}
 
     - enable: True
