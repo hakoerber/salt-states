@@ -8,15 +8,21 @@ proxy_set_header X-Scheme          $scheme;
 
 proxy_buffering on;
 
-{% for target in reverse_proxy.upstream %}
+{% for target in upstream %}
 server {
-    {% if reverse_proxy.protocol == 'http' %}
-    listen {{ nginx_map.ports.http }};
+    {% if target.protocols is defined %}
+    {% set proto = target.protocols %}
     {% else %}
+    {% set proto = protocol %}
+    {% endif %}
+    {% if 'http' in proto %}
+    listen {{ nginx_map.ports.http }};
+    {% endif %}
+    {% if 'https' in proto %}
     listen {{ nginx_map.ports.https }} ssl;
     {% endif %}
 
-    server_name {{ target.subdomain }}.*;
+    server_name {{ target.servername }};
 
     location / {
         proxy_pass {{ target.url }};

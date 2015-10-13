@@ -91,7 +91,8 @@ nginx-20_reverse_proxy.conf:
     - source: 'salt://states/nginx/files/20_reverse_proxy.conf.jinja'
     - template: jinja
     - defaults:
-        reverse_proxy: {{ params.reverse_proxy }}
+        upstream: {{ params.reverse_proxy.upstream }}
+        protocol: {{ params.reverse_proxy.protocol }}
     - require:
       - file: nginx-conf.d
     - watch_in:
