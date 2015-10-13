@@ -1,0 +1,31 @@
+{% from 'states/murmur/map.jinja' import murmur as murmur_map with context %}
+database={{ murmur_map.home }}/murmur.sqlite
+logfile={{ murmur_map.home }}/murmur.log
+pidfile={{ murmur_map.home }}/murmur.pid
+
+# disable database logging
+logdays=-1
+
+host=0.0.0.0
+port={{ murmur_map.port }}
+serverpassword={{ password }}
+
+welcometext="<br/>Welcome to this server running <strong>Murmur</strong>.<br/>Enjoy your stay!<br/>"
+
+bandwidth=72000
+users=100
+channelnestinglimit=10
+
+bonjour=false
+
+sendversion=false
+certrequired=true
+
+channelname=[ \\-=\\w\\#\\[\\]\\{\\}\\(\\)\\@\\|]+
+username=[-=\\w\\[\\]\\{\\}\\(\\)\\@\\|\\.]+
+
+# disable limits
+textmessagelength=0
+imagemessagelength=0
+
+allowhtml=true

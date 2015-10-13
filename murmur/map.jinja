@@ -1,0 +1,10 @@
+{% set murmur = salt['grains.filter_by']({
+    'default': {
+        'service': 'murmur',
+        'port': '64738',
+        'home': '/var/lib/murmur',
+        'user': 'murmur',
+        'group': 'murmur',
+        'conf_file': '/etc/murmur.ini',
+    }
+}, base='default') %}
