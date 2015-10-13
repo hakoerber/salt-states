@@ -51,6 +51,8 @@ nginx-15_ssl.conf:
 nginx-15_ssl.conf-absent:
   file.absent:
     - name: {{ name }}
+    - watch_in:
+      - service: nginx
 {% endif %}
 
 {% set name = nginx_map.conf.include_dir + '/10_static_content.conf' %}
@@ -73,6 +75,8 @@ nginx-10_static_content.conf:
 nginx-10_static_content.conf-absent:
   file.absent:
     - name: {{ name }}
+    - watch_in:
+      - service: nginx
 {% endif %}
 
 
@@ -96,6 +100,8 @@ nginx-20_reverse_proxy.conf:
 nginx-10_reverse-proxy.conf-absent:
   file.absent:
     - name: {{ name }}
+    - watch_in:
+      - service: nginx
 {% endif %}
 
 nginx-30_local_status.conf:
