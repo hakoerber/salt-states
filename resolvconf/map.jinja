@@ -1,0 +1,5 @@
+{% set resolvconf = salt['grains.filter_by']({
+    'default': {
+        'resolv': '/etc/resolv.conf',
+    },
+}, base='default') %}

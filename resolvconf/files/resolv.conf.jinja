@@ -1,0 +1,4 @@
+search {{ search|join(' ') }}
+{% for nameserver in nameservers %}
+nameserver {{ nameserver }}
+{% endfor %}

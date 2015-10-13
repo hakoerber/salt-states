@@ -1,0 +1,10 @@
+{% from 'states/defaults.map.jinja' import defaults with context %}
+user={{ defaults.nobody }}
+group={{ defaults.nogroup }}
+
+listen-address=127.0.0.1
+
+{% for nameserver in nameservers %}
+server=/{{ domain }}/{{ nameserver }}
+server=/{{ reverse_domain }}/{{ nameserver }}
+{% endfor %}
