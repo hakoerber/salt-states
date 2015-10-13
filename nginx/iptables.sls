@@ -10,7 +10,7 @@
 nginx-iptables-{{ protocol }}:
   iptables.append:
     - table: filter
-    - chain: ZONE_LOCAL
+    - chain: {{ 'ZONE_PUBLIC' if params.get('public', False) else 'ZONE_LOCAL' }}
     - proto: tcp
     - jump: ACCEPT
     - dport: {{ nginx_map.ports[protocol] }}
