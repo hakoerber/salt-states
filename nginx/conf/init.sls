@@ -33,6 +33,26 @@ nginx-conf.d:
     - require_in:
       - file: nginx.conf
 
+{% set name = nginx_map.conf.include_dir + '/15_ssl.conf' %}
+{% if 'https' in params.get('reverse_proxy', {}).get('protocol', []) %}
+nginx-15_ssl.conf:
+  file.managed:
+    - name: {{ name }}
+    - user: root
+    - group: {{ defaults.rootgroup }}
+    - mode: 644
+    - source: 'salt://states/nginx/files/15_ssl.conf.jinja'
+    - template: jinja
+    - require:
+      - file: nginx-conf.d
+    - watch_in:
+      - service: nginx
+{% else %}
+nginx-15_ssl.conf-absent:
+  file.absent:
+    - name: {{ name }}
+{% endif %}
+
 {% set name = nginx_map.conf.include_dir + '/10_static_content.conf' %}
 {% if params.get('static_content', None) is not none %}
 nginx-10_static_content.conf:
