@@ -1,0 +1,8 @@
+{% set subsonic = salt['grains.filter_by']({
+    'default': {
+        'service': 'subsonic',
+        'ports': {
+            'tcp': [4040],
+        },
+    },
+}, base='default') %}
