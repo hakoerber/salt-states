@@ -1,4 +1,4 @@
-{% from "emby/map.jinja" import emby as emby_map with context %}
+{% from "states/emby/map.jinja" import emby as emby_map with context %}
 
 emby:
   service.running:

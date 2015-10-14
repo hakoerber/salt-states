@@ -1,4 +1,4 @@
-{% from 'emby/map.jinja' import emby as emby_map with context %}
+{% from 'states/emby/map.jinja' import emby as emby_map with context %}
 
 {% for proto in emby_map.ports.keys() %}
 emby_iptables:
