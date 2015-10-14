@@ -1,0 +1,11 @@
+{% set seafile = salt['grains.filter_by']({
+    'default': {
+        'services': [
+            'seafile',
+            'seahub',
+        ],
+        'ports': {
+            'tcp': [8000, 8082],
+        },
+    },
+}, base='default') %}
