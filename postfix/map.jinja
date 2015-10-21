@@ -1,0 +1,36 @@
+{% set postfix = salt['grains.filter_by']({
+    'default': {
+        'package': 'postfix',
+        'service': 'postfix',
+
+        'ports': {
+            'receive': 25,
+            'submit': 587,
+        },
+
+        'queuedir': '/var/spool/postfix',
+        'daemondir': '/usr/libexec/postfix',
+        'datadir': '/var/lib/postfix',
+        'commanddir': '/usr/sbin',
+        'maildir': '/var/spool/mail',
+        'confdir': '/etc/postfix',
+        'mandir': '/usr/share/man',
+
+        'user': 'postfix',
+        'group': 'postdrop',
+
+        'aliasesfile': '/etc/aliases',
+
+        'main_cf': '/etc/postfix/main.cf',
+        'master_cf': '/etc/postfix/master.cf',
+
+        'ca_file': '/etc/ssl/certs/ca-bundle.crt',
+
+        'aliases': [
+            {'postmaster': ['root']},
+            {'abuse': ['root']},
+            {'security': ['root']},
+            {'hostmaster': ['root']},
+        ]
+    },
+}, base='default') %}
