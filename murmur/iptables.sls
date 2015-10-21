@@ -13,8 +13,8 @@ murmur-iptables-tcp-{{ family }}:
     - save: true
     - match: comment
     - comment: murmur
-  #    - require:
-  #      - iptables: chain_zone_public_ipv4
+    - require:
+      - iptables: chain_zone_public_ipv4
 
 murmur-iptables-udp-{{ family }}:
   iptables.append:
@@ -27,8 +27,8 @@ murmur-iptables-udp-{{ family }}:
     - save: true
     - match: comment
     - comment: murmur
-  #    - require:
-  #      - iptables: chain_zone_public_ipv4
+    - require:
+      - iptables: chain_zone_public_ipv4
 {% endfor %}
 
 
