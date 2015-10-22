@@ -6,7 +6,6 @@
     stateconf.set: []
 # --- end of state config ---
 
-{% if params.local %}
 {% set filename = '20_local.conf' %}
 rsyslog_{{ filename }}:
   file.managed:
@@ -21,7 +20,6 @@ rsyslog_{{ filename }}:
       - pkg: rsyslog
     - watch_in:
       - service: rsyslog
-{% endif %}
 
 {% set filename = '30_forward.conf' %}
 rsyslog_{{ filename }}:

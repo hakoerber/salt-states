@@ -23,6 +23,6 @@ rsyslog.d:
     - mode: 755
     - clean: True
     - require:
-      - file: /etc/rsyslog.d/40_applications.conf
-      - file: /etc/rsyslog.d/20_local.conf
-      - file: /etc/rsyslog.d/30_forward.conf
+      {% for file in rsyslog_map.client.include %}
+      - file: {{ rsyslog_map.include_basedir }}/{{ file }}
+      {% endfor %}

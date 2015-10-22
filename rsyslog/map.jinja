@@ -165,7 +165,9 @@
         'applications_conf': '40_applications.conf',
         'client': {
             'include': [
-                'syslog_forward.conf',
+                '20_local.conf',
+                '30_forward.conf',
+                '40_applications.conf',
             ],
         },
     }
