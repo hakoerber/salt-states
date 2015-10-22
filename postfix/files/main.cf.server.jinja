@@ -1,31 +1,24 @@
 {% from 'states/postfix/map.jinja' import postfix as postfix_map with context %}
 {% from 'states/defaults.map.jinja' import defaults with context %}
-# directories
-queue_directory      = {{ postfix_map.queuedir }}
-command_directory    = {{ postfix_map.commanddir }}
-daemon_directory     = {{ postfix_map.daemondir }}
-data_directory       = {{ postfix_map.datadir }}
-mail_spool_directory = {{ postfix_map.maildir }}
-config_directory     = {{ postfix_map.confdir }}
-manpage_directory    = {{ postfix_map.mandir }}
+{% include 'states/postfix/files/main.cf.common.jinja' with context %}
 
-# users
-mail_owner    = {{ postfix_map.user }}
-default_privs = {{ defaults.nobody }}
-setgid_group  = {{ postfix_map.group }}
-
-# hostnames
-myhostname = {{ hostname }}
-mydomain   = {{ domain }}
-myorigin   = $mydomain
 
 # listening
 inet_interfaces = $myhostname, localhost
 inet_protocols  = all
 
 # receiving
+{% if domain_authorative %}
 mydestination        = $myhostname, localhost.$mydomain, localhost, $mydomain
+{% else %}
+mydestination        = $myhostname, localhost.$mydomain, localhost
+{% endif %}
 local_recipient_maps = $alias_maps
+
+# hostnames
+myhostname = {{ hostname }}
+mydomain   = {{ domain }}
+myorigin   = $mydomain
 
 # misc
 allow_mail_to_commands =

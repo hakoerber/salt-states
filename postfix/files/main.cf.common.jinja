@@ -1,0 +1,17 @@
+# directories
+queue_directory      = {{ postfix_map.queuedir }}
+command_directory    = {{ postfix_map.commanddir }}
+daemon_directory     = {{ postfix_map.daemondir }}
+data_directory       = {{ postfix_map.datadir }}
+mail_spool_directory = {{ postfix_map.maildir }}
+config_directory     = {{ postfix_map.confdir }}
+manpage_directory    = {{ postfix_map.mandir }}
+
+# users
+mail_owner    = {{ postfix_map.user }}
+default_privs = {{ defaults.nobody }}
+setgid_group  = {{ postfix_map.group }}
+
+# logging
+syslog_facility = mail
+syslog_name     = postfix

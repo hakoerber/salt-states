@@ -1,0 +1,11 @@
+{% from 'states/postfix/map.jinja' import postfix as postfix_map with context %}
+{% from 'states/defaults.map.jinja' import defaults with context %}
+{% include 'states/postfix/files/main.cf.common.jinja' with context %}
+
+
+# listening
+inet_interfaces = localhost
+inet_protocols  = all
+
+# receiving
+mydestination = $myhostname, localhost.$mydomain, localhost

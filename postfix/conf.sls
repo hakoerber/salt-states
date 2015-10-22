@@ -12,12 +12,17 @@ postfix-main.cf:
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 644
-    - source: salt://states/postfix/files/main.cf.jinja
-    - template: jinja
+{% if params.listen_remote %}
+    - source: salt://states/postfix/files/main.cf.server.jinja
     - defaults:
         hostname: {{ params.hostname }}
         domain: {{ params.domain }}
         relay: {{ params.get('relay') }}
+        domain_authorative: {{ params.domain_authorative }}
+{% else %}
+    - source: salt://states/postfix/files/main.cf.local.jinja
+{% endif %}
+    - template: jinja
     - watch_in:
       - service: postfix
     - require:
@@ -31,6 +36,8 @@ postfix-master.cf:
     - mode: 644
     - source: salt://states/postfix/files/master.cf.jinja
     - template: jinja
+    - defaults:
+        listen_remote: {{ params.listen_remote }}
     - watch_in:
       - service: postfix
     - require:
@@ -45,7 +52,7 @@ postfix-aliases:
     - source: salt://states/postfix/files/aliases.jinja
     - template: jinja
     - defaults:
-        aliases: {{ postfix_map.aliases + params.aliases }}
+        aliases: {{ postfix_map.aliases + params.get('aliases', []) }}
     - watch_in:
       - cmd: postfix-aliases
     - require:
