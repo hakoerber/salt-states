@@ -24,5 +24,5 @@ rsyslog.d:
     - clean: True
     - require:
       {% for file in rsyslog_map.client.include %}
-      - file: {{ rsyslog_map.include_basedir }}/{{ file }}
+      - file: {{ rsyslog_map.include_basedir }}/{{ file.name }}
       {% endfor %}

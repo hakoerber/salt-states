@@ -6,34 +6,20 @@
     stateconf.set: []
 # --- end of state config ---
 
-{% set filename = '20_local.conf' %}
-rsyslog_{{ filename }}:
+{% for file in rsyslog_map.client.include %}
+rsyslog-{{ file.tag }}:
   file.managed:
-    - name: {{ rsyslog_map.include_basedir }}/{{ filename }}
+    - name: {{ rsyslog_map.include_basedir }}/{{ file.name }}
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 644
-    - source: salt://states/rsyslog/files/{{ filename }}.jinja
-    - template: jinja
-    - makedirs: True
-    - require:
-      - pkg: rsyslog
-    - watch_in:
-      - service: rsyslog
-
-{% set filename = '30_forward.conf' %}
-rsyslog_{{ filename }}:
-  file.managed:
-    - name: {{ rsyslog_map.include_basedir }}/{{ filename }}
-    - user: root
-    - group: {{ defaults.rootgroup }}
-    - mode: 644
-    - source: salt://states/rsyslog/files/{{ filename }}.jinja
-    - template: jinja
-    - makedirs: True
+    - source: salt://states/rsyslog/files/{{ file.name }}.jinja
     - defaults:
         servers: {{ params.servers }}
+    - template: jinja
+    - makedirs: True
     - require:
       - pkg: rsyslog
     - watch_in:
       - service: rsyslog
+{% endfor %}
