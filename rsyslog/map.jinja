@@ -178,6 +178,17 @@
                     'name': '40_applications.conf'
                 },
             ],
+            'logging': {
+                'name': 'syslog',
+                'postrotate': [
+                    '/bin/kill -HUP $(cat /var/run/syslogd.pid 2>/dev/null) 2>/dev/null || true',
+                ],
+                'permissions': {
+                    'user': 'root',
+                    'group': 'root',
+                    'mode': '0600',
+                },
+            }
         },
     }
 }, merge=salt['pillar.get']('rsyslog:lookup'), base='default') %}

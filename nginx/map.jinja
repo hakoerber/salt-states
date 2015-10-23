@@ -24,7 +24,15 @@
             {
                 'path': '/var/log/nginx/error.log',
                 'tag': 'error'
-            }]
+            }],
+            'postrotate': [
+                '/bin/kill -USR1 $(cat /run/nginx.pid 2>/dev/null) 2>/dev/null || true',
+            ],
+            'permissions': {
+                'user': 'nginx',
+                'group': 'nginx',
+                'mode': '0644',
+            },
         },
     },
 }, base='default') %}

@@ -13,7 +13,15 @@
         'logging': {
             'files': [{
                 'path': '/var/log/named/named.log'
-            }]
+            }],
+            'postrotate': [
+                '/sbin/systemctl reload named.service >/dev/null 2>&1 || true'
+            ],
+            'permissions': {
+                'user': 'named',
+                'group': 'named',
+                'mode': '0644',
+            },
         },
     },
 }, base='default') %}
