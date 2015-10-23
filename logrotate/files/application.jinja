@@ -1,0 +1,46 @@
+{% if logging.get('separate', False) %}
+{% for file in logging.files|sort(attribute='path') %}
+{{ file.path }}
+{
+    {% set perm = file.get('permissions', logging.get('permissions', none)) %}
+    {% if perm is not none %}
+    create {{ perm.mode }} {{ perm.user }} {{ perm.group }}
+    {% endif %}
+    {% set interval = file.get('interval', logging.get('interval', none)) %}
+    {% if interval is not none %}
+    {{ interval }}
+    {% endif %}
+    {% set keep = file.get('keep', logging.get('keep', none)) %}
+    {% if keep is not none %}
+    rotate {{ keep }}
+    {% endif %}
+    {% set postrotate = file.get('postrotate', logging.get('postrotate', none)) %}
+    {% if postrotate is not none %}
+    postrotate
+    {% for cmd in postrotate %}
+        {{ cmd }}
+    {% endfor %}
+    {% endif %}
+}
+{% endfor %}
+{% else %}
+{{ logging.files|map(attribute='path')|sort|join('\n') }}
+{
+    {% if logging.permissions is defined %}
+    create {{ logging.permissions.mode }} {{ logging.permissions.user }} {{ logging.permissions.group }}
+    {% endif %}
+    {% if logging.interval is defined %}
+    {{ logging.interval }}
+    {% endif %}
+    {% if logging.keep is defined %}
+    rotate {{ logging.keep }}
+    {% endif %}
+    {% if logging.postrotate is defined %}
+    sharedscripts
+    postrotate
+    {% for cmd in logging.postrotate %}
+        {{ cmd }}
+    {% endfor %}
+    endscript
+    {% endif %}
+}{% endif %}

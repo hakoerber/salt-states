@@ -1,0 +1,14 @@
+{% from 'states/logrotate/map.jinja' import logrotate as logrotate_map with context %}
+daily
+rotate 30
+
+create
+
+dateext
+dateformat -%Y%m%d
+
+compress
+
+missingok
+
+include {{ logrotate_map.conf_dir }}
