@@ -17,7 +17,7 @@ logrotate.d:
   file.directory:
     - name: {{ logrotate_map.conf_dir }}
     - user: root
-    - group: root
+    - group: {{ defaults.rootgroup }}
     - mode: 755
 
 {% set logging = logrotate_map.default_logging %}
