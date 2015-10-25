@@ -42,7 +42,8 @@ openvpn-allow_forward_all_vpn_{{ vpnname }}:
     - require:
       - iptables: openvpn-chain-vpn-{{ vpnname }}
 
-{% elif client_options.allow_forward is defined %}
+{% else %}
+{% if client_options.allow_forward is defined %}
 openvpn-allow_selective_forward_inbound_vpn_{{ vpnname }}:
   iptables.append:
     - table: filter
@@ -52,6 +53,8 @@ openvpn-allow_selective_forward_inbound_vpn_{{ vpnname }}:
     - save: true
     - require:
       - iptables: openvpn-chain-vpn-{{ vpnname }}
+    - require_in:
+      - iptables: openvpn-deny_forward_vpn_{{ vpnname }}:
 
 openvpn-allow_selective_forward_outbound_vpn_{{ vpnname }}:
   iptables.append:
@@ -62,6 +65,9 @@ openvpn-allow_selective_forward_outbound_vpn_{{ vpnname }}:
     - save: true
     - require:
       - iptables: openvpn-chain-vpn-{{ vpnname }}
+    - require_in:
+      - iptables: openvpn-deny_forward_vpn_{{ vpnname }}:
+{% endif %}
 
 openvpn-deny_forward_vpn_{{ vpnname }}:
   iptables.append:
@@ -71,8 +77,6 @@ openvpn-deny_forward_vpn_{{ vpnname }}:
     - save: true
     - require:
       - iptables: openvpn-chain-vpn-{{ vpnname }}
-      - iptables: openvpn-allow_selective_forward_outbound_vpn_{{ vpnname }}
-      - iptables: openvpn-allow_selective_forward_inbound_vpn_{{ vpnname }}
 {% endif %}
 
 {% endfor %}
