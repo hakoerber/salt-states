@@ -3,7 +3,7 @@
         'client': {
             'logs': [
                 {
-                    'selector': ':msg, contains, "[iptables-reject] "',
+                    'selector': ':msg, contains, "[iptables-reject]"',
                     'file': '/var/log/iptables-reject.log',
                     'stop': True
                 },
@@ -45,9 +45,12 @@
     'Debian': {
         'workdir': '/var/spool/rsyslog',
         'client': {
+            'logging': {
+                'name': 'rsyslog',
+            },
             'logs': [
                 {
-                    'selector': ':msg, contains, "[iptables-reject] "',
+                    'selector': ':msg, contains, "[iptables-reject]"',
                     'file': '/var/log/iptables-reject.log',
                     'stop': True
                 },
@@ -191,4 +194,4 @@
             }
         },
     }
-}, merge=salt['pillar.get']('rsyslog:lookup'), base='default') %}
+}, base='default') %}

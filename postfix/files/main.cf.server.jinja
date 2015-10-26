@@ -2,7 +2,6 @@
 {% from 'states/defaults.map.jinja' import defaults with context %}
 {% include 'states/postfix/files/main.cf.common.jinja' with context %}
 
-
 # listening
 inet_interfaces = $myhostname, localhost
 inet_protocols  = all
