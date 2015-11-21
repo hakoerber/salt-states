@@ -54,7 +54,7 @@ openvpn-allow_selective_forward_inbound_vpn_{{ vpnname }}:
     - require:
       - iptables: openvpn-chain-vpn-{{ vpnname }}
     - require_in:
-      - iptables: openvpn-deny_forward_vpn_{{ vpnname }}:
+      - iptables: openvpn-deny_forward_vpn_{{ vpnname }}
 
 openvpn-allow_selective_forward_outbound_vpn_{{ vpnname }}:
   iptables.append:
@@ -66,7 +66,7 @@ openvpn-allow_selective_forward_outbound_vpn_{{ vpnname }}:
     - require:
       - iptables: openvpn-chain-vpn-{{ vpnname }}
     - require_in:
-      - iptables: openvpn-deny_forward_vpn_{{ vpnname }}:
+      - iptables: openvpn-deny_forward_vpn_{{ vpnname }}
 {% endif %}
 
 openvpn-deny_forward_vpn_{{ vpnname }}:
