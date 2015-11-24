@@ -2,8 +2,14 @@
 server {
     {% if content.protocol == 'http' %}
     listen {{ nginx_map.ports.http }} default_server;
+    {% if ipv6 %}
+    listen [::]:{{ nginx_map.ports.http }} default_server;
+    {% endif %}
     {% else %}
     listen {{ nginx_map.ports.https }} ssl default_server;
+    {% if ipv6 %}
+    listen [::]:{{ nginx_map.ports.https }} default_server;
+    {% endif %}
     {% endif %}
     server_name {{ content.get('server_name', '_') }};
     root {{ content.path }};

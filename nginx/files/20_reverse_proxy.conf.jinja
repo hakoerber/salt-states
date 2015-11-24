@@ -17,9 +17,15 @@ server {
     {% endif %}
     {% if 'http' in proto %}
     listen {{ nginx_map.ports.http }};
+    {% if ipv6 %}
+    listen [::]:{{ nginx_map.ports.http }};
+    {% endif %}
     {% endif %}
     {% if 'https' in proto %}
     listen {{ nginx_map.ports.https }} ssl;
+    {% if ipv6 %}
+    listen [::]:{{ nginx_map.ports.https }} ssl;
+    {% endif %}
     {% endif %}
 
     server_name {{ target.servername }};

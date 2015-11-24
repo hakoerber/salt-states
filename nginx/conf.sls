@@ -60,7 +60,8 @@ nginx-{{ name }}.conf-absent:
 
 {% set name = '10_force_https' %}
 {% set include = params.get('reverse_proxy', {}).get('protocol', []) == ['https'] %}
-{{ include_conf(name, include) }}
+{% set context = {'ipv6': params.get('ipv6', False)} %}
+{{ include_conf(name, include, context) }}
 
 {% set name = '15_ssl' %}
 {% set include =  'https' in params.get('reverse_proxy', {}).get('protocol', []) %}
@@ -68,13 +69,16 @@ nginx-{{ name }}.conf-absent:
 
 {% set name = '10_static_content' %}
 {% set include = params.get('static_content', None) is not none %}
-{% set context = {'content': params.get('static_content')} %}
+{% set context = {
+  'content': params.get('static_content'),
+  'ipv6': params.get('ipv6', False)} %}
 {{ include_conf(name, include, context) }}
 
 {% set name = '20_reverse_proxy' %}
 {% set include = params.get('reverse_proxy', None) is not none %}
 {% set context = {
   'upstream': params.get('reverse_proxy', {}).get('upstream'),
+  'ipv6': params.get('ipv6', False),
   'protocol': params.get('reverse_proxy', {}).get('protocol')} %}
 {{ include_conf(name, include, context) }}
 

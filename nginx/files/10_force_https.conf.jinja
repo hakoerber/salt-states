@@ -2,6 +2,9 @@
 server {
     server_name _;
 	listen {{ nginx_map.ports.http }} default_server;
+    {% if ipv6 %}
+    listen [::]:{{ nginx_map.ports.http }} default_server;
+    {% endif %}
 	return 301 https://$host$request_uri;
 }
 
