@@ -3,7 +3,9 @@
 
 acl "internal" {
         localhost;
-        {{ params.network.ip }}/{{ params.network.prefix }};
+        {% for network in params.networks %}
+        {{ network }};
+        {% endfor %}
 };
 
 options {
