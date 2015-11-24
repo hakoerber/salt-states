@@ -9,6 +9,7 @@
             'https': '443',
         },
         'conf': {
+            'confdir': '/etc/nginx',
             'main': {
                 'path': '/etc/nginx/nginx.conf',
                 'template': 'salt://states/nginx/files/nginx.conf.jinja',
@@ -33,6 +34,12 @@
                 'group': 'nginx',
                 'mode': '0644',
             },
+        },
+        'pki': {
+            'pkidir': 'pki',
+            'cert': 'fullchain.pem',
+            'key': 'privkey.pem',
+            'dhparams': 'dhparams.pem'
         },
     },
 }, base='default') %}

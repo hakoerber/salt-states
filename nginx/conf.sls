@@ -33,108 +33,51 @@ nginx-conf.d:
     - require_in:
       - file: nginx.conf
 
-{% set name = nginx_map.conf.include_dir + '/10_force_https.conf' %}
-{% if params.get('reverse_proxy', {}).get('protocol', []) == ['https'] %}
-nginx-10_force_https.conf:
+{% macro include_conf(name, include, context={}) %}
+{% set path = nginx_map.conf.include_dir + '/' + name + '.conf' %}
+{% if include %}
+nginx-{{ name }}.conf:
   file.managed:
-    - name: {{ name }}
+    - name: {{ path }}
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 644
-    - source: 'salt://states/nginx/files/10_force_https.conf.jinja'
+    - source: {{ 'salt://states/nginx/files/' + name + '.conf.jinja' }}
     - template: jinja
+    - defaults: {{ context }}
     - require:
       - file: nginx-conf.d
     - watch_in:
       - service: nginx
 {% else %}
-nginx-10_force_https-absent:
+nginx-{{ name }}.conf-absent:
   file.absent:
-    - name: {{ name }}
+    - name: {{ path }}
     - watch_in:
       - service: nginx
 {% endif %}
+{% endmacro %}
 
-{% set name = nginx_map.conf.include_dir + '/15_ssl.conf' %}
-{% if 'https' in params.get('reverse_proxy', {}).get('protocol', []) %}
-nginx-15_ssl.conf:
-  file.managed:
-    - name: {{ name }}
-    - user: root
-    - group: {{ defaults.rootgroup }}
-    - mode: 644
-    - source: 'salt://states/nginx/files/15_ssl.conf.jinja'
-    - template: jinja
-    - require:
-      - file: nginx-conf.d
-    - watch_in:
-      - service: nginx
-{% else %}
-nginx-15_ssl.conf-absent:
-  file.absent:
-    - name: {{ name }}
-    - watch_in:
-      - service: nginx
-{% endif %}
+{% set name = '10_force_https' %}
+{% set include = params.get('reverse_proxy', {}).get('protocol', []) == ['https'] %}
+{{ include_conf(name, include) }}
 
-{% set name = nginx_map.conf.include_dir + '/10_static_content.conf' %}
-{% if params.get('static_content', None) is not none %}
-nginx-10_static_content.conf:
-  file.managed:
-    - name: {{ name }}
-    - user: root
-    - group: {{ defaults.rootgroup }}
-    - mode: 644
-    - source: 'salt://states/nginx/files/10_static_content.conf.jinja'
-    - template: jinja
-    - defaults:
-        content: {{ params.static_content }}
-    - require:
-      - file: nginx-conf.d
-    - watch_in:
-      - service: nginx
-{% else %}
-nginx-10_static_content.conf-absent:
-  file.absent:
-    - name: {{ name }}
-    - watch_in:
-      - service: nginx
-{% endif %}
+{% set name = '15_ssl' %}
+{% set include =  'https' in params.get('reverse_proxy', {}).get('protocol', []) %}
+{{ include_conf(name, include) }}
 
+{% set name = '10_static_content' %}
+{% set include = params.get('static_content', None) is not none %}
+{% set context = {'content': params.get('static_content')} %}
+{{ include_conf(name, include, context) }}
 
-{% set name = nginx_map.conf.include_dir + '/20_reverse_proxy.conf' %}
-{% if params.get('reverse_proxy', None) is not none %}
-nginx-20_reverse_proxy.conf:
-  file.managed:
-    - name: {{ nginx_map.conf.include_dir }}/20_reverse_proxy.conf
-    - user: root
-    - group: {{ defaults.rootgroup }}
-    - mode: 644
-    - source: 'salt://states/nginx/files/20_reverse_proxy.conf.jinja'
-    - template: jinja
-    - defaults:
-        upstream: {{ params.reverse_proxy.upstream }}
-        protocol: {{ params.reverse_proxy.protocol }}
-    - require:
-      - file: nginx-conf.d
-    - watch_in:
-      - service: nginx
-{% else %}
-nginx-10_reverse-proxy.conf-absent:
-  file.absent:
-    - name: {{ name }}
-    - watch_in:
-      - service: nginx
-{% endif %}
+{% set name = '20_reverse_proxy' %}
+{% set include = params.get('reverse_proxy', None) is not none %}
+{% set context = {
+  'upstream': params.get('reverse_proxy', {}).get('upstream'),
+  'protocol': params.get('reverse_proxy', {}).get('protocol')} %}
+{{ include_conf(name, include, context) }}
 
-nginx-30_local_status.conf:
-  file.managed:
-    - name: {{ nginx_map.conf.include_dir }}/30_local_status.conf
-    - user: root
-    - group: {{ defaults.rootgroup }}
-    - mode: 644
-    - source: 'salt://states/nginx/files/30_local_status.conf'
-    - require:
-      - file: nginx-conf.d
-    - watch_in:
-      - service: nginx
+{% set name = '30_local_status' %}
+{% set include = True %}
+{{ include_conf(name, include) }}
