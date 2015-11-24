@@ -6,6 +6,15 @@
     stateconf.set: []
 # --- end of state config ---
 
+openvpn-pkidir:
+  file.directory:
+    - name: {{ openvpn_map.confdir }}/{{ openvpn_map.pkidir }}
+    - user: root
+    - group: {{ defaults.rootgroup }}
+    - mode: 700
+    - require:
+      - pkg: openvpn
+
 {% for vpnname, vpn in params.vpns.items() %}
 
 openvpn-keydir-{{ vpnname }}:
@@ -20,6 +29,7 @@ openvpn-keydir-{{ vpnname }}:
       - file: openvpn-client-{{ vpnname }}.conf
     - require:
       - pkg: openvpn
+      - file: openvpn-pkidir
 
 openvpn-ca-cert-{{ vpnname }}:
   file.managed:
