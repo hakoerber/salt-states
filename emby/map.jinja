@@ -1,6 +1,6 @@
 {% set emby = salt['grains.filter_by']({
     'default': {
-        'service': 'MediaBrowserServer',
+        'service': 'emby-server',
         'ports': {
             'tcp': [8096, 8945, 8920],
         },
