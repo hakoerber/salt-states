@@ -1,30 +1,43 @@
+{% set wtmp = {
+    'path': '/var/log/wtmp',
+    'permissions': {
+        'user': 'root',
+        'group': 'utmp',
+        'mode': '0644',
+    },
+    'interval': 'monthly',
+} %}
+
+{% set btmp = {
+    'path': '/var/log/btmp',
+    'permissions': {
+        'user': 'root',
+        'group': 'utmp',
+        'mode': '0600',
+    },
+    'interval': 'monthly',
+} %}
+
 {% set logrotate = salt['grains.filter_by']({
-    'default': {
-        'package': 'logrotate',
-        'conf_file': '/etc/logrotate.conf',
-        'conf_dir': '/etc/logrotate.d',
-        'application_template': 'salt://states/logrotate/files/application.jinja',
+    'Debian': {
+        'group': 'syslog',
         'default_logging': {
             'default': {
                 'separate': True,
-                'files': [{
-                    'path': '/var/log/wtmp',
-                    'permissions': {
-                        'user': 'root',
-                        'group': 'utmp',
-                        'mode': '0644',
-                    },
-                    'interval': 'monthly',
-                },
-                {
-                    'path': '/var/log/btmp',
-                    'permissions': {
-                        'user': 'root',
-                        'group': 'utmp',
-                        'mode': '0600',
-                    },
-                    'interval': 'monthly',
-                }
+                'files': [
+                    wtmp,
+                    btmp,
+                ],
+            },
+        },
+    },
+    'RedHat': {
+        'default_logging': {
+            'default': {
+                'separate': True,
+                'files': [
+                    wtmp,
+                    btmp,
                 ],
             },
             'yum': {
@@ -37,6 +50,21 @@
                     'mode': '0600',
                 },
                 'interval': 'monthly',
+            },
+        },
+    },
+    'FreeBSD': {
+        'conf_file': '/usr/local/etc/logrotate.conf',
+        'conf_dir': '/usr/local/etc/logrotate.d',
+    },
+    'default': {
+        'package': 'logrotate',
+        'conf_file': '/etc/logrotate.conf',
+        'conf_dir': '/etc/logrotate.d',
+        'application_template': 'salt://states/logrotate/files/application.jinja',
+        'default_logging': {
+            'default': {
+                'files': [],
             },
         },
     },
