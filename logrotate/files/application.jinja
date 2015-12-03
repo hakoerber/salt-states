@@ -24,6 +24,7 @@
 }
 {% endfor %}
 {% else %}
+{% if logging.files|length > 0 %}
 {{ logging.files|map(attribute='path')|sort|join('\n') }}
 {
     {% if logging.permissions is defined %}
@@ -44,3 +45,4 @@
     endscript
     {% endif %}
 }{% endif %}
+{% endif %}
