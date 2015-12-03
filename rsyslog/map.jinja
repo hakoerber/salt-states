@@ -47,6 +47,14 @@
         'client': {
             'logging': {
                 'name': 'rsyslog',
+                'postrotate': [
+                    '/bin/kill -HUP $(cat /var/run/rsyslogd.pid 2>/dev/null) 2>/dev/null || true',
+                ],
+                'permissions': {
+                    'user': 'root',
+                    'group': 'root',
+                    'mode': '0600',
+                },
             },
             'logs': [
                 {
@@ -108,11 +116,18 @@
         'include_basedir': '/usr/local/etc/rsyslog.d',
         'conflicts': ['syslogd'],
         'client': {
-            'logs': [
-                {
-                    'selector': '*.err;kern.warning;auth.notice;mail.crit',
-                    'file': '/dev/console'
+            'logging': {
+                'name': 'rsyslog',
+                'postrotate': [
+                    '/bin/kill -HUP $(cat /var/run/rsyslogd.pid 2>/dev/null) 2>/dev/null || true',
+                ],
+                'permissions': {
+                    'user': 'root',
+                    'group': 'wheel',
+                    'mode': '0600',
                 },
+            },
+            'logs': [
                 {
                     'selector': '*.notice;authpriv.none;kern.debug;lpr.info;mail.crit;news.err,local1.none,local2.none',
                     'file': '/var/log/messages'
@@ -144,10 +159,6 @@
                 {
                     'selector': '*.=debug',
                     'file': '/var/log/debug.log'
-                },
-                {
-                    'selector': '*.emerg',
-                    'file': '*'
                 },
                 {
                     'selector': 'local1.*',
