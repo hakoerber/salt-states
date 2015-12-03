@@ -1,4 +1,7 @@
 {% from 'states/logrotate/map.jinja' import logrotate as logrotate_map with context %}
+{% from 'states/defaults.map.jinja' import defaults with context %}
+su {{ logrotate_map.user|default('root') }} {{ logrotate_map.group|default(defaults.rootgroup) }}
+
 daily
 rotate 30
 
