@@ -106,6 +106,7 @@
         'service': 'rsyslogd',
         'conf': '/usr/local/etc/rsyslog.conf',
         'include_basedir': '/usr/local/etc/rsyslog.d',
+        'conflicts': ['syslogd'],
         'client': {
             'logs': [
                 {
@@ -166,6 +167,7 @@
         'conf': '/etc/rsyslog.conf',
         'include_basedir': '/etc/rsyslog.d',
         'applications_conf': '40_applications.conf',
+        'conflicts': [],
         'client': {
             'include': [
                 {

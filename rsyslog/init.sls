@@ -9,3 +9,12 @@ rsyslog:
     - enable: true
     - require:
       - pkg: rsyslog
+
+{% for conflict in rsyslog_map.conflicts %}
+rsyslog-conflict-{{ conflict }}:
+  service.dead:
+    - name: {{ conflict }}
+    - enable: false
+    - require_in:
+      - service: rsyslog
+{% endfor %}
