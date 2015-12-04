@@ -10,6 +10,9 @@ host=0.0.0.0
 port={{ murmur_map.port }}
 serverpassword={{ password }}
 
+sslCert={{ murmur_map.pki.dir }}/{{ murmur_map.pki.cert }}
+sslKey={{ murmur_map.pki.dir }}/{{ murmur_map.pki.key }}
+
 welcometext="<br/>Welcome to this server running <strong>Murmur</strong>.<br/>Enjoy your stay!<br/>"
 
 bandwidth=72000
