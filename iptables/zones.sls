@@ -5,12 +5,19 @@
 # --- end of state config ---
 
 {# currently no support for ipv6 zones #}
-{% set families = ['ipv4'] %}
+{% set families = ['ipv4', 'ipv6'] %}
 
 {% for zone, zoneinfo in params.zones.items() %}
 {% set zonechain = "ZONE_" ~ zone|upper %}
 
 {% for family in families %}
+
+{% if family == 'ipv6' %}
+{% if zonechain != 'ZONE_PUBLIC' %}
+{% continue %}
+{% endif %}
+{% endif %}
+
 chain_zone_{{ zone }}_{{ family }}:
   iptables.chain_present:
     - name: {{ zonechain }}
