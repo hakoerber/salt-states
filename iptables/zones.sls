@@ -27,36 +27,18 @@ chain_zone_{{ zone }}_{{ family }}:
 {% for source in zoneinfo.sources %}
 {% set sourceid = sourceid + 1 %}
 
-tcp_jump_to_zone_{{ zone }}_{{ family }}_source_{{ sourceid }}:
+jump_to_zone_{{ zone }}_{{ family }}_source_{{ sourceid }}:
   iptables.append:
     - table: filter
     - chain: TCPUDP
     - jump: {{ zonechain }}
     - family: {{ family }}
-    - proto: tcp
-    - tcp-flags: SYN,RST,ACK,FIN SYN
     - source: {{ source }}
-    - match: state
-    - connstate: NEW
     - save: true
     - require:
       - iptables: chain_zone_{{ zone }}_{{ family }}
       - iptables: chain_tcpudp_{{ family }}
 
-udp_jump_to_zone_{{ zone }}_{{ family }}_source_{{ sourceid }}:
-  iptables.append:
-    - table: filter
-    - chain: TCPUDP
-    - jump: {{ zonechain }}
-    - family: {{ family }}
-    - proto: udp
-    - source: {{ source }}
-    - match: state
-    - connstate: NEW
-    - save: true
-    - require:
-      - iptables: chain_zone_{{ zone }}_{{ family }}
-      - iptables: chain_tcpudp_{{ family }}
 {% endfor %}
 {% endfor %}
 {% endfor %}
