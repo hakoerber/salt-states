@@ -26,14 +26,18 @@ template(name="{{ identifier }}-json" type="list") {
 }
 
 ruleset(name="forward-{{ identifier }}") {
+{% for server in servers %}
+{% for listener in server.listeners %}
     action(
         name="forward-tcp"
         type="omfwd"
         Template="{{ identifier }}-json"
-        Target="log.lab"
-        Port="514"
-        Protocol="tcp"
+        Target="{{ server.name + "." + server.domain }}"
+        Port="{{ listener.port }}"
+        Protocol="{{ listener.protocol }}"
     )
+{% endfor %}
+{% endfor %}
 }
 
 input(type="imfile"
