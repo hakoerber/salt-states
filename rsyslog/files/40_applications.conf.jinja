@@ -1,3 +1,4 @@
+{% if servers|length != 0 %}
 module(load="imfile")
 {% if accumulator is defined %}
 {% for application_name, application in accumulator|dictsort() %}
@@ -43,4 +44,5 @@ input(type="imfile"
 )
 {% endfor %}
 {% endfor %}
+{% endif %}
 {% endif %}
