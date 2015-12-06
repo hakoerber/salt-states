@@ -1,16 +1,17 @@
 {% from 'states/salt/map.jinja' import salt as salt_map with context %}
 
-salt-master-iptables:
+{% for component, ports in salt_map.master.ports.items() %}
+salt-master-iptables-{{ component }}:
   iptables.append:
     - table: filter
     - chain: ZONE_LOCAL
     - proto: tcp
     - jump: ACCEPT
-    - dports: {{ salt_map.master.ports }}
+    - dports: {{ ports }}
     - family: ipv4
     - save: true
     - match: comment
-    - comment: salt-master
+    - comment: salt master {{ component }}
     - require:
       - iptables: chain_zone_local_ipv4
-
+{% endfor %}

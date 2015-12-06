@@ -1,0 +1,76 @@
+{% from 'states/salt/map.jinja' import salt as salt_map with context %}
+default_include: {{ salt_map.master.conf_include }}
+
+# connectivity
+interface: 0.0.0.0
+ipv6: False
+publish_port: {{ salt_map.master.ports.publish }}
+ret_port: {{ salt_map.master.ports.return }}
+
+# paths
+root_dir: {{ salt_map.master.root_dir }}
+pidfile:  {{ salt_map.master.pidfile }}
+pki_dir:  {{ salt_map.master.pki_dir }}
+cachedir: {{ salt_map.master.cachedir }}
+sock_dir: {{ salt_map.master.sock_dir }}
+log_file: {{ salt_map.master.log_file }}
+
+user: {{ salt_map.master.user }}
+
+# workers
+worker_threads: 10
+loop_interval: 60
+
+# caching and jobs
+keep_jobs: 24
+job_cache: True
+minion_data_cache: True
+con_cache: True
+
+# security
+verify_env: True
+max_minions: 0
+open_mode: False
+auto_accept: False
+file_recv: False
+rotate_aes_key: True
+
+# states
+renderer: yaml_jinja
+jinja_trim_blocks: True
+jinja_lstrip_blocks: True
+failhard: False
+state_verbose: True
+state_output: changes
+state_aggregate: False
+color: True
+yaml_utf8: True
+
+# logging
+log_level: warning
+log_level_logfile: warning
+log_datefmt: '%H:%M:%S'
+log_datefmt_logfile: '%Y-%m-%dT%H:%M:%S'
+
+# misc
+presence_events: False
+
+# fileserver
+fileserver_backend:
+    - roots
+
+file_roots:
+{% for env, paths in salt_map.master.file_roots.items() %}
+    {{ env }}:
+    {% for path in paths %}
+        - {{ path }}
+    {% endfor %}
+{% endfor %}
+
+pillar_roots:
+{% for env, paths in salt_map.master.pillar_roots.items() %}
+    {{ env }}:
+    {% for path in paths %}
+        - {{ path }}
+    {% endfor %}
+{% endfor %}
