@@ -1,0 +1,14 @@
+{% set unifi = salt['grains.filter_by']({
+    'default': {
+        'controller': {
+            'ports': {
+                'web gui': {
+                    'tcp': [8443],
+                },
+                'device inform': {
+                    'tcp': [8080],
+                },
+            },
+        },
+    },
+}, base='default') %}
