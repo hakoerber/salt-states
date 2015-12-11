@@ -1,0 +1,7 @@
+{% set firewalld = salt['grains.filter_by']({
+    'default': {
+        'package': 'firewalld',
+        'service': 'firewalld',
+        'conf_file': '/etc/firewalld.conf',
+    },
+}, base='default') %}
