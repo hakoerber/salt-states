@@ -33,7 +33,7 @@ nginx-conf.d:
     - require_in:
       - file: nginx.conf
 
-{% macro include_conf(name, include, context={}) %}
+{% macro include_conf(name, include, context={}, include_states=[]) %}
 {% set path = nginx_map.conf.include_dir + '/' + name + '.conf' %}
 {% if include %}
 nginx-{{ name }}.conf:
@@ -56,6 +56,11 @@ nginx-{{ name }}.conf-absent:
     - watch_in:
       - service: nginx
 {% endif %}
+
+{% for state in include_states %}
+include:
+  - states.nginx.include.{{ state }}
+{% endfor %}
 {% endmacro %}
 
 {% set name = '10_force_https' %}
@@ -81,6 +86,16 @@ nginx-{{ name }}.conf-absent:
   'ipv6': params.get('ipv6', False),
   'protocol': params.get('reverse_proxy', {}).get('protocol')} %}
 {{ include_conf(name, include, context) }}
+
+{% set name = '30_cgi' %}
+{% set include = params.get('cgi', None) is not none %}
+{% set include_states = ['cgi'] %}
+{% set context = {
+  'protocols': params.get('protocols', ['http']),
+  'ipv6': params.get('ipv6', False),
+  'socket': params.cgi.socket,
+  'cgi_params': params.cgi.params} %}
+{{ include_conf(name, include, context, include_states) }}
 
 {% set name = '30_local_status' %}
 {% set include = True %}

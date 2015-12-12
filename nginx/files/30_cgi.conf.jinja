@@ -1,0 +1,24 @@
+{% from 'states/nginx/map.jinja' import nginx as nginx_map with context %}
+server {
+    {% if 'http' in protocols %}
+    listen {{ nginx_map.ports.http }} default_server;
+    {% if ipv6 %}
+    listen [::]:{{ nginx_map.ports.http }} default_server;
+    {% endif %}
+    {% else %}
+    listen {{ nginx_map.ports.https }} ssl default_server;
+    {% if ipv6 %}
+    listen [::]:{{ nginx_map.ports.https }} default_server;
+    {% endif %}
+    {% endif %}
+    server_name {{ server_name|default('_') }};
+    location / {
+        include uwsgi_params;
+        uwsgi_modifier1 9;
+        uwsgi_pass unix:{{ socket }};
+        {% for key, value in cgi_params.items() %}
+        uwsgi_param {{ key }} {{ value }};
+        {% endfor %}
+    }
+}
+
