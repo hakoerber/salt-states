@@ -49,6 +49,12 @@ nginx-{{ name }}.conf:
       - file: nginx-conf.d
     - watch_in:
       - service: nginx
+
+{% for state in include_states %}
+include:
+  - states.nginx.include.{{ state }}
+{% endfor %}
+
 {% else %}
 nginx-{{ name }}.conf-absent:
   file.absent:
@@ -56,11 +62,6 @@ nginx-{{ name }}.conf-absent:
     - watch_in:
       - service: nginx
 {% endif %}
-
-{% for state in include_states %}
-include:
-  - states.nginx.include.{{ state }}
-{% endfor %}
 {% endmacro %}
 
 {% set name = '10_force_https' %}
