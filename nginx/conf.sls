@@ -94,8 +94,8 @@ nginx-{{ name }}.conf-absent:
 {% set context = {
   'protocols': params.get('protocols', ['http']),
   'ipv6': params.get('ipv6', False),
-  'socket': params.cgi.socket,
-  'cgi_params': params.cgi.params} %}
+  'socket': params.get('cgi', {}).get('socket'),
+  'cgi_params': params.get('cgi', {}).get('params')} %}
 {{ include_conf(name, include, context, include_states) }}
 
 {% set name = '30_local_status' %}
