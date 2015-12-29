@@ -2,7 +2,7 @@
 
 selinux-dev:
   pkg.installed:
-    pkgs:
+    - pkgs:
       - checkpolicy
       - policycoreutils
       - policycoreutils-python
