@@ -15,5 +15,8 @@ server {
     root {{ content.path }};
 
     location / {
+        {% if content.get('autoindex', false) %}
+        autoindex on;
+        {% endif %}
     }
 }
