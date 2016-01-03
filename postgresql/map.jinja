@@ -1,0 +1,14 @@
+{% set postgresql = salt['grains.filter_by']({
+    'default': {
+        'package': 'postgresql-server',
+        'service': 'postgresql',
+
+        'ports': {
+            'tcp': [5432],
+        },
+
+        'dbroot': '/var/lib/pgsql/data/',
+        'locale': 'en_US.UTF8',
+        'encoding': 'UTF8',
+    },
+}, base='default') %}

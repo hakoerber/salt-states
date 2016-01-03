@@ -10,6 +10,9 @@
     'default': {
         'package': 'git',
         'user': 'git',
-        'home': '/home/git',
+        'home': '/var/lib/git',
+        'http': {
+            'cbackend': '/usr/libexec/git-core/git-http-backend',
+        },
     }
 }, base='default') %}

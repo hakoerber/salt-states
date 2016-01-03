@@ -29,7 +29,9 @@
     },
     'default': {
         'server': {
-            'ports': [22],
+            'ports': {
+                'tcp': [22],
+            },
             'keytypes': ['rsa'],
             'conf_file': '/etc/ssh/sshd_config',
             'listen_address': ['localhost'],

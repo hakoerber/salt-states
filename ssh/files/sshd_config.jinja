@@ -1,4 +1,4 @@
-Port {{ ports|join(' ') }}
+Port {{ ports.tcp|join(' ') }}
 {% if listen_address != "all" %}
 {% for address in listen_address -%}
 ListenAddress {{ address }}
