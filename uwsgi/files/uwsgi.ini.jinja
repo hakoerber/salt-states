@@ -1,0 +1,10 @@
+{% from 'states/uwsgi/map.jinja' import uwsgi as uwsgi_map with context %}
+[uwsgi]
+plugins = cgi
+chown-socket = {{ params.user }}:{{ params.group }}
+processes = 1
+threads = 4
+cgi = {{ params.backend }}
+socket = {{ uwsgi_map.socket }}
+pidfile = {{ uwsgi_map.pidfile }}
+logto = {{ uwsgi_map.logfile }}

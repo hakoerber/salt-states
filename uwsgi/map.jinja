@@ -1,0 +1,22 @@
+{% set uwsgi = salt['grains.filter_by']({
+    'RedHat': {
+    },
+    'Debian': {
+    },
+    'FreeBSD': {
+    },
+    'Arch': {
+    },
+    'default': {
+        'packages': [
+            'uwsgi',
+            'uwsgi-plugin-common',
+        ],
+        'service': 'uwsgi',
+        'conf': '/etc/uwsgi.ini',
+        'template': 'salt://states/uwsgi/files/uwsgi.ini.jinja',
+        'socket': '/run/uwsgi/uwsgi.sock',
+        'pidfile': '/run/uwsgi/uwsgi.pid',
+        'logfile': '/var/log/uwsgi.log',
+    }
+}, base='default') %}
