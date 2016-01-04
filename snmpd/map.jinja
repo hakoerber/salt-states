@@ -1,0 +1,11 @@
+{% set snmpd = salt['grains.filter_by']({
+    'default': {
+        'ports': {
+            'udp': [161],
+        },
+        'package': 'net-snmp',
+        'service': 'snmpd',
+        'conf_file': '/etc/snmp/snmpd.conf'
+
+    }
+}, base='default') %}

@@ -1,0 +1,16 @@
+agentaddress udp:161
+
+agentuser  snmp
+agentgroup snmp
+
+rocommunity public
+
+#       sec.name  source          community
+com2sec public    default         public
+
+sysLocation {{ sysinfo.location }}
+sysContact {{ sysinfo.contact }}
+sysName {{ grains['fqdn'] }}
+
+dontLogTCPWrappersConnects yes
+
