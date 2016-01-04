@@ -1,13 +1,9 @@
 #!stateconf
 {% from 'states/snmpd/map.jinja' import snmpd as snmpd_map with context %}
 
-include:
-  - states.templates.iptables
+{% set application = 'snmpd' %}
+{% set ipv6 = False %}
+{% set public = False %}
+{% set ports = snmpd_map.ports %}
 
-extend:
-  states.templates.iptables::params:
-    stateconf.set:
-      - app: snmpd
-      - ipv6: False
-      - public: False
-      - ports: {{ snmpd_map.ports }}
+{% include 'states/templates/iptables.sls.jinja' with context %}

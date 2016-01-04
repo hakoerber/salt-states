@@ -1,13 +1,9 @@
 #!stateconf
 {% from 'states/postgresql/map.jinja' import postgresql as postgresql_map with context %}
 
-include:
-  - states.templates.iptables
+{% set application = 'postgresql-server' %}
+{% set ipv6 = False %}
+{% set public = False %}
+{% set ports = postgresql_map.ports %}
 
-extend:
-  states.templates.iptables::params:
-    stateconf.set:
-      - app: postgresql-server
-      - ipv6: False
-      - public: False
-      - ports: {{ postgresql_map.ports }}
+{% include 'states/templates/iptables.sls.jinja' with context %}

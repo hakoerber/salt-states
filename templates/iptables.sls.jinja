@@ -1,0 +1,34 @@
+{% for family in (['ipv4', 'ipv6'] if ipv6|default(False) else ['ipv4']) %}
+
+{% if components is not defined %}
+{% set components = {'': ports} %}
+{% endif %}
+
+{% for component, protos in components.items() %}
+{% for proto, ports in protos.items() %}
+{% if component|length != 0 %}
+{% set component = '-' + component %}
+{% endif %}
+{{ application }}{{ component }}-iptables-{{ family }}:
+  iptables.append:
+    - table: filter
+    - chain: {{ 'ZONE_PUBLIC' if public|default(False) else 'ZONE_LOCAL' }}
+    - proto: {{ proto }}
+    - jump: ACCEPT
+    - dports: {{ ports }}
+    - family: {{ family }}
+    {% if source is defined %}
+    - source: {{ source }}
+    {% endif %}
+    - save: true
+    - match: comment
+    - comment: {{ application }}{{ component }}
+    - require:
+      {% if public|default(False) %}
+      - iptables: chain_zone_public_{{ family }}
+      {% else %}
+      - iptables: chain_zone_local_{{ family }}
+      {% endif %}
+{% endfor %}
+{% endfor %}
+{% endfor %}
