@@ -43,3 +43,9 @@ user {{ defaults.nobody }}
 group {{ defaults.nogroup }}
 persist-key
 persist-tun
+
+{% if advertise_subnet != {} %}
+route-noexec
+route-up "scripts/route-filter {{ advertise_subnet.ip }} {{ advertise_subnet.mask }}"
+script-security 2
+{% endif %}

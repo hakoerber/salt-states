@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# default path is too short
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+# must be given in the configuration after route-up <script>
+filter_network="$1"
+filter_netmask="$2"
+
+for (( i=1;;i++ )); do
+    # extract environment variables, see "Environmental Variables" in
+    # openvpn(8)
+    network="route_network_$i"; network="${!network}"
+    netmask="route_netmask_$i"; netmask="${!netmask}"
+    gateway="route_gateway_$i"; gateway="${!gateway}"
+
+    # no more variables given
+    [[ -z "$network" ]] && break
+
+    if [[ "$network/$netmask" == "$filter_network/$filter_netmask" ]] ; then
+        continue
+    fi
+
+    # this is the default used by OpenVPN
+    if command -v ip >/dev/null 2>&1 ; then
+        ip route add $network/$netmask via $gateway
+    elif command -v route >/dev/null 2>&1 ; then
+        route add -net $network netmask $netmask gw $gateway
+    else
+        printf '%s\n' 'Neither "route" nor "ip" found. Aborting.'
+        exit 1
+    fi
+done
