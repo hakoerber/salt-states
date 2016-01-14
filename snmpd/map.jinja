@@ -1,4 +1,8 @@
 {% set snmpd = salt['grains.filter_by']({
+    'FreeBSD': {
+        'conf_file': '/usr/local/etc/snmpd.config',
+    },
+
     'default': {
         'ports': {
             'udp': [161],
