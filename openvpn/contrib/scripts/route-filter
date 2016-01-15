@@ -1,11 +1,21 @@
 #!/bin/bash
 
+_myname="$0"
+
+log() {
+    printf '[%s] <%s> %s\n' "$(date +%Y-%m-%dT%H:%M:%S)" "$_myname" "$*"
+}
+
+log "Entering $_myname"
+
 # default path is too short
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 # must be given in the configuration after route-up <script>
 filter_network="$1"
 filter_netmask="$2"
+
+log "Filtering route $filter_network/$filter_netmask"
 
 for (( i=1;;i++ )); do
     # extract environment variables, see "Environmental Variables" in
@@ -14,20 +24,27 @@ for (( i=1;;i++ )); do
     netmask="route_netmask_$i"; netmask="${!netmask}"
     gateway="route_gateway_$i"; gateway="${!gateway}"
 
-    # no more variables given
-    [[ -z "$network" ]] && break
+    if [[ -z "$network" ]] ; then
+         log "No more routes to process"
+         break
+    fi
 
     if [[ "$network/$netmask" == "$filter_network/$filter_netmask" ]] ; then
+        log "Skipping route $network/$netmask"
         continue
     fi
+    log "Adding route $network/$netmask via $gateway"
 
     # this is the default used by OpenVPN
     if command -v ip >/dev/null 2>&1 ; then
-        ip route add $network/$netmask via $gateway
+        cmd="ip route add $network/$netmask via $gateway"
     elif command -v route >/dev/null 2>&1 ; then
-        route add -net $network netmask $netmask gw $gateway
+        cmd="route add -net $network netmask $netmask gw $gateway"
     else
-        printf '%s\n' 'Neither "route" nor "ip" found. Aborting.'
+        log "Neither \"route\" nor \"ip\" found. Aborting."
         exit 1
     fi
+    log "executing $cmd"
+    $cmd
 done
+log 'Done'
