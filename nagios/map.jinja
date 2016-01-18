@@ -35,6 +35,17 @@
         },
     },
     'default': {
+        'conf': '/etc/nagios/nagios.cfg',
+        'packages': ['nagios', 'nagios-plugins-all'],
+        'service': 'nagios',
+        'thruk': {
+            'package': 'thruk',
+            'service': 'thruk',
+            'service_webserver': 'httpd',
+            'ports': {
+                'tcp': [80],
+            },
+        },
         'check_mk': {
             'agent': {
                 'package': 'check-mk-agent',
@@ -48,9 +59,15 @@
                 'port': 6556,
             },
             'server': {
-                'service': 'omd',
+                'package': 'check-mk',
+                'main_conf': '/etc/check_mk/main.mk',
                 'ports': {
-                    'tcp': [80],
+                },
+                'livestatus': {
+                    'package': 'check-mk-livestatus',
+                    'module_path': '/usr/lib64/check_mk/livestatus.o',
+                    'socket_dir': '/var/run/nagios',
+                    'socket_name': 'live',
                 },
             },
         },

@@ -1,0 +1,11 @@
+
+module nagios_sock 1.0;
+
+require {
+	type nagios_t;
+	type nagios_var_run_t;
+	class sock_file { write create unlink getattr setattr };
+}
+
+#============= nagios_t ==============
+allow nagios_t nagios_var_run_t:sock_file { write create unlink setattr getattr};
