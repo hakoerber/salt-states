@@ -38,7 +38,7 @@
         'conf': '/etc/nagios/nagios.cfg',
         'packages': ['nagios', 'nagios-plugins-all'],
         'service': 'nagios',
-        'sockdir': '/var/run/nagios',
+        'socket_dir': '/var/run/nagios',
         'thruk': {
             'package': 'thruk',
             'service': 'thruk',
@@ -67,7 +67,6 @@
                 'livestatus': {
                     'package': 'check-mk-livestatus',
                     'module_path': '/usr/lib64/check_mk/livestatus.o',
-                    'socket_dir': '/var/run/nagios',
                     'socket_name': 'live',
                 },
             },

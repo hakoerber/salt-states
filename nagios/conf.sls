@@ -16,7 +16,7 @@ nagios.cfg:
 
 nagios-socketdir:
   file.directory:
-    - name: {{ nagios_map.check_mk.server.livestatus.socket_dir }}
+    - name: {{ nagios_map.socket_dir }}
     - user: nagios
     - group: nagios
     - mode: 755
