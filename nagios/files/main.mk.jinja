@@ -1,3 +1,126 @@
+{% from 'states/nagios/map.jinja' import nagios as nagios_map with context %}
+
 all_hosts = [
-    'localhost'
+    {% for host, hostinfo in params.hosts.items() %}
+    '{{ ([host] + hostinfo.groups)|join('|') }}',
+    {% endfor %}
 ]
+
+ipaddresses = {
+    {% for host, hostinfo in params.hosts.items() %}
+    {% if hostinfo.get('use_ip', False) %}
+    '{{ host }}': '{{ hostinfo.ip }}',
+    {% endif %}
+    {% endfor %}
+}
+
+agent_port = {{ nagios_map.check_mk.agent.port }}
+
+tcp_connect_timeout = 2.0
+
+ping_levels += [
+( { "rta": (100, 200), "loss": (100, 100), "packets": 2, "timeout": 5 }, ALL_HOSTS)
+]
+
+service_descriptions = {}
+
+define_hostgroups = True
+host_groups = [
+    {% for group in params.get('groups', []) %}
+    ('{{ group }}', ['{{ group }}'], ALL_HOSTS),
+    {% endfor %}
+]
+
+# otherwise nagios complains
+generate_dummy_commands = True
+
+ignored_services = [
+    ( ALL_HOSTS, [ "^Interface .*vt?net.*$" ] ), # libvirt virtual interfaces
+    ( ALL_HOSTS, [ "^fs_/run/user.*$" ] )
+]
+
+inventory_check_interval = 120
+inventory_check_severity = 1
+
+snmp_default_community = '{{ params.get('snmp', {}).get('community', 'public') }}'
+
+ignored_checktypes = [ "lnx_thermal" ]
+
+
+### check defaults
+extra_service_conf["max_check_attempts"] = [
+        ( "1", ALL_HOSTS, ALL_SERVICES ),
+]
+extra_host_conf["max_check_attempts"] = [
+        ( "1", ALL_HOSTS ),
+]
+
+extra_service_conf["check_interval"] = [
+        ( "1", ALL_HOSTS, ALL_SERVICES ),
+]
+extra_host_conf["check_interval"] = [
+        ( "1", ALL_HOSTS ),
+]
+
+extra_service_conf["retry_interval"] = [
+        ( "1", ALL_HOSTS, ALL_SERVICES ),
+]
+extra_host_conf["retry_interval"] = [
+        ( "1", ALL_HOSTS ),
+]
+### check-specific settings
+
+# if
+if_inventory_pad_portnumbers = True
+if_inventory_uses_description = True
+if_inventory_monitor_speed = True
+
+# ipmi
+ipmi_summarize = False
+
+# smart.temp
+smart_temp_default_levels = (40, 45)
+
+# df
+filesystem_default_levels = {
+   "levels"         : (85.0, 90.0),  # levels in percent
+   "trend_range"    : 24,            # hours
+   "trend_timeleft" : (72, 48),      # run time left in hours until full
+   "trend_perfdata" : True           # no performance data for trends
+}
+inventory_df_exclude_mountpoints = [
+    '/dev',
+    '/dev/shm',
+    '/run',
+    '/sys/fs/cgroup',
+]
+inventory_df_exclude_fs = [
+    'nfs',
+    'smbfs',
+    'cifs',
+    'tmpfs',
+]
+# not sure if this is what we want
+filesystem_groups = [
+    ([('zpool', '/tank/*')], [], ALL_HOSTS),
+]
+
+# diskstat
+diskstat_inventory_mode = "rule"
+diskstat_inventory += [
+    ( ['lvm', 'physical'], [], ALL_HOSTS ),
+]
+
+# ntp
+ntp_default_levels = (
+    4,     # max stratum
+    100.0, # warning offset in ms
+    200.0, # critical offset ins ms
+)
+
+extra_service_conf["max_check_attempts"] += [
+        ( "20", ALL_HOSTS, ["NTP Time"] ),
+]
+
+# mem.used
+memused_default_levels = (100.0, 150.0)

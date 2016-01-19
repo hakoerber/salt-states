@@ -1,5 +1,10 @@
+#!stateconf
 {% from 'states/nagios/map.jinja' import nagios as nagios_map with context %}
 {% from 'states/defaults.map.jinja' import defaults with context %}
+
+.params:
+    stateconf.set: []
+# --- end of state config ---
 
 main.mk:
   file.managed:
@@ -9,10 +14,10 @@ main.mk:
     - mode: 644
     - source: salt://states/nagios/files/main.mk.jinja
     - template: jinja
+    - defaults:
+      params: {{ params }}
     - require:
       - pkg: check_mk-server
-    - watch_in:
-      - service: nagios
       
 check_mk-update:
   cmd.run:
@@ -21,3 +26,5 @@ check_mk-update:
     - group: {{ defaults.rootgroup }}
     - onchanges:
       - file: main.mk
+    - watch_in:
+      - service: nagios

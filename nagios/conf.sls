@@ -13,3 +13,14 @@ nagios.cfg:
       - pkg: nagios
     - watch_in:
       - service: nagios
+
+nagios-socketdir:
+  file.directory:
+    - name: {{ nagios_map.check_mk.server.livestatus.socket_dir }}
+    - user: nagios
+    - group: nagios
+    - mode: 755
+    - require_in:
+      - file: nagios.cfg
+    - watch_in:
+      - service: nagios
