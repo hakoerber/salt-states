@@ -1,0 +1,9 @@
+{% set influxdb = salt['grains.filter_by']({
+    'default': {
+        'package': 'influxdb',
+        'service': 'influxdb',
+        'ports': {
+            'tcp': [8086],
+        },
+    },
+}, base='default') %}
