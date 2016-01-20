@@ -10,6 +10,8 @@ reload_zones:
   cmd.wait:
     - name: rndc reload
 
+{% for direction in ['forward', 'reverse'] %}
+
 {% if params.role == 'master' %}
 {% set grain = 'bind_zone_serial_' ~ params.domain %}
 {% set newserial_date = salt['cmd.run']('date +%Y%m%d') %}
@@ -29,13 +31,12 @@ reload_zones:
 {% endif %}
 {% endif %}
 
-zone-{{ params.domain }}-store-serial-grain:
+zone-{{ params.domain }}-{{ direction }}-store-serial-grain:
   grains.present:
-    - name: bind_zone_serial_{{ params.domain }}
+    - name: bind_zone_serial_{{ direction }}_{{ params.domain }}
     - value: {{ newserial }}
     - force: true
 
-{% for direction in ['forward', 'reverse'] %}
 zone-{{ params.domain }}-{{ direction }}-check:
   file.managed:
     - name: {{ bind_map.main_directory }}/{{ direction }}.{{ params.domain }}
@@ -50,7 +51,7 @@ zone-{{ params.domain }}-{{ direction }}-check:
     - require:
       - pkg: bind
     - onchanges_in:
-      - grains: zone-{{ params.domain }}-store-serial-grain
+      - grains: zone-{{ params.domain }}-{{ direction }}-store-serial-grain
 
 zone-{{ params.domain }}-{{ direction }}:
   file.managed:
@@ -71,5 +72,5 @@ zone-{{ params.domain }}-{{ direction }}:
       - pkg: bind
     - onchanges:
       - file: zone-{{ params.domain }}-{{ direction }}-check
-{% endfor %}
 {% endif %}
+{% endfor %}

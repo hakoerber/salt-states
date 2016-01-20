@@ -1,6 +1,6 @@
 $TTL {{ params.zoneinfo.ttl }}
 @	{{ params.zoneinfo.class }}	SOA	{{ params.zoneinfo.masterdns.name }}. {{ params.zoneinfo.hostmaster }}.{{ params.domain }}. (
-        {{ params.zoneinfo.serial }}	;Serial
+        {{ serial }}	;Serial
         {{ params.zoneinfo.refresh }}	;Refresh
         {{ params.zoneinfo.retry }}	;Retry
         {{ params.zoneinfo.expire }}	;Expire
