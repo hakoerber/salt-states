@@ -10,8 +10,8 @@ selinux-dev:
 
 nagios-selinux-module-sock:
   c_selinux.module:
-    - name: nagios_sock
-    - source: salt://states/nagios/contrib/nagios_sock.te
+    - name: nagios_custom
+    - source: salt://states/nagios/contrib/nagios_custom.te
     - require_in:
       - service: nagios
     - require:

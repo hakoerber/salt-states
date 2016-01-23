@@ -1,0 +1,17 @@
+module nagios_custom 1.0;
+
+require {
+        type nagios_t;
+        type snmpd_var_lib_t;
+        type nagios_var_run_t;
+        type var_lib_t;
+        class dir { read getattr open };
+        class file { read ioctl write getattr unlink open };
+        class sock_file { write create unlink getattr setattr };
+}
+
+#============= nagios_t ==============
+allow nagios_t nagios_var_run_t:sock_file { write create unlink setattr getattr};
+allow nagios_t snmpd_var_lib_t:dir { read getattr open };
+allow nagios_t snmpd_var_lib_t:file { read getattr open };
+allow nagios_t var_lib_t:file { write ioctl read unlink open getattr };
