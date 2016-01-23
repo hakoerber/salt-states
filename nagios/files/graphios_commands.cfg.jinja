@@ -1,0 +1,11 @@
+{% from 'states/nagios/map.jinja' import nagios as nagios_map with context %}
+define command {
+    command_name            graphite_perf_host
+    command_line            /bin/mv {{ nagios_map.graphios.spooldir }}/host-perfdata {{ nagios_map.graphios.spooldir }}/host-perfdata.$TIMET$
+
+}
+
+define command {
+    command_name            graphite_perf_service
+    command_line            /bin/mv {{ nagios_map.graphios.spooldir }}/service-perfdata {{ nagios_map.graphios.spooldir }}/service-perfdata.$TIMET$
+}

@@ -35,7 +35,10 @@
         },
     },
     'default': {
+        'user': 'nagios',
+        'group': 'nagios',
         'conf': '/etc/nagios/nagios.cfg',
+        'confdir': '/etc/nagios/conf.d',
         'packages': ['nagios', 'nagios-plugins-all'],
         'service': 'nagios',
         'socket_dir': '/var/run/nagios',
@@ -46,6 +49,15 @@
             'ports': {
                 'tcp': [80],
             },
+        },
+        'graphios': {
+            'package': 'graphios',
+            'service': 'graphios',
+            'spooldir': '/var/spool/nagios/graphios',
+            'logfile': '/var/log/graphios.log',
+            'conf': '/etc/graphios/graphios.cfg',
+            'check_mk_conf': 'graphios.mk',
+            'graphios_commands': 'graphios_commands.cfg',
         },
         'check_mk': {
             'agent': {
@@ -62,6 +74,7 @@
             'server': {
                 'package': 'check-mk',
                 'main_conf': '/etc/check_mk/main.mk',
+                'confdir': '/etc/check_mk/conf.d',
                 'ports': {
                 },
                 'livestatus': {

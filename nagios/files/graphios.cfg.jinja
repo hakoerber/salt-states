@@ -1,0 +1,72 @@
+{% from 'states/nagios/map.jinja' import nagios as nagios_map with context %}
+[graphios]
+# Character to use as replacement for invalid characters in metric names
+replacement_character = _
+
+# nagios spool directory
+spool_directory = {{ nagios_map.graphios.spooldir }}
+
+# graphios log info
+log_file = {{ nagios_map.graphios.logfile }}
+
+# max log size (it will rotate the files) default: 24 MB
+log_max_size = 25165824
+
+# DEBUG is quite verbose
+#log_level = logging.DEBUG
+log_level = logging.INFO
+
+# Disable this once you get it working.
+debug = False
+
+# How long to sleep between processing the spool directory
+sleep_time = 60
+
+# when we can't connect to carbon, the sleeptime is doubled until we hit max
+sleep_max = 60
+
+# test mode makes it so we print what we would add to carbon, and not delete
+# any files from the spool directory. log_level must be DEBUG as well.
+test_mode = False
+
+# use service description, most people will NOT want this, read documentation!
+use_service_desc = False
+
+# replace "." in nagios hostnames? (so "my.host.name" becomes "my_host_name")
+# (uses the replacement_character)
+replace_hostname = False
+
+# reverse hostname
+# if you have:
+# host.datacenter.company.tld
+# as your nagios hostname you may prefer to have your metric stored as:
+# tld.company.datacenter.host
+reverse_hostname = False
+
+#metric_base_path = nagios
+
+enable_influxdb09 = True
+
+# Extra tags to add to metrics, like data center location etc.
+# Only valid for 0.9
+#influxdb_extra_tags = {"location": "la"}
+
+# Comma separated list of server:ports
+# defaults to 127.0.0.1:8086 (:8087 if using SSL).
+influxdb_servers = {{ influxdb.host }}:{{ influxdb.port }}
+
+# SSL, defaults to False
+#influxdb_use_ssl = True
+
+# Database-name, defaults to nagios
+influxdb_db = {{ influxdb.database }}
+
+# Credentials (required)
+influxdb_user = {{ influxdb.user }}
+influxdb_password = {{ influxdb.password }}
+
+# Max metrics to send / request, defaults to 250
+influxdb_max_metrics = 500
+
+# Flag the InfluxDB backend as 'non essential' for the purposes of error checking
+#nerf_influxdb = False
