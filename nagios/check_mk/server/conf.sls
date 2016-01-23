@@ -28,3 +28,15 @@ check_mk-update:
       - file: main.mk
     - watch_in:
       - service: nagios
+    - require:
+      - cmd: check_mk-inventory
+
+check_mk-inventory:
+  cmd.run:
+    - name: cmk -I
+    - user: root
+    - group: {{ defaults.rootgroup }}
+    - onchanges:
+      - file: main.mk
+    - watch_in:
+      - service: nagios
