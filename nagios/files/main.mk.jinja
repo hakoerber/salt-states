@@ -1,7 +1,7 @@
 {% from 'states/nagios/map.jinja' import nagios as nagios_map with context %}
 
 all_hosts = [
-    {% for host in params.hosts %}
+    {% for host in params.hosts|sort(attribute='name') %}
     '{{ ([host.name] + host.groups)|join('|') }}',
     {% endfor %}
 ]
@@ -130,3 +130,6 @@ extra_service_conf["max_check_attempts"] += [
 
 # mem.used
 memused_default_levels = (100.0, 150.0)
+
+only_hosts = [
+  ( ['!offline', ], ALL_HOSTS, {'comment': u'Do not monitor hosts with the tag "offline"'} )]

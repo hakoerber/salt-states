@@ -18,7 +18,7 @@ main.mk:
       params: {{ params }}
     - require:
       - pkg: check_mk-server
-      
+
 check_mk-update:
   cmd.run:
     - name: cmk --update
