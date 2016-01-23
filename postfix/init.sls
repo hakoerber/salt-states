@@ -3,7 +3,7 @@
 
 postfix:
   pkg.installed:
-    - name: {{ postfix_map.package }}
+    - pkgs: {{ postfix_map.packages }}
 
   service.running:
     - name: {{ postfix_map.service }}
