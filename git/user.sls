@@ -5,6 +5,6 @@ git-user:
     - name: {{ git_map.user }}
     - home: {{ git_map.home }}
     - createhome: True
-    - git_from_name: True
+    - gid_from_name: True
     - require:
       - pkg: git
