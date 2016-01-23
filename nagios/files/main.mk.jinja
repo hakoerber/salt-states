@@ -1,20 +1,26 @@
 {% from 'states/nagios/map.jinja' import nagios as nagios_map with context %}
 
 all_hosts = [
-    {% for host, hostinfo in params.hosts.items() %}
-    '{{ ([host] + hostinfo.groups)|join('|') }}',
+    {% for host in params.hosts %}
+    '{{ ([host.name] + host.groups)|join('|') }}',
     {% endfor %}
 ]
 
 ipaddresses = {
-    {% for host, hostinfo in params.hosts.items() %}
-    {% if hostinfo.get('use_ip', False) %}
-    '{{ host }}': '{{ hostinfo.ip }}',
+    {% for host in params.hosts %}
+    {% if host.get('use_ip', False) %}
+    '{{ host.name }}': '{{ host.ip }}',
     {% endif %}
     {% endfor %}
 }
 
 agent_port = {{ nagios_map.check_mk.agent.port }}
+
+bulkwalk_hosts += [
+  ( [ "!nobulk" ], ALL_HOSTS ),
+]
+
+agent_port = 6556
 
 tcp_connect_timeout = 2.0
 
