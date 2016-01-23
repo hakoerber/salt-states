@@ -13,7 +13,7 @@ reload_zones:
 {% for direction in ['forward', 'reverse'] %}
 
 {% if params.role == 'master' %}
-{% set grain = 'bind_zone_serial_' ~ params.domain %}
+{% set grain = 'bind_zone_serial_' ~ direction ~ '_' ~ params.domain %}
 {% set newserial_date = salt['cmd.run']('date +%Y%m%d') %}
 {% set oldserial = grains.get(grain, none) %}
 {% if oldserial is none %}
