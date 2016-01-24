@@ -20,11 +20,11 @@ nginx-iptables-{{ protocol }}-{{ family }}:
     - match: comment
     - comment: nginx {{ protocol|upper }}
     - require:
-      {% if params.get('public', False) %}
+{% if params.get('public', False) %}
       - iptables: chain_zone_public_{{ family }}
-      {% else %}
+{% else %}
       - iptables: chain_zone_local_{{ family }}
-      {% endif %}
+{% endif %}
 {% endif %}
 {% endfor %}
 {% endfor %}

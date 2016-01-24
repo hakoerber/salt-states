@@ -29,15 +29,15 @@ dotfiles-{{ application.name }}-{{ file.name }}:
     - makedirs: True
     - mode: 600
     - source: salt://files/users/{{ username }}/dotfiles/{{ file.name }}
-    {% if template %}
+{% if template %}
     - template: jinja
     - defaults:
         user: {{ user }}
-    {% endif %}
-    {% if application.packages is defined %}
+{% endif %}
+{% if application.packages is defined %}
     - require:
       - pkg: dotfiles-packages-{{ application.name }}
-    {% endif %}
+{% endif %}
 {% endfor %}
 {% endfor %}
 {% endfor %}

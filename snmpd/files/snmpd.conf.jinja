@@ -14,3 +14,4 @@ sysName {{ grains['fqdn'] }}
 
 dontLogTCPWrappersConnects yes
 
+override .1.3.6.1.4.1.2021.7890.1 octet_str "{{ grains['os'] }} {{ grains['osrelease'] }}"

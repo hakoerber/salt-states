@@ -15,13 +15,13 @@ sshd_config:
     - source: salt://states/ssh/files/sshd_config.jinja
     - template: jinja
     - context:
-      ports: {{ ssh_map.server.ports }}
-      sftp_binary: {{ ssh_map.server.sftp_binary }}
-      keytypes: {{ ssh_map.server.keytypes }}
-      listen_address: {{ params.listen_address }}
-    {% if ssh_map.server.package != None %}
+        ports: {{ ssh_map.server.ports }}
+        sftp_binary: {{ ssh_map.server.sftp_binary }}
+        keytypes: {{ ssh_map.server.keytypes }}
+        listen_address: {{ params.listen_address }}
+{% if ssh_map.server.package != None %}
     - require:
       - pkg: ssh-server
-    {% endif %}
+{% endif %}
     - watch_in:
       - service: ssh-server

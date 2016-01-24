@@ -9,13 +9,13 @@ http {
                     '$status $body_bytes_sent "$http_referer" '
                     '"$http_user_agent" "$http_x_forwarded_for"';
 
-    {% for file in nginx_map.logging.files %}
-    {% if file.tag == 'access' %}
+{% for file in nginx_map.logging.files %}
+{% if file.tag == 'access' %}
     access_log {{ file.path }} main;
-    {% elif file.tag == 'error' %}
+{% elif file.tag == 'error' %}
     error_log  {{ file.path }} warn;
-    {% endif %}
-    {% endfor %}
+{% endif %}
+{% endfor %}
 
     sendfile            on;
     tcp_nopush          on;

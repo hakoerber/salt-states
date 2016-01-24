@@ -23,6 +23,6 @@ rsyslog.d:
     - mode: 755
     - clean: True
     - require:
-      {% for file in rsyslog_map.client.include %}
+{% for file in rsyslog_map.client.include %}
       - file: {{ rsyslog_map.include_basedir }}/{{ file.name }}
-      {% endfor %}
+{% endfor %}

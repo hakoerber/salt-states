@@ -18,18 +18,18 @@
     - jump: ACCEPT
     - dports: {{ ports }}
     - family: {{ family }}
-    {% if source is defined %}
+{% if source is defined %}
     - source: {{ source }}
-    {% endif %}
+{% endif %}
     - save: true
     - match: comment
     - comment: {{ application }}{{ component }}
     - require:
-      {% if public|default(False) %}
+{% if public|default(False) %}
       - iptables: chain_zone_public_{{ family }}
-      {% else %}
+{% else %}
       - iptables: chain_zone_local_{{ family }}
-      {% endif %}
+{% endif %}
 {% endfor %}
 {% endfor %}
 {% endfor %}

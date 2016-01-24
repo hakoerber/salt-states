@@ -14,12 +14,12 @@ snmpd_config:
     - mode: 600
     - source: salt://states/snmpd/files/snmpd.conf.jinja
     - template: jinja
-    {# On FreeBSD, /usr/local/etc/snmp does not exist by default #}
-    {% if grains['os_family'] == 'FreeBSD' %}
+{# On FreeBSD, /usr/local/etc/snmp does not exist by default #}
+{% if grains['os_family'] == 'FreeBSD' %}
     - makedirs: True
-    {% endif %}
+{% endif %}
     - context:
-      sysinfo: {{ params.sysinfo }}
+        sysinfo: {{ params.sysinfo }}
     - require:
       - pkg: snmpd
     - watch_in:

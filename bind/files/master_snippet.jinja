@@ -1,14 +1,14 @@
         allow-transfer {
-                {% for slave in params.slaves %} 
+{% for slave in params.slaves %}
                 {{ slave.ip }};
-                {% endfor %}
+{% endfor %}
         };
 
         notify explicit;
         also-notify {
-                {%+ for slave in params.slaves %} 
+{% for slave in params.slaves %}
                 {{ slave.ip }};
-                {% endfor %}
+{% endfor %}
         };
 
         zone "{{ params.domain }}" IN {

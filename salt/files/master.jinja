@@ -62,15 +62,15 @@ fileserver_backend:
 file_roots:
 {% for env, paths in salt_map.master.file_roots.items() %}
     {{ env }}:
-    {% for path in paths %}
+{% for path in paths %}
         - {{ path }}
-    {% endfor %}
+{% endfor %}
 {% endfor %}
 
 pillar_roots:
 {% for env, paths in salt_map.master.pillar_roots.items() %}
     {{ env }}:
-    {% for path in paths %}
+{% for path in paths %}
         - {{ path }}
-    {% endfor %}
+{% endfor %}
 {% endfor %}

@@ -8,6 +8,11 @@
 
 {% set port = params.get('port', nagios_map.check_mk.agent.port) %}
 
+{% set server_ips = [] %}
+{% for server in params.servers %}
+{% do server_ips.append(server.ip) %}
+{% endfor %}
+
 {% if grains['os_family'] == 'FreeBSD' %}
 check-mk-agent-hosts-allow:
   file.blockreplace:
@@ -15,7 +20,7 @@ check-mk-agent-hosts-allow:
     - marker_start: '# START managed zone check_mk'
     - marker_end: '# END managed zone check_mk'
     - content: |
-       check_mk_agent : {{ params.servers|map(attribute='ip')|join(',') }} : allow
+       check_mk_agent : {{ server_ips|join(',') }} : allow
        check_mk_agent : ALL : deny
     - append_if_not_found: True
     - show_changes: True

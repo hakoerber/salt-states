@@ -12,7 +12,7 @@ $TTL {{ params.zoneinfo.ttl }}
 
 @	IN	PTR	{{ params.domain }}.
 
-{% for record in params.records|sort(attribute='reverse') %}
+{% for record in params.records|sort() %}
 {% for arecord in record.arecords %}
 {{ record.get('reverse') }}	IN	PTR	{{ arecord }}.{{ params.domain }}.
 {% endfor %}

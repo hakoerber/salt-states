@@ -10,23 +10,23 @@ proxy_buffering on;
 
 {% for target in upstream %}
 server {
-    {% if target.protocols is defined %}
-    {% set proto = target.protocols %}
-    {% else %}
-    {% set proto = protocol %}
-    {% endif %}
-    {% if 'http' in proto %}
+{% if target.protocols is defined %}
+{% set proto = target.protocols %}
+{% else %}
+{% set proto = protocol %}
+{% endif %}
+{% if 'http' in proto %}
     listen {{ nginx_map.ports.http }};
-    {% if ipv6 %}
+{% if ipv6 %}
     listen [::]:{{ nginx_map.ports.http }};
-    {% endif %}
-    {% endif %}
-    {% if 'https' in proto %}
+{% endif %}
+{% endif %}
+{% if 'https' in proto %}
     listen {{ nginx_map.ports.https }} ssl;
-    {% if ipv6 %}
+{% if ipv6 %}
     listen [::]:{{ nginx_map.ports.https }} ssl;
-    {% endif %}
-    {% endif %}
+{% endif %}
+{% endif %}
 
     server_name {{ target.servername }};
 

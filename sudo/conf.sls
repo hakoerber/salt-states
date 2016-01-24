@@ -28,9 +28,9 @@ sudoers:
     - require:
       - pkg: sudo
       - file: sudo-logfile
-      {% for group in [params.group, params.group_nopw] %}
+{% for group in [params.group, params.group_nopw] %}
       - group: sudo-group-{{ group }}
-      {% endfor %}
+{% endfor %}
 
 sudo-logfile:
   file.managed:

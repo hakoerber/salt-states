@@ -10,19 +10,19 @@ repository-{{ repo }}:
     - name: {{ repo }}
     - humanname: {{ repo }}
     - baseurl: |
-        {% for mirror in mirrors %}
+{% for mirror in mirrors %}
         http://{{ mirror.name }}.{{ mirror.domain }}/{{ mirror.url }}
-        {% endfor %}
+{% endfor %}
 
-    {% for mirror in mirrors %}
-    {% if mirror.get('gpg', true) == false %}
-    {% do nogpg.append(1) %}
-    {% endif %}
-    {% endfor %}
-    {% if nogpg %}
+{% for mirror in mirrors %}
+{% if mirror.get('gpg', true) == false %}
+{% do nogpg.append(1) %}
+{% endif %}
+{% endfor %}
+{% if nogpg %}
     - gpgcheck: 0
-    {% else %}
+{% else %}
     - gpgcheck: 1
-    {% endif %}
+{% endif %}
 
 {% endfor %}

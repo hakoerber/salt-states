@@ -1,17 +1,17 @@
 {% from 'states/nagios/map.jinja' import nagios as nagios_map with context %}
 
 all_hosts = [
-    {% for host in params.hosts|sort(attribute='name') %}
+{% for host in params.hosts|sort() %}
     '{{ ([host.name] + host.groups)|join('|') }}',
-    {% endfor %}
+{% endfor %}
 ]
 
 ipaddresses = {
-    {% for host in params.hosts %}
-    {% if host.get('use_ip', False) %}
+{% for host in params.hosts %}
+{% if host.get('use_ip', False) %}
     '{{ host.name }}': '{{ host.ip }}',
-    {% endif %}
-    {% endfor %}
+{% endif %}
+{% endfor %}
 }
 
 agent_port = {{ nagios_map.check_mk.agent.port }}
@@ -32,9 +32,9 @@ service_descriptions = {}
 
 define_hostgroups = True
 host_groups = [
-    {% for group in params.get('groups', []) %}
+{% for group in params.get('groups', []) %}
     ('{{ group }}', ['{{ group }}'], ALL_HOSTS),
-    {% endfor %}
+{% endfor %}
 ]
 
 # otherwise nagios complains

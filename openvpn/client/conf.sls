@@ -48,10 +48,10 @@ openvpn-client-{{ vpnname }}.conf:
       - service: openvpn-client-{{ vpnname }}-service
     - require:
       - pkg: openvpn
-      {% if advertise_subnet != {} %}
-      {% do create_scriptdir.append(1) %}
+{% if advertise_subnet != {} %}
+{% do create_scriptdir.append(1) %}
       - file: openvpn-client-script-route-filter
-      {% endif %}
+{% endif %}
 
 {% endfor %}
 

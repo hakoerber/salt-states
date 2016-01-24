@@ -16,42 +16,42 @@ group-{{ group }}:
 {% endfor %}
 
 user-{{ username }}:
-  {% if username == 'root' %}
-  {% set groupname = defauts.rootgroup %}
-  {% else %}
-  {% set groupname = username %}
-  {% endif %}
+{% if username == 'root' %}
+{% set groupname = defauts.rootgroup %}
+{% else %}
+{% set groupname = username %}
+{% endif %}
   group.present:
     - name: {{ groupname }}
 
   user.present:
     - name: {{ username }}
 
-    {% if user.uid is defined %}
+{% if user.uid is defined %}
     - uid: {{ user.uid }}
-    {% endif %}
+{% endif %}
 
     - gid: {{ groupname }}
 
-    {% if user.shell is defined %}
+{% if user.shell is defined %}
     - shell: {{ shell_map[user.shell] }}
-    {% endif %}
+{% endif %}
 
-    {% if user.home is defined %}
+{% if user.home is defined %}
     - home: {{ user.home }}
-    {% endif %}
+{% endif %}
 
     - createhome: True
 
     - password: {{ user.password }}
 
-    {% if user.groups is defined %}
+{% if user.groups is defined %}
     - groups: {{ user.groups }}
-    {% endif %}
+{% endif %}
 
     - require:
       - group: user-{{ username }}
-      {% for group in groups %}
+{% for group in groups %}
       - group: group-{{ group }}
-      {% endfor %}
+{% endfor %}
 {% endfor %}

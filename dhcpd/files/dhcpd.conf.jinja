@@ -23,9 +23,9 @@ failover peer "failover" {
     max-unacked-updates 10;
     mclt 3600;
 
-    {% if params.role == 'primary' %}
+{% if params.role == 'primary' %}
     split 128;
-    {% endif %}
+{% endif %}
 
     load balance max seconds 3;
 }
@@ -49,9 +49,9 @@ subnet {{ params.network.ip }} netmask {{ params.network.netmask }} {
     option domain-name-servers {{ nameservers|join(', ') }};
     option ntp-servers         {{ ntpservers|join(', ') }};
 
-    {% for option, value in params.dhcpoptions.items() %}
+{% for option, value in params.dhcpoptions.items() %}
     {{ option }}        {{ value }};
-    {% endfor %}
+{% endfor %}
 
     pool {
         failover peer "failover";
@@ -60,7 +60,7 @@ subnet {{ params.network.ip }} netmask {{ params.network.netmask }} {
     }
 }
 
-{% for reservation in params.reservations|sort(attribute='name') %}
+{% for reservation in params.reservations|sort() %}
 host {{ reservation.name }}.{{ params.domain }} {
     hardware ethernet {{ reservation.mac|upper }};
     fixed-address {{ reservation.ip }};

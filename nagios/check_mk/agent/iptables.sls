@@ -5,6 +5,11 @@
     stateconf.set: []
 # --- end of state config ---
 
+{% set server_ips = [] %}
+{% for server in params.servers %}
+{% do server_ips.append(server.ip) %}
+{% endfor %}
+
 {% set port = params.get('port', nagios_map.check_mk.agent.port) %}
 check_mk-agent-iptables:
   iptables.append:
@@ -12,7 +17,7 @@ check_mk-agent-iptables:
     - chain: ZONE_LOCAL
     - proto: tcp
     - jump: ACCEPT
-    - source: {{ params.servers|map(attribute='ip')|join(',') }}
+    - source: {{ server_ips|join(',') }}
     - dports: {{ port }}
     - family: ipv4
     - save: true
