@@ -11,21 +11,33 @@
             }]
         },
     },
-    'RedHat': {
-        'packages': [
-            'iptables',
-            'iptables-services',
-        ],
-        'services': [
-            'iptables',
-            'ip6tables',
-        ],
-    },
+    'RedHat': salt['grains.filter_by']({
+        'default': {
+            'packages': [
+                'iptables',
+                'iptables-services',
+            ],
+            'services': {
+                'iptables': {
+                    'conf': '/etc/sysconfig/iptables',
+                },
+                'ip6tables': {
+                    'conf': '/etc/sysconfig/ip6tables',
+                },
+            },
+        },
+        '6': {
+            'packages': [
+                'iptables',
+                'iptables-ipv6',
+            ],
+        },
+    }, grain='osmajorrelease', base='default'),
     'Debian': {
         'packages': [
             'iptables',
             'iptables-persistent',
         ],
-        'services': [],
+        'services': {},
     },
 }, base='default') %}
