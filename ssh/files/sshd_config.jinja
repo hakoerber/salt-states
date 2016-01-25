@@ -11,7 +11,12 @@ ChallengeResponseAuthentication no
 UsePAM yes
 PrintMotd no
 SyslogFacility LOCAL2
+{# OpenSSH before 5.9 do not support sandboxing #}
+{% if grains['os_family'] == 'RedHat' and grains['osmajorrelease']|int < 7 %}
+UsePrivilegeSeparation yes
+{% else %}
 UsePrivilegeSeparation sandbox
+{% endif %}
 ClientAliveInterval 10
 TCPKeepAlive yes
 UseDns no
