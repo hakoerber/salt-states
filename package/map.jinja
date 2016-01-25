@@ -1,14 +1,26 @@
 {% set package = salt['grains.filter_by']({
     'default': {
     },
-    'RedHat': {
-        'autoupdate': {
-            'package': 'yum-cron',
-            'service': 'yum-cron',
-            'conf_path': '/etc/yum/yum-cron.conf',
-            'conf_source': 'salt://states/package/files/yum-cron.conf.jinja',
+    'RedHat': salt['grains.filter_by']({
+        '7': {
+            'autoupdate': {
+                'conf_path': '/etc/yum/yum-cron.conf',
+                'conf_source': 'salt://states/package/files/yum-cron.conf.jinja',
+            },
         },
-    },
+        '6': {
+            'autoupdate': {
+                'conf_path': '/etc/sysconfig/yum-cron',
+                'conf_source': 'salt://states/package/files/yum-cron.rhel6.jinja',
+            },
+        },
+        'default': {
+            'autoupdate': {
+                'package': 'yum-cron',
+                'service': 'yum-cron',
+            },
+        },
+    }, grain='osmajorrelease', base='default'),
     'Debian': {
         'autoupdate': {
             'package': 'unattended-upgrades',
