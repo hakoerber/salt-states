@@ -11,6 +11,8 @@
 {% endfor %}
 
 {% set port = params.get('port', nagios_map.check_mk.agent.port) %}
+
+{% if server_ips %}
 check_mk-agent-iptables:
   iptables.append:
     - table: filter
@@ -25,3 +27,4 @@ check_mk-agent-iptables:
     - comment: check_mk agent
     - require:
       - iptables: chain_zone_local_ipv4
+{% endif %}
