@@ -13,6 +13,7 @@ repository-{{ repo }}:
 {% for mirror in mirrors %}
         http://{{ mirror.name }}.{{ mirror.domain }}/{{ mirror.url }}
 {% endfor %}
+    - order: 1
 
 {% for mirror in mirrors %}
 {% if mirror.get('gpg', true) == false %}

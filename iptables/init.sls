@@ -4,7 +4,7 @@
 iptables:
   pkg.installed:
     # this is better than requiring this package in every iptables state
-    - order: 1
+    - order: 10
     - pkgs: {{ iptables_map.packages }}
 
 {% for service, serviceconf in iptables_map.services.items() %}
