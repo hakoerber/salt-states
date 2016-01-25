@@ -1,47 +1,52 @@
 {% set rsyslog = salt['grains.filter_by']({
-    'RedHat': {
-        'client': {
-            'logs': [
-                {
-                    'selector': ':msg, contains, "[iptables-reject]"',
-                    'file': '/var/log/iptables-reject.log',
-                    'stop': True
-                },
-                {
-                    'selector': '*.info;mail.none;authpriv.none;cron.none,local1.none,local2.none',
-                    'file': '/var/log/messages'
-                },
-                {
-                    'selector': 'authpriv.*',
-                    'file': '/var/log/secure'
-                },
-                {
-                    'selector': 'mail.*',
-                    'file': '/var/log/maillog'
-                },
-                {
-                    'selector': 'cron.*',
-                    'file': '/var/log/cron'
-                },
-                {
-                    'selector': 'uucp,news.crit',
-                    'file': '/var/log/spooler'
-                },
-                {
-                    'selector': 'local7.*',
-                    'file': '/var/log/boot.log'
-                },
-                {
-                    'selector': 'local1.*',
-                    'file': '/var/log/dhcpd.log'
-                },
-                {
-                    'selector': 'local2.*',
-                    'file': '/var/log/sshd.log'
-                },
-            ],
+    'RedHat': salt['grains.filter_by']({
+        'default': {
+            'client': {
+                'logs': [
+                    {
+                        'selector': ':msg, contains, "[iptables-reject]"',
+                        'file': '/var/log/iptables-reject.log',
+                        'stop': True
+                    },
+                    {
+                        'selector': '*.info;mail.none;authpriv.none;cron.none,local1.none,local2.none',
+                        'file': '/var/log/messages'
+                    },
+                    {
+                        'selector': 'authpriv.*',
+                        'file': '/var/log/secure'
+                    },
+                    {
+                        'selector': 'mail.*',
+                        'file': '/var/log/maillog'
+                    },
+                    {
+                        'selector': 'cron.*',
+                        'file': '/var/log/cron'
+                    },
+                    {
+                        'selector': 'uucp,news.crit',
+                        'file': '/var/log/spooler'
+                    },
+                    {
+                        'selector': 'local7.*',
+                        'file': '/var/log/boot.log'
+                    },
+                    {
+                        'selector': 'local1.*',
+                        'file': '/var/log/dhcpd.log'
+                    },
+                    {
+                        'selector': 'local2.*',
+                        'file': '/var/log/sshd.log'
+                    },
+                ],
+            },
         },
-    },
+        '6': {
+            'package': 'rsyslog7',
+        },
+    }, grain='osmajorrelease', base='default'),
     'Debian': {
         'workdir': '/var/spool/rsyslog',
         'client': {
