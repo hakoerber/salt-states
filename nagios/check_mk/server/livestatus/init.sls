@@ -1,5 +1,4 @@
 {% from 'states/nagios/map.jinja' import nagios as nagios_map with context %}
-{% from 'states/defaults.map.jinja' import defaults with context %}
 
 check_mk-server-livestatus:
   pkg.installed:

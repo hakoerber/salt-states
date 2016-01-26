@@ -6,14 +6,11 @@ service livestatus
         socket_type     = stream
         protocol        = tcp
         wait            = no
-        cps             = 100 3
-        instances       = 500
-        per_source      = 250
+        bind            = 127.0.0.1
         flags           = NODELAY
-        user            = nagios
-        server          = {{ nagios_map.check_mk.server.livestatus.unixcat }} 
+        user            = {{ nagios_map.user }}
+        group           = {{ nagios_map.group }}
+        server          = {{ nagios_map.check_mk.server.livestatus.unixcat }}
         server_args     = {{ nagios_map.socket_dir }}/{{ nagios_map.check_mk.server.livestatus.socket_name }}
-        only_from       = 127.0.0.1
         disable         = no
 }
-
