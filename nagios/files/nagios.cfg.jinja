@@ -1,135 +1,78 @@
 {% from 'states/nagios/map.jinja' import nagios as nagios_map with context %}
 
-log_file=/var/log/nagios/nagios.log
+# paths
+log_file={{ nagios_map.logfile }}
+cfg_dir={{ nagios_map.cfg_dir }}
+object_cache_file={{ nagios_map.object_cache_file }}
+precached_object_file={{ nagios_map.precached_object_file }}
+resource_file={{ nagios_map.resource_file }}
+status_file=/dev/null
+command_file={{ nagios_map.command_file }}
+query_socket={{ nagios_map.query_socket }}
+lock_file={{ nagios_map.lock_file }}
+temp_file={{ nagios_map.temp_file }}
+temp_path={{ nagios_map.temp_path }}
+log_archive_path={{ nagios_map.log_archive_path }}
+state_retention_file={{ nagios_map.state_retention_file }}
+check_result_path={{ nagios_map.check_result_path }}
 
-#cfg_file=/etc/nagios/objects/commands.cfg
-#cfg_file=/etc/nagios/objects/contacts.cfg
-#cfg_file=/etc/nagios/objects/timeperiods.cfg
-#cfg_file=/etc/nagios/objects/templates.cfg
-cfg_dir=/etc/nagios/conf.d
+# users
+nagios_user={{ nagios_map.user }}
+nagios_group={{ nagios_map.group }}
 
-object_cache_file=/var/log/nagios/objects.cache
-
-precached_object_file=/var/log/nagios/objects.precache
-
-resource_file=/etc/nagios/private/resource.cfg
-
-status_file=/var/log/nagios/status.dat
-status_update_interval=10
-
-nagios_user=nagios
-nagios_group=nagios
-
-check_external_commands=1
-command_file=/var/spool/nagios/cmd/nagios.cmd
-
-query_socket=/var/run/nagios/nagios.qh
-
-lock_file=/var/run/nagios/nagios.pid
-
-temp_file=/var/log/nagios/nagios.tmp
-
-temp_path=/tmp
-
-event_broker_options=-1
-
-log_rotation_method=d
-log_archive_path=/var/log/nagios/archives
+# logging
 use_syslog=1
 log_notifications=1
 log_service_retries=1
 log_host_retries=1
-log_event_handlers=1
+log_event_handlers=0
 log_initial_states=0
-log_current_states=1
-log_external_commands=1
-log_passive_checks=1
+log_current_states=0
+log_external_commands=0
+log_passive_checks=0
+log_rotation_method=d
 
-service_inter_check_delay_method=s
-max_service_check_spread=30
-service_interleave_factor=s
-host_inter_check_delay_method=s
-max_host_check_spread=30
-max_concurrent_checks=0
-check_result_reaper_frequency=10
-max_check_result_reaper_time=30
-check_result_path=/var/log/nagios/spool/checkresults
-max_check_result_file_age=3600
-cached_host_check_horizon=15
-cached_service_check_horizon=15
-enable_predictive_host_dependency_checks=1
-enable_predictive_service_dependency_checks=1
-soft_state_dependencies=0
-auto_reschedule_checks=0
-auto_rescheduling_interval=30
-auto_rescheduling_window=180
-service_check_timeout=60
-host_check_timeout=30
-event_handler_timeout=30
-notification_timeout=30
-ocsp_timeout=5
-perfdata_timeout=5
+# timings
+max_service_check_spread=1
+max_host_check_spread=1
+interval_length=60
+
+# state retention
 retain_state_information=1
-state_retention_file=/var/log/nagios/retention.dat
-retention_update_interval=60
+retention_update_interval=0
 use_retained_program_state=1
 use_retained_scheduling_info=1
-retained_host_attribute_mask=0
-retained_service_attribute_mask=0
-retained_process_host_attribute_mask=0
-retained_process_service_attribute_mask=0
-retained_contact_host_attribute_mask=0
-retained_contact_service_attribute_mask=0
-interval_length=60
-check_for_updates=1
-bare_update_check=0
-use_aggressive_host_checking=0
-execute_service_checks=1
-accept_passive_service_checks=1
-execute_host_checks=1
-accept_passive_host_checks=1
-enable_notifications=1
-enable_event_handlers=1
-process_performance_data=1
-obsess_over_services=0
-obsess_over_hosts=0
-translate_passive_host_checks=0
-passive_host_checks_are_soft=0
-check_for_orphaned_services=1
-check_for_orphaned_hosts=1
-check_service_freshness=1
-service_freshness_check_interval=60
-service_check_timeout_state=c
-check_host_freshness=0
-host_freshness_check_interval=60
-additional_freshness_latency=15
+
+# flap detection
 enable_flap_detection=1
 low_service_flap_threshold=5.0
-high_service_flap_threshold=20.0
+high_service_flap_threshold=15.0
 low_host_flap_threshold=5.0
-high_host_flap_threshold=20.0
-date_format=us
-illegal_object_name_chars=`~!$%^&*|'"<>?,()=
-illegal_macro_output_chars=`~$&|'"<>
-use_regexp_matching=0
-use_true_regexp_matching=0
-admin_email=nagios@localhost
-admin_pager=pagenagios@localhost
-daemon_dumps_core=0
-use_large_installation_tweaks=0
+high_host_flap_threshold=15.0
+
+# perfdata
+process_performance_data=1
+
+# freshness
+check_service_freshness=0
+check_host_freshness=0
+
+# misc
+check_for_updates=0
+use_large_installation_tweaks=1
 enable_environment_macros=0
-debug_level=0
-debug_verbosity=1
-debug_file=/var/log/nagios/nagios.debug
-max_debug_file_size=1000000
-allow_empty_hostgroup_assignment=0
+date_format=strict-iso8601
+check_external_commands=0
+illegal_macro_output_chars=`~$^&"|'<>
 
 {% if accumulator is defined %}
 {% for state, contents in accumulator.items() %}
+# {{ state }}
 {% for content in contents %}
 {% for key, value in content.items() %}
 {{ key }}={{ value }}
 {% endfor %}
 {% endfor %}
+
 {% endfor %}
 {% endif %}
