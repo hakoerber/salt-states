@@ -1,0 +1,19 @@
+{% from 'states/nagios/map.jinja' import nagios as nagios_map with context %}
+service livestatus
+{
+        type            = UNLISTED
+        port            = {{ nagios_map.check_mk.server.livestatus.port }}
+        socket_type     = stream
+        protocol        = tcp
+        wait            = no
+        cps             = 100 3
+        instances       = 500
+        per_source      = 250
+        flags           = NODELAY
+        user            = nagios
+        server          = {{ nagios_map.check_mk.server.livestatus.unixcat }} 
+        server_args     = {{ nagios_map.socket_dir }}/{{ nagios_map.check_mk.server.livestatus.socket_name }}
+        only_from       = 127.0.0.1
+        disable         = no
+}
+

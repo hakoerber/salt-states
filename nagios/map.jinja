@@ -55,6 +55,10 @@
         'service': 'nagios',
         'socket_dir': '/var/run/nagios',
         'check_result_path': '/var/log/nagios/spool/checkresults',
+        'xinetd': {
+            'package': 'xinetd',
+            'service': 'xinetd',
+        },
         'thruk': {
             'package': 'thruk',
             'service': 'thruk',
@@ -94,6 +98,9 @@
                     'package': 'check-mk-livestatus',
                     'module_path': '/usr/lib64/check_mk/livestatus.o',
                     'socket_name': 'live',
+                    'socket': '/var/run/nagios/live',
+                    'port': '6557',
+                    'unixcat': '/usr/bin/unixcat',
                 },
             },
         },
