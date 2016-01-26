@@ -1,0 +1,81 @@
+define_contactgroups = {
+    'all': u'Everybody',
+{% for group in params.contactgroups %}
+    '{{ group.name }}': u'{{ group.get('descriptions', group.name) }}',
+{% endfor %}
+}
+
+enable_rulebased_notifications = True
+contacts = {
+{% for contact in params.contacts %}
+'{{ contact.name }}': {
+    'alias': u'{{ contact.name }}',
+    'contactgroups': [
+        'all',
+{% for group in contact.get('groups', []) %}
+        '{{ group }}',
+{% endfor %}
+    ],
+    'disable_notifications': False,
+    'email': '{{ contact.email }}'},
+{% endfor %}
+}
+
+_asciimail = ('asciimail', {
+    'common_body': u'''
+Host:     $HOSTNAME$ ($HOSTADDRESS$),
+''',
+    'host_body': u'''
+Event:    $EVENT_TXT$
+Output:   $HOSTOUTPUT$
+Perfdata: $HOSTPERFDATA$
+$LONGHOSTOUTPUT$
+''',
+    'host_subject': u'''
+$HOSTNAME$ - $EVENT_TXT$
+''',
+    'service_body': u'''
+Service:  $SERVICEDESC$
+Event:    $EVENT_TXT$
+Output:   $SERVICEOUTPUT$
+Perfdata: $SERVICEPERFDATA$
+$LONGSERVICEOUTPUT$
+''',
+    'service_subject': '''
+$HOSTNAME$/$SERVICEDESC$ $EVENT_TXT$
+'''
+})
+
+{% set typemap = {
+    'mail': '_asciimail'
+} %}
+
+{% for notification in params.notifications %}
+notification_rules += [{
+    'allow_disable': True,
+    'contact_all': False, # contact all users
+    'contact_all_with_email': False, # contact all users with "email" defined
+    'contact_object': True, # contact users defined as contacts for the object
+    'description': '',
+    'disabled': False,
+    'contact_users': [
+{% for user in notification.get('users', []) %}
+        {{ user }},
+{% endfor %}
+{% for group in notification.get('groups', []) %}
+{% for user in params.contacts %}
+{% if group in user.get('groups', []) + ['all'] %}
+        '{{ user.name }}', # from contact group {{ group }}
+{% endif %}
+{% endfor %}
+{% endfor %}
+    ],
+    'contact_groups': [],
+    'notify_plugin': {{ typemap[notification.type] }}
+}]
+{% endfor %}
+
+
+host_contactgroups = [
+  ( 'all', [], ALL_HOSTS, {'comment': u'Put all hosts into the contact group "all"'} ),
+] + host_contactgroups
