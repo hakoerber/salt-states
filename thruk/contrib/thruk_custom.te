@@ -1,0 +1,10 @@
+module thruk_custom 1.0;
+
+require {
+	type var_t;
+	type logrotate_t;
+	class dir read;
+}
+
+#============= logrotate_t ==============
+allow logrotate_t var_t:dir read;

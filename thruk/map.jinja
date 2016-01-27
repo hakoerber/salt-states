@@ -6,5 +6,11 @@
         'ports': {
             'tcp': [80],
         },
+        'selinux_booleans': {
+            'httpd_run_stickshift': '1',
+            'httpd_mod_auth_pam': '1',
+            'httpd_execmem': '1',
+            'httpd_can_network_connect': '1',
+        },
     }
 }, base='default') %}
