@@ -1,0 +1,9 @@
+{% set grafana = salt['grains.filter_by']({
+    'default': {
+        'package': 'grafana',
+        'service': 'grafana-server',
+        'ports': {
+            'tcp': [3000],
+        },
+    }
+}, base='default') %}
