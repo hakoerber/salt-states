@@ -45,9 +45,6 @@ ignored_services = [
     ( ALL_HOSTS, [ "^fs_/run/user.*$" ] )
 ]
 
-#inventory_check_interval = 120
-#inventory_check_severity = 1
-
 snmp_default_community = '{{ params.get('snmp', {}).get('community', 'public') }}'
 
 ignored_checktypes = [ "lnx_thermal" ]
