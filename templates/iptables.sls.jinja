@@ -16,7 +16,11 @@
     - chain: {{ 'ZONE_PUBLIC' if public|default(False) else 'ZONE_LOCAL' }}
     - proto: {{ proto }}
     - jump: ACCEPT
+{% if ports is string %}
+    - dport: {{ ports }}
+{% else %}
     - dports: {{ ports }}
+{% endif %}
     - family: {{ family }}
 {% if source is defined %}
     - source: {{ source }}
