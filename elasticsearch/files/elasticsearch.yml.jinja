@@ -1,0 +1,34 @@
+{% from "states/elasticsearch/map.jinja" import elasticsearch as elasticsearch_map with context %}
+cluster.name: {{ params.get('cluster', {}).get('name', 'elasticsearch') }}
+
+node.name: {{ params.get('nodename', '${HOSTNAME}') }}
+node.master: {{ params.get('master', true)|string|lower }}
+node.data: {{ params.get('data', true)|string|lower }}
+
+path.data: {{ elasticsearch_map.paths.data }}
+path.logs: {{ elasticsearch_map.paths.logs }}
+
+network.host: 0.0.0.0
+http.port: {{ elasticsearch_map.ports.query.tcp }}
+http.publish_port: {{ elasticsearch_map.ports.query.tcp }}
+http.compression: true
+
+transport.host: 0.0.0.0
+transport.tcp.port: {{ elasticsearch_map.ports.transport.tcp }}
+transport.tcp.publish_port: {{ elasticsearch_map.ports.transport.tcp }}
+transport.tcp.connect_timeout: 5s
+transport.tcp.compress: true
+
+node.max_local_storage_nodes: 1
+
+{% if params.get('cluster') is not none %}
+discovery.zen.ping.multicast.enabled: false
+discovery.zen.ping.unicast.hosts: ["{{ params['cluster']['nodes']|join('", "') }}"]
+discovery.zen.minimum_master_nodes: {{ params['cluster'].get('min_masters', (params['cluster']['nodes']|length / 2 +1)|int) }}
+
+discovery.zen.no_master_block: write
+
+discovery.zen.fd.ping_inverval: 1s
+discovery.zen.fd.ping_timeout: 1s
+discovery.zen.fd.ping_retries: 3
+{% endif %}

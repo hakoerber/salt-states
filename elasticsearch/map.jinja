@@ -1,0 +1,22 @@
+{% set elasticsearch = salt['grains.filter_by']({
+    'default': {
+        'packages': [
+            'elasticsearch',
+            'java-1.8.0-openjdk',
+        ],
+        'service': 'elasticsearch',
+        'conf': '/etc/elasticsearch/elasticsearch.yml',
+        'ports': {
+            'query': {
+                'tcp': '9200',
+            },
+            'transport': {
+                'tcp': '9300',
+            },
+        },
+        'paths': {
+            'data': '/var/lib/elasticsearch',
+            'logs': '/var/log/elasticsearch',
+        },
+    },
+}, base='default') %}
