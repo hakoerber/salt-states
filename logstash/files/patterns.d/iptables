@@ -1,0 +1,5 @@
+NETFILTERMAC %{COMMONMAC:content[dst_mac]}:%{COMMONMAC:content[src_mac]}:%{ETHTYPE:content[ethtype]}
+ETHTYPE (?:(?:[A-Fa-f0-9]{2}):(?:[A-Fa-f0-9]{2}))
+IPTABLES1 (?:IN=%{WORD:content[in_device]} OUT=(%{WORD:content[out_device]})? MAC=%{NETFILTERMAC} SRC=%{IP:content[src_ip]} DST=%{IP:content[dst_ip]}.*(TTL=%{INT:content[ttl]})?.*PROTO=%{WORD:content[proto]}?.*SPT=%{INT:content[src_port]}?.*DPT=%{INT:content[dst_port]}?.*)
+IPTABLES2 (?:IN=%{WORD:content[in_device]} OUT=(%{WORD:content[out_device]})? MAC=%{NETFILTERMAC} SRC=%{IP:content[src_ip]} DST=%{IP:content[dst_ip]}.*(TTL=%{INT:content[ttl]})?.*PROTO=%{INT:content[proto]}?.*)
+IPTABLES .*(?:%{IPTABLES1}|%{IPTABLES2})

@@ -1,0 +1,15 @@
+{% set applications = [
+  {
+    "name": "iptables-reject",
+    "pattern": "IPTABLES",
+    "inputtype": "iptables-block",
+  },
+  {
+    "name": "nginx-access",
+  },
+  {
+    "name": "salt",
+    "inputtype": "salt-master",
+    "pattern": "SALTLOGBASE",
+  },
+] %}

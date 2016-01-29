@@ -1,0 +1,3 @@
+SALTLOG_LEVEL (?:DEBUG|FATAL|ERROR|WARNING|INFO)
+SALTCMD salt\.\w+
+SALTLOGBASE %{TIMESTAMP_ISO8601:content[timestamp]} \[%{SALTCMD:content[saltcmd]}(?:[ \t]+)\]\[%{SALTLOG_LEVEL:content[loglevel]}(?:[ \t]+)\] %{GREEDYDATA:content[logmsg]}

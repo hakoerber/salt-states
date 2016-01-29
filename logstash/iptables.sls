@@ -7,7 +7,7 @@
 
 {% for listener in params.listeners %}
 {% for family in ['ipv4'] %}
-logstash-iptables-{{ listener.port }}-{{ listener.protocol }}-{{ family }}:
+logstash-iptables-{{ listener.port }}-{{ listener.protocol }}-{{ listener.type }}-{{ family }}:
   iptables.append:
     - table: filter
     - chain: ZONE_LOCAL
@@ -17,7 +17,7 @@ logstash-iptables-{{ listener.port }}-{{ listener.protocol }}-{{ family }}:
     - family: {{ family }}
     - save: true
     - match: comment
-    - comment: logstash {{ listener.format }}
+    - comment: logstash {{ listener.type }}
     - require:
       - iptables: chain_zone_local_ipv4
 {% endfor %}
