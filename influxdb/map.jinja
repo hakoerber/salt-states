@@ -2,8 +2,20 @@
     'default': {
         'package': 'influxdb',
         'service': 'influxdb',
+        'conf': '/etc/influxdb/influxdb.conf',
+        'envfile': '/etc/default/influxdb',
         'ports': {
-            'tcp': [8086],
+            'meta': {
+                'tcp': 8088,
+            },
+            'query': {
+                'tcp': 8086,
+            },
         },
+        'basedir': '/var/lib/influxdb',
+        'metadir': '/var/lib/influxdb/meta',
+        'datadir': '/var/lib/influxdb/data',
+        'waldir': '/var/lib/influxdb/wal',
+        'hhdir': '/var/lib/influxdb/hh',
     },
 }, base='default') %}

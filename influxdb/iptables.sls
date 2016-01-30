@@ -4,6 +4,6 @@
 {% set application = 'influxdb' %}
 {% set ipv6 = False %}
 {% set public = False %}
-{% set ports = influxdb_map.ports %}
+{% set components = influxdb_map.ports %}
 
 {% include 'states/templates/iptables.sls.jinja' with context %}
