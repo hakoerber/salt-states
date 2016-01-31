@@ -6,7 +6,11 @@ service livestatus
         socket_type     = stream
         protocol        = tcp
         wait            = no
+{% if allow_from %}
+        only_from       = {{ allow_from|map(attribute='ip')|join(' ') }}
+{% else %}
         bind            = 127.0.0.1
+{% endif %}
         flags           = NODELAY
         user            = {{ nagios_map.user }}
         group           = {{ nagios_map.group }}
