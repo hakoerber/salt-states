@@ -16,7 +16,6 @@ hostname = "{{ params.get('hostname', grains['fqdn']) }}"
   raft-promotion-enabled = true
 
 [data]
-{% if params.get('data', true)|string|lower %}
   enabled = true
   dir = "{{ influxdb_map.datadir }}"
   max-wal-size = 104857600
@@ -25,9 +24,6 @@ hostname = "{{ params.get('hostname', grains['fqdn']) }}"
   wal-dir = "{{ influxdb_map.waldir }}"
   wal-logging-enabled = true
   query-log-enabled = false
-{% else %}
-  enabled = false
-{% endif %}
 
 [hinted-handoff]
   enabled = true
