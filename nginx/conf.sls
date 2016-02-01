@@ -71,7 +71,8 @@ nginx-{{ name }}.conf-absent:
 
 {% set name = '15_ssl' %}
 {% set include =  'https' in params.get('reverse_proxy', {}).get('protocol', []) %}
-{{ include_conf(name, include) }}
+{% set context = {'simple': params.get('ssl', {}).get('simple', False)} %}
+{{ include_conf(name, include, context) }}
 
 {% set name = '10_static_content' %}
 {% set include = params.get('static_content', None) is not none %}
