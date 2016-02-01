@@ -19,4 +19,9 @@ server {
         autoindex on;
 {% endif %}
     }
+{% if acme_backend %}
+    location /.well-known/acme-challenge/ {
+        proxy_pass http://{{ acme_backend.ip }}/acme/$host$uri;
+    }
+{% endif %}
 }

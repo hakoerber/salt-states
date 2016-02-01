@@ -1,0 +1,9 @@
+server {
+    listen 80;
+    server_name _;
+    add_header Content-Type text/plain;
+    location /acme/ {
+        alias /var/lib/acme/webroot/;
+        try_files $uri =404;
+    }
+}
