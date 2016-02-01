@@ -8,26 +8,29 @@ proxy_set_header X-Scheme          $scheme;
 
 proxy_buffering on;
 
-{% for target in upstream %}
-server {
+{% macro listen(target) %}
 {% if target.protocols is defined %}
 {% set proto = target.protocols %}
 {% else %}
 {% set proto = protocol %}
 {% endif %}
 {% if 'http' in proto %}
-    listen {{ nginx_map.ports.http }};
+listen {{ nginx_map.ports.http }};
 {% if ipv6 %}
-    listen [::]:{{ nginx_map.ports.http }};
+listen [::]:{{ nginx_map.ports.http }};
 {% endif %}
 {% endif %}
 {% if 'https' in proto %}
-    listen {{ nginx_map.ports.https }} ssl;
+listen {{ nginx_map.ports.https }} ssl;
 {% if ipv6 %}
-    listen [::]:{{ nginx_map.ports.https }} ssl;
+listen [::]:{{ nginx_map.ports.https }} ssl;
 {% endif %}
 {% endif %}
+{% endmacro %}
 
+{% for target in upstream %}
+server {
+    {{ listen(target)|indent }}
     server_name {{ target.servername }};
 
     location / {
@@ -40,4 +43,13 @@ server {
 {% endif %}
 }
 
+{% if target.get('redirect_from', None) is not none %}
+server {
+    {{ listen(target)|indent }}
+{% for server in target['redirect_from'] %}
+    server_name {{ server }};
+{% endfor %}
+    return 301 $scheme://{{ target.servername }}$request_uri;
+}
+{% endif %}
 {% endfor %}
