@@ -92,7 +92,7 @@ nginx-{{ name }}.conf-absent:
 {{ include_conf(name, include, context) }}
 
 {% set name = '20_acme_backend' %}
-{% set include = params.get('acme_backend', false) != false %}
+{% set include = params.get('acme', False) != False %}
 {% set context = {} %}
 {{ include_conf(name, include, context) }}
 
