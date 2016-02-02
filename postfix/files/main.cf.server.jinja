@@ -36,6 +36,16 @@ alias_database = hash:{{ postfix_map.aliasesfile }}
 # handlers
 daemon_table_open_error_is_fatal = yes
 
+# tls
+smtpd_use_tls = yes
+smtpd_tls_auth_only = yes
+smtpd_tls_key_file          = {{ postfix_map.pkidir }}/{{ postfix_map.key }}
+smtpd_tls_cert_file         = {{ postfix_map.pkidir }}/{{ postfix_map.cert }}
+smtpd_tls_dh1024_param_file = {{ postfix_map.pkidir }}/{{ postfix_map.dhparams }}
+smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3
+smtpd_tls_protocols = !SSLv2, !SSLv3
+smtpd_tls_loglevel = 1
+
 # relaying
 mynetworks_style = host
 relay_domains =
