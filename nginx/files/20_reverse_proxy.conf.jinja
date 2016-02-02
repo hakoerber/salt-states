@@ -8,12 +8,7 @@ proxy_set_header X-Scheme          $scheme;
 
 proxy_buffering on;
 
-{% macro listen(target) %}
-{% if target.protocols is defined %}
-{% set proto = target.protocols %}
-{% else %}
-{% set proto = protocol %}
-{% endif %}
+{% macro listen(target, proto) %}
 {% if 'http' in proto %}
 listen {{ nginx_map.ports.http }};
 {% if ipv6 %}
@@ -28,10 +23,30 @@ listen [::]:{{ nginx_map.ports.https }} ssl;
 {% endif %}
 {% endmacro %}
 
+{% macro ssl(target, proto) %}
+{% if 'https' in proto %}
+{% if target.get('ssl_cert', false) %}
+ssl_certificate {{ nginx_map.conf.confdir }}/{{ nginx_map.pki.pkidir }}/{{ target.get('ssl_domain', target.servername) }}/{{ nginx_map.pki.cert }};
+ssl_certificate_key {{ nginx_map.conf.confdir }}/{{ nginx_map.pki.pkidir }}/{{ target.get('ssl_domain', target.servername) }}/{{ nginx_map.pki.key }};
+{% else %}
+ssl_certificate {{ nginx_map.conf.confdir }}/{{ nginx_map.pki.pkidir }}/{{ nginx_map.pki.cert }};
+ssl_certificate_key {{ nginx_map.conf.confdir }}/{{ nginx_map.pki.pkidir }}/{{ nginx_map.pki.key }};
+{% endif %}
+{% endif %}
+{% endmacro %}
+
 {% for target in upstream %}
+{% if target.protocols is defined %}
+{% set proto = target.protocols %}
+{% else %}
+{% set proto = protocol %}
+{% endif %}
+
 server {
-    {{ listen(target)|indent }}
+    {{ listen(target, proto)|indent }}
     server_name {{ target.servername }};
+
+    {{ ssl(target, proto)|indent }}
 
     location / {
         proxy_pass {{ target.url }};
@@ -45,7 +60,7 @@ server {
 
 {% if target.get('redirect_from', None) is not none %}
 server {
-    {{ listen(target)|indent }}
+    {{ listen(target, proto)|indent }}
 {% for server in target['redirect_from'] %}
     server_name {{ server }};
 {% endfor %}

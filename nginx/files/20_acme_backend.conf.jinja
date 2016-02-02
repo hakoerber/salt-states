@@ -1,9 +1,10 @@
+{% from 'states/acme/map.jinja' import acme as acme_map with context %}
 server {
     listen 80;
     server_name _;
     add_header Content-Type text/plain;
     location /acme/ {
-        alias /var/lib/acme/webroot/;
+        alias {{ acme_map.webroot }};
         try_files $uri =404;
     }
 }

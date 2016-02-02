@@ -15,6 +15,49 @@ nginx-pkidir:
     - require:
       - pkg: nginx
 
+{% set commoncert = false %}
+{% for domain in params.domains %}
+{% if domain.get('ssl_cert', false) %}
+nginx-pkidir-{{ domain.name }}:
+  file.directory:
+    - name: {{ nginx_map.conf.confdir }}/{{ nginx_map.pki.pkidir }}/{{ domain.name }}
+    - user: root
+    - group: {{ defaults.rootgroup }}
+    - mode: 700
+    - require:
+      - file: nginx-pkidir
+
+nginx-ssl-cert-{{ domain.name }}:
+  file.managed:
+    - name: {{ nginx_map.conf.confdir }}/{{ nginx_map.pki.pkidir }}/{{ domain.name }}/{{ nginx_map.pki.cert }}
+    - user: root
+    - group: {{ defaults.rootgroup }}
+    - mode: 600
+    - source: salt://files/ssl/{{ grains['id'] }}/{{ domain.name }}/fullchain.pem
+    - show_diff: false
+    - require:
+      - file: nginx-pkidir-{{ domain.name }}
+    - watch_in:
+      - service: nginx
+
+nginx-ssl-key-{{ domain.name }}:
+  file.managed:
+    - name: {{ nginx_map.conf.confdir }}/{{ nginx_map.pki.pkidir }}/{{ domain.name }}/{{ nginx_map.pki.key }}
+    - user: root
+    - group: {{ defaults.rootgroup }}
+    - mode: 600
+    - source: salt://files/ssl/{{ grains['id'] }}/{{ domain.name }}/privkey.pem
+    - show_diff: false
+    - require:
+      - file: nginx-pkidir-{{ domain.name }}
+    - watch_in:
+      - service: nginx
+{% else %}
+{% set commoncert = true %}
+{% endif %}
+{% endfor %}
+
+{% if commoncert %}
 nginx-ssl-cert:
   file.managed:
     - name: {{ nginx_map.conf.confdir }}/{{ nginx_map.pki.pkidir }}/{{ nginx_map.pki.cert }}
@@ -40,6 +83,7 @@ nginx-ssl-key:
       - file: nginx-pkidir
     - watch_in:
       - service: nginx
+{% endif %}
 
 {% set dhparams = nginx_map.conf.confdir + '/' + nginx_map.pki.pkidir + '/' + nginx_map.pki.dhparams %}
 nginx-ssl-dhparams:
