@@ -10,7 +10,7 @@ $TTL {{ params.zoneinfo.ttl }}
 @	IN	A	{{ params.zoneinfo.masterdns.ip }}
 
 ; nameservers
-{% for nameserver in params.nameservers %}
+{% for nameserver in params.zoneinfo.nameservers %}
 @	IN	NS	{{ nameserver.name }}.{{ params.domain }}.
 {% endfor %}
 
@@ -20,7 +20,7 @@ $TTL {{ params.zoneinfo.ttl }}
 {% endfor %}
 
 ; common records
-{% for record in params.records|sort() %}
+{% for record in params.zoneinfo.records|sort() %}
 {% for arecord in record.get('arecords') %}
 {{ arecord }}.{{ params.domain }}.	IN	A	{{ record.ip }}
 {% for subdomain in record.get('subdomains', []) %}
