@@ -1,5 +1,5 @@
 $TTL {{ params.zoneinfo.ttl }}
-@	{{ params.zoneinfo.class }}	SOA	{{ params.zoneinfo.masterdns.name }}. {{ params.zoneinfo.hostmaster }}.{{ params.domain }}. (
+@	{{ params.zoneinfo.class }}	SOA	{{ params.master.name }}. {{ params.zoneinfo.hostmaster }}.{{ params.domain }}. (
         {{ serial }}	;Serial
         {{ params.zoneinfo.refresh }}	;Refresh
         {{ params.zoneinfo.retry }}	;Retry
@@ -7,7 +7,7 @@ $TTL {{ params.zoneinfo.ttl }}
         {{ params.zoneinfo.ttl }}	;Minimum TTL
 )
 
-@	IN	A	{{ params.zoneinfo.masterdns.ip }}
+@	IN	A	{{ params.master.ip }}
 
 ; nameservers
 {% for nameserver in params.zoneinfo.nameservers %}
@@ -21,16 +21,16 @@ $TTL {{ params.zoneinfo.ttl }}
 
 ; common records
 {% for record in params.zoneinfo.records|sort() %}
-{% for arecord in record.get('arecords') %}
+{% for arecord in record['dns']['arecords'] %}
 {{ arecord }}.{{ params.domain }}.	IN	A	{{ record.ip }}
-{% for subdomain in record.get('subdomains', []) %}
+{% for subdomain in record['dns'].get('subdomains', []) %}
 {{ subdomain }}.{{ arecord }}.{{ params.domain }}.	IN	A	{{ record.ip }}
 {% endfor %}
 {% endfor %}
-{% for cname in record.get('cnames', []) %}
-{{ cname }}.{{ params.domain }}.	IN	CNAME	{{ record.get('arecords')[0] }}.{{ params.domain }}.
-{% for subdomain in record.get('subdomains', []) %}
-{{ subdomain }}.{{ cname }}.{{ params.domain }}.	IN	CNAME	{{ record.get('arecords')[0] }}.{{ params.domain }}.
+{% for cname in record['dns'].get('cnames', []) %}
+{{ cname }}.{{ params.domain }}.	IN	CNAME	{{ record['dns']['arecords'][0] }}.{{ params.domain }}.
+{% for subdomain in record['dns'].get('subdomains', []) %}
+{{ subdomain }}.{{ cname }}.{{ params.domain }}.	IN	CNAME	{{ record['dns']['arecords'][0] }}.{{ params.domain }}.
 {% endfor %}
 {% endfor %}
 
