@@ -7,10 +7,10 @@
 # --- end of state config ---
 
 {% set files = [] %}
-{% for vpn in params.vpns.keys() %}
+{% for vpn in params.vpns %}
 {% do files.append({
-  'path': '/var/log/openvpn-' + vpn + '.log',
-  'tag': vpn
+  'path': '/var/log/openvpn-' + vpn['name'] + '.log',
+  'tag': vpn['name']
 }) %}
 {% endfor %}
 

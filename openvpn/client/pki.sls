@@ -15,73 +15,73 @@ openvpn-pkidir:
     - require:
       - pkg: openvpn
 
-{% for vpnname, vpn in params.vpns.items() %}
+{% for vpn in params.vpns %}
 
-openvpn-keydir-{{ vpnname }}:
+openvpn-keydir-{{ vpn.name }}:
   file.directory:
-    - name: {{ openvpn_map.confdir }}/{{ openvpn_map.pkidir }}/{{ vpnname }}
+    - name: {{ openvpn_map.confdir }}/{{ openvpn_map.pkidir }}/{{ vpn.name }}
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 700
     - watch_in:
-      - service: openvpn-client-{{ vpnname }}-service
+      - service: openvpn-client-{{ vpn.name }}-service
     - require_in:
-      - file: openvpn-client-{{ vpnname }}.conf
+      - file: openvpn-client-{{ vpn.name }}.conf
     - require:
       - pkg: openvpn
       - file: openvpn-pkidir
 
-openvpn-ca-cert-{{ vpnname }}:
+openvpn-ca-cert-{{ vpn.name }}:
   file.managed:
-    - name: {{ openvpn_map.confdir }}/{{ openvpn_map.pkidir }}/{{ vpnname }}/ca.crt
+    - name: {{ openvpn_map.confdir }}/{{ openvpn_map.pkidir }}/{{ vpn.name }}/ca.crt
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 600
-    - source: salt://files/openvpn/{{ vpnname }}/shared/ca.crt
+    - source: salt://files/openvpn/{{ vpn.name }}/shared/ca.crt
     - show_diff: false
     - require:
-      - file: openvpn-keydir-{{ vpnname }}
+      - file: openvpn-keydir-{{ vpn.name }}
     - watch_in:
-      - service: openvpn-client-{{ vpnname }}-service
+      - service: openvpn-client-{{ vpn.name }}-service
 
-openvpn-tls-auth-key-{{ vpnname }}:
+openvpn-tls-auth-key-{{ vpn.name }}:
   file.managed:
-    - name: {{ openvpn_map.confdir }}/{{ openvpn_map.pkidir }}/{{ vpnname }}/ta.key
+    - name: {{ openvpn_map.confdir }}/{{ openvpn_map.pkidir }}/{{ vpn.name }}/ta.key
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 600
-    - source: salt://files/openvpn/{{ vpnname }}/shared/ta.key
+    - source: salt://files/openvpn/{{ vpn.name }}/shared/ta.key
     - show_diff: false
     - require:
-      - file: openvpn-keydir-{{ vpnname }}
+      - file: openvpn-keydir-{{ vpn.name }}
     - watch_in:
-      - service: openvpn-client-{{ vpnname }}-service
+      - service: openvpn-client-{{ vpn.name }}-service
 
 {% set common_name = grains['id'] %}
 
-openvpn-client-cert-{{ vpnname }}:
+openvpn-client-cert-{{ vpn.name }}:
   file.managed:
-    - name: {{ openvpn_map.confdir }}/{{ openvpn_map.pkidir }}/{{ vpnname }}/client.crt
+    - name: {{ openvpn_map.confdir }}/{{ openvpn_map.pkidir }}/{{ vpn.name }}/client.crt
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 600
-    - source: salt://files/openvpn/{{ vpnname }}/clients/{{ common_name }}/client.crt
+    - source: salt://files/openvpn/{{ vpn.name }}/clients/{{ common_name }}/client.crt
     - show_diff: false
     - require:
-      - file: openvpn-keydir-{{ vpnname }}
+      - file: openvpn-keydir-{{ vpn.name }}
     - watch_in:
-      - service: openvpn-client-{{ vpnname }}-service
+      - service: openvpn-client-{{ vpn.name }}-service
 
-openvpn-client-key-{{ vpnname }}:
+openvpn-client-key-{{ vpn.name }}:
   file.managed:
-    - name: {{ openvpn_map.confdir }}/{{ openvpn_map.pkidir }}/{{ vpnname }}/client.key
+    - name: {{ openvpn_map.confdir }}/{{ openvpn_map.pkidir }}/{{ vpn.name }}/client.key
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 600
-    - source: salt://files/openvpn/{{ vpnname }}/clients/{{ common_name }}/client.key
+    - source: salt://files/openvpn/{{ vpn.name }}/clients/{{ common_name }}/client.key
     - show_diff: false
     - require:
-      - file: openvpn-keydir-{{ vpnname }}
+      - file: openvpn-keydir-{{ vpn.name }}
     - watch_in:
-      - service: openvpn-client-{{ vpnname }}-service
+      - service: openvpn-client-{{ vpn.name }}-service
 {% endfor %}

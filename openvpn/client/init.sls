@@ -6,11 +6,11 @@
     stateconf.set: []
 # --- end of state config ---
 
-{% for vpnname, vpn in params.vpns.items() %}
-openvpn-client-{{ vpnname }}-service:
+{% for vpn in params.vpns %}
+openvpn-client-{{ vpn.name }}-service:
   service.running:
 {% if '%s' in openvpn_map.client.service %}
-    - name: {{ openvpn_map.client.service|format('client-' + vpnname) }}
+    - name: {{ openvpn_map.client.service|format('client-' + vpn.name) }}
 {% else %}
     - name: {{ openvpn_map.client.service }}
 {% endif %}

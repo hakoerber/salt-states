@@ -7,11 +7,11 @@ dev {{ vpn.devname }}
 dev-type {{ vpn.dev }}
 
 # files
-ca {{ openvpn_map.pkidir }}/{{ vpnname }}/ca.crt
-cert {{ openvpn_map.pkidir }}/{{ vpnname }}/server.crt
-key {{ openvpn_map.pkidir }}/{{ vpnname }}/server.key
-tls-auth {{ openvpn_map.pkidir }}/{{ vpnname }}/ta.key 0
-dh {{ openvpn_map.pkidir }}/{{ vpnname }}/dh2048.pem
+ca {{ openvpn_map.pkidir }}/{{ vpn.name }}/ca.crt
+cert {{ openvpn_map.pkidir }}/{{ vpn.name }}/server.crt
+key {{ openvpn_map.pkidir }}/{{ vpn.name }}/server.key
+tls-auth {{ openvpn_map.pkidir }}/{{ vpn.name }}/ta.key 0
+dh {{ openvpn_map.pkidir }}/{{ vpn.name }}/dh2048.pem
 
 # mode and addressing
 mode server
@@ -22,16 +22,16 @@ ifconfig {{ vpn.gateway }} {{ vpn.netmask }}
 push "route-gateway {{ vpn.gateway }}"
 {% if vpn.dhcp_pool is defined %}
 ifconfig-pool {{ vpn.dhcp_pool.start }} {{ vpn.dhcp_pool.end }} {{ vpn.netmask }}
-ifconfig-pool-persist /var/run/openvpn/ipp-{{ vpnname }}.txt
+ifconfig-pool-persist /var/run/openvpn/ipp-{{ vpn.name }}.txt
 {% endif %}
-client-config-dir /etc/openvpn/{{ vpnname }}.ccd
+client-config-dir /etc/openvpn/{{ vpn.name }}.ccd
 client-to-client
 
 # advertised client subnets
-{% for clientname, clientinfo in vpn.get('clients', {}).items() %}
-{% set conf = clientinfo.options %}
+{% for client in vpn.get('clients', []) %}
+{% set conf = client.options %}
 {% if conf.advertise_subnet is defined %}
-# client {{ clientname }}
+# client {{ client.name }}
 route {{ conf.advertise_subnet.ip }} {{ conf.advertise_subnet.mask }} {{ conf.ip }}
 push "route {{ conf.advertise_subnet.ip }} {{ conf.advertise_subnet.mask }}"
 {% endif %}
@@ -47,8 +47,8 @@ auth {{ vpn.digest|default(openvpn_map.default_digest) }}
 tls-cipher {{ openvpn_map.tls_ciphers|sort|join(':') }}
 
 # logging
-log /var/log/openvpn-{{ vpnname }}.log
-status /var/run/openvpn/status-{{ vpnname }} 10
+log /var/log/openvpn-{{ vpn.name }}.log
+status /var/run/openvpn/status-{{ vpn.name }} 10
 verb 4
 mute 20
 mute-replay-warnings

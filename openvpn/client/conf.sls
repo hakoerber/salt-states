@@ -29,23 +29,22 @@ See contrib/route-filter for the script.
 #}
 
 {% set create_scriptdir = [] %}
-{% for vpnname, vpn in params.vpns.items() %}
-{% set advertise_subnet = vpn.get('clients', {}).get(grains['id'], {}).get('options', {}).get('advertise_subnet', {}) %}
+{% for vpn in params.vpns %}
+{% set advertise_subnet = vpn.client.options.get('advertise_subnet', {}) %}
 
-openvpn-client-{{ vpnname }}.conf:
+openvpn-client-{{ vpn.name }}.conf:
   file.managed:
-    - name: {{ openvpn_map.confdir }}/client-{{ vpnname }}.conf
+    - name: {{ openvpn_map.confdir }}/client-{{ vpn.name }}.conf
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 644
     - source: salt://states/openvpn/files/client.conf.jinja
     - template: jinja
     - defaults:
-        vpnname: {{ vpnname }}
         vpn: {{ vpn }}
         advertise_subnet: {{ advertise_subnet }}
     - watch_in:
-      - service: openvpn-client-{{ vpnname }}-service
+      - service: openvpn-client-{{ vpn.name }}-service
     - require:
       - pkg: openvpn
 {% if advertise_subnet != {} %}

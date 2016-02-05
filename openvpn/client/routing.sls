@@ -7,8 +7,8 @@
 # --- end of state config ---
 
 {% set forward = [] %}
-{% for vpnname, vpn in params.vpns.items() %}
-{% set client_options = vpn.clients.get(grains['id'], {}).get('options', {}) %}
+{% for vpn in params.vpns %}
+{% set client_options = vpn.client.get('options', {}) %}
 {% if client_options.get('allow_forward') is not none %}
 {% do forward.append(1)%}
 {% endif %}

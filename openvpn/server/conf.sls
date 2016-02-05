@@ -6,47 +6,47 @@
     stateconf.set: []
 # --- end of state config ---
 
-{% for vpnname, vpn in params.vpns.items() %}
-openvpn-server-{{ vpnname }}.conf:
+{% for vpn in params.vpns %}
+openvpn-server-{{ vpn.name }}.conf:
   file.managed:
-    - name: {{ openvpn_map.confdir }}/server-{{ vpnname }}.conf
+    - name: {{ openvpn_map.confdir }}/server-{{ vpn.name }}.conf
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 644
     - source: salt://states/openvpn/files/server.conf.jinja
     - template: jinja
     - defaults:
-        vpnname: {{ vpnname }}
+        vpn.name: {{ vpn.name }}
         vpn: {{ vpn }}
     - watch_in:
-      - service: openvpn-server-{{ vpnname }}-service
+      - service: openvpn-server-{{ vpn.name }}-service
     - require:
       - pkg: openvpn
-      - file: openvpn-server-{{ vpnname }}-ccd
+      - file: openvpn-server-{{ vpn.name }}-ccd
 
-openvpn-server-{{ vpnname }}-ccd:
+openvpn-server-{{ vpn.name }}-ccd:
   file.directory:
-    - name: {{ openvpn_map.confdir }}/{{ vpnname }}.ccd
+    - name: {{ openvpn_map.confdir }}/{{ vpn.name }}.ccd
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 755
 
-{% for clientname, clientinfo in vpn.get('clients', {}).items() %}
-{% set conf = clientinfo.options %}
-{% if conf.get('ip', 'dhcp') != 'dhcp' or conf.advertise_subnet is defined %}
-openvpn-server-{{ vpnname }}-ccd-{{ clientname }}:
+{% for client in vpn.get('clients', {}) %}
+{% set client_options = client.get('options', {}) %}
+{% if client.options.get('ip', 'dhcp') != 'dhcp' or client.options.advertise_subnet is defined %}
+openvpn-server-{{ vpn.name }}-ccd-{{ client.name }}:
   file.managed:
-    - name: {{ openvpn_map.confdir }}/{{ vpnname }}.ccd/{{ clientname }}
+    - name: {{ openvpn_map.confdir }}/{{ vpn.name }}.ccd/{{ client.name }}
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 644
     - source: salt://states/openvpn/files/server.ccd.jinja
     - template: jinja
     - context:
-        client_conf: {{ conf }}
+        client_conf: {{ client_options }}
         vpn: {{ vpn }}
     - require:
-      - file: openvpn-server-{{ vpnname }}-ccd
+      - file: openvpn-server-{{ vpn.name }}-ccd
 {% endif %}
 {% endfor %}
 

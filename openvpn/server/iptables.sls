@@ -5,10 +5,10 @@
     stateconf.set: []
 # --- end of state config ---
 
-{% for vpnname, vpn in params.vpns.items() %}
-{% set chain = 'VPN_' + vpnname|upper %}
+{% for vpn in params.vpns %}
+{% set chain = 'VPN_' + vpn.name|upper %}
 
-openvpn-access-vpn-{{ vpnname }}:
+openvpn-access-vpn-{{ vpn.name }}:
   iptables.append:
     - table: filter
     - chain: ZONE_PUBLIC
@@ -18,15 +18,15 @@ openvpn-access-vpn-{{ vpnname }}:
     - family: ipv4
     - save: True
     - match: comment
-    - comment: OpenVPN {{ vpnname }}
+    - comment: OpenVPN {{ vpn.name }}
     - require:
       - iptables: chain_zone_public_ipv4
 
-openvpn-chain-vpn-{{ vpnname }}:
+openvpn-chain-vpn-{{ vpn.name }}:
   iptables.chain_present:
     - name: {{ chain }}
 
-openvpn-jump_forward_inbound_vpn_{{ vpnname }}:
+openvpn-jump_forward_inbound_vpn_{{ vpn.name }}:
   iptables.append:
     - table: filter
     - chain: FORWARD
@@ -34,9 +34,9 @@ openvpn-jump_forward_inbound_vpn_{{ vpnname }}:
     - jump: {{ chain }}
     - save: true
     - require:
-      - iptables: openvpn-chain-vpn-{{ vpnname }}
+      - iptables: openvpn-chain-vpn-{{ vpn.name }}
 
-openvpn-jump_forward_outbound_vpn_{{ vpnname }}:
+openvpn-jump_forward_outbound_vpn_{{ vpn.name }}:
   iptables.append:
     - table: filter
     - chain: FORWARD
@@ -44,14 +44,14 @@ openvpn-jump_forward_outbound_vpn_{{ vpnname }}:
     - jump: {{ chain }}
     - save: true
     - require:
-      - iptables: openvpn-chain-vpn-{{ vpnname }}
+      - iptables: openvpn-chain-vpn-{{ vpn.name }}
 
-openvpn-allow_forward_all_vpn_{{ vpnname }}:
+openvpn-allow_forward_all_vpn_{{ vpn.name }}:
   iptables.append:
     - table: filter
     - chain: {{ chain }}
     - jump: ACCEPT
     - save: true
     - require:
-      - iptables: openvpn-chain-vpn-{{ vpnname }}
+      - iptables: openvpn-chain-vpn-{{ vpn.name }}
 {% endfor %}

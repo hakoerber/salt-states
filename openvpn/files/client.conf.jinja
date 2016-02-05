@@ -7,10 +7,10 @@ dev {{ vpn.devname }}
 dev-type {{ vpn.dev }}
 
 # files
-ca {{ openvpn_map.pkidir }}/{{ vpnname }}/ca.crt
-cert {{ openvpn_map.pkidir }}/{{ vpnname }}/client.crt
-key {{ openvpn_map.pkidir }}/{{ vpnname }}/client.key
-tls-auth {{ openvpn_map.pkidir }}/{{ vpnname }}/ta.key 1
+ca {{ openvpn_map.pkidir }}/{{ vpn.name }}/ca.crt
+cert {{ openvpn_map.pkidir }}/{{ vpn.name }}/client.crt
+key {{ openvpn_map.pkidir }}/{{ vpn.name }}/client.key
+tls-auth {{ openvpn_map.pkidir }}/{{ vpn.name }}/ta.key 1
 
 # mode and addressing
 client
@@ -33,7 +33,7 @@ tls-cipher {{ openvpn_map.tls_ciphers|sort|join(':') }}
 ns-cert-type server
 
 # logging
-log /var/log/openvpn-{{ vpnname }}.log
+log /var/log/openvpn-{{ vpn.name }}.log
 verb 4
 mute 20
 mute-replay-warnings
