@@ -23,7 +23,7 @@ node.max_local_storage_nodes: 1
 
 {% if params.get('cluster') is not none %}
 discovery.zen.ping.multicast.enabled: false
-discovery.zen.ping.unicast.hosts: ["{{ params['cluster']['nodes']|join('", "') }}"]
+discovery.zen.ping.unicast.hosts: ["{{ params['cluster']['nodes']|map(attribute='name')|join('", "') }}"]
 discovery.zen.minimum_master_nodes: {{ params['cluster'].get('min_masters', (params['cluster']['nodes']|length / 2 +1)|int) }}
 
 discovery.zen.no_master_block: write
