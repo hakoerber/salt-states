@@ -37,7 +37,7 @@ alias_database = hash:{{ postfix_map.aliasesfile }}
 daemon_table_open_error_is_fatal = yes
 
 # tls
-smtpd_use_tls = yes
+smtpd_tls_security_level = may
 smtpd_tls_auth_only = yes
 smtpd_tls_key_file          = {{ postfix_map.pkidir }}/{{ postfix_map.key }}
 smtpd_tls_cert_file         = {{ postfix_map.pkidir }}/{{ postfix_map.cert }}
