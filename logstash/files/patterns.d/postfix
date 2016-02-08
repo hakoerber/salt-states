@@ -1,3 +1,5 @@
+# https://github.com/whyscream/postfix-grok-patterns
+#
 # common postfix patterns
 POSTFIX_QUEUEID ([0-9A-F]{6,}|[0-9a-zA-Z]{15,})
 POSTFIX_CLIENT_INFO %{HOSTNAME:postfix_client_hostname}?\[%{IP:postfix_client_ip}\](:%{INT:postfix_client_port})?
