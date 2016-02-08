@@ -34,7 +34,7 @@ openvpn-ca-cert-{{ vpn.name }}:
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 600
-    - source: salt://files/openvpn/{{ vpn.name }}/shared/ca.crt
+    - contents_pillar: openvpn:{{ vpn.name }}:shared:ca.crt
     - show_diff: false
     - require:
       - file: openvpn-keydir-{{ vpn.name }}
@@ -47,7 +47,7 @@ openvpn-tls-auth-key-{{ vpn.name }}:
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 600
-    - source: salt://files/openvpn/{{ vpn.name }}/shared/ta.key
+    - contents_pillar: openvpn:{{ vpn.name }}:shared:ta.key
     - show_diff: false
     - require:
       - file: openvpn-keydir-{{ vpn.name }}
@@ -62,7 +62,7 @@ openvpn-server-cert-{{ vpn.name }}:
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 600
-    - source: salt://files/openvpn/{{ vpn.name }}/server/server.crt
+    - contents_pillar: openvpn:{{ vpn.name }}:server:server.crt
     - show_diff: false
     - require:
       - file: openvpn-keydir-{{ vpn.name }}
@@ -75,7 +75,7 @@ openvpn-server-key-{{ vpn.name }}:
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 600
-    - source: salt://files/openvpn/{{ vpn.name }}/server/server.key
+    - contents_pillar: openvpn:{{ vpn.name }}:server:server.key
     - show_diff: false
     - require:
       - file: openvpn-keydir-{{ vpn.name }}
@@ -88,7 +88,7 @@ openvpn-server-dh-{{ vpn.name }}:
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 600
-    - source: salt://files/openvpn/{{ vpn.name }}/server/dh2048.pem
+    - contents_pillar: openvpn:{{ vpn.name }}:server:dh2048.pem
     - show_diff: false
     - require:
       - file: openvpn-keydir-{{ vpn.name }}

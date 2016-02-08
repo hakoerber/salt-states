@@ -19,7 +19,7 @@ murmur-ssl-cert:
     - user: {{ murmur_map.user }}
     - group: {{ murmur_map.group }}
     - mode: 600
-    - source: salt://files/murmur/pki/{{ grains['id'] }}/fullchain.pem
+    - contents_pillar: murmur:pki:fullchain.pem
     - show_diff: false
     - require:
       - file: murmur-pkidir
@@ -32,7 +32,7 @@ murmur-ssl-key:
     - user: {{ murmur_map.user }}
     - group: {{ murmur_map.group }}
     - mode: 600
-    - source: salt://files/murmur/pki/{{ grains['id'] }}/privkey.pem
+    - contents_pillar: murmur:pki:privkey.pem
     - show_diff: false
     - require:
       - file: murmur-pkidir

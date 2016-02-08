@@ -13,7 +13,7 @@ hostkey-{{ keytype }}:
     - mode: 600
     - user: root
     - group: {{ defaults.rootgroup }}
-    - source: salt://files/ssh/hostkeys/{{ grains['id'] }}/ssh_host_{{ keytype }}_key
+    - contents_pillar: ssh:hostkeys:ssh_host_{{ keytype }}_key
     - show_diff: false
     - watch_in:
       - service: ssh-server
@@ -24,7 +24,7 @@ hostkey-{{ keytype }}-pub:
     - mode: 644
     - user: root
     - group: {{ defaults.rootgroup }}
-    - source: salt://files/ssh/hostkeys/{{ grains['id'] }}//ssh_host_{{ keytype }}_key.pub
+    - contents_pillar: ssh:hostkeys:ssh_host_{{ keytype }}_key.pub
     - show_diff: false
     - watch_in:
       - service: ssh-server

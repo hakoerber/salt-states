@@ -33,7 +33,7 @@ nginx-ssl-cert-{{ domain.name }}:
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 600
-    - source: salt://files/ssl/{{ grains['id'] }}/{{ domain.name }}/fullchain.pem
+    - contents_pillar: ssl:{{ domain.name }}:fullchain.pem
     - show_diff: false
     - require:
       - file: nginx-pkidir-{{ domain.name }}
@@ -46,7 +46,7 @@ nginx-ssl-key-{{ domain.name }}:
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 600
-    - source: salt://files/ssl/{{ grains['id'] }}/{{ domain.name }}/privkey.pem
+    - contents_pillar: ssl:{{ domain.name }}:privkey.pem
     - show_diff: false
     - require:
       - file: nginx-pkidir-{{ domain.name }}
@@ -64,7 +64,7 @@ nginx-ssl-cert:
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 600
-    - source: salt://files/ssl/{{ grains['id'] }}/fullchain.pem
+    - contents_pillar: ssl:fullchain.pem
     - show_diff: false
     - require:
       - file: nginx-pkidir
@@ -77,7 +77,7 @@ nginx-ssl-key:
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 600
-    - source: salt://files/ssl/{{ grains['id'] }}/privkey.pem
+    - contents_pillar: ssl:privkey.pem
     - show_diff: false
     - require:
       - file: nginx-pkidir
@@ -97,7 +97,7 @@ nginx-ssl-dhparams:
     - watch_in:
       - service: nginx
 {% if params.get('master_dhparams', false) == true %}
-    - source: salt://files/ssl/{{ grains['id'] }}/dhparams.pem
+    - contents_pillar: ssl:dhparams.pem
     - show_diff: false
 {% else %}
     - require:

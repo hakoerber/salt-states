@@ -28,7 +28,7 @@ dotfiles-{{ application.name }}-{{ file.name }}:
     - group: {{ username }}
     - makedirs: True
     - mode: 600
-    - source: salt://files/users/{{ username }}/dotfiles/{{ file.name }}
+    - source: salt://files/dotfiles/{{ username }}/{{ file.name }}
 {% if template %}
     - template: jinja
     - defaults:

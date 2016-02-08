@@ -21,7 +21,7 @@ postfix-ssl-cert:
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 600
-    - source: salt://files/postfix/ssl/{{ grains['id'] }}/fullchain.pem
+    - contents_pillar: postfix:ssl:fullchain.pem
     - show_diff: false
     - require:
       - file: postfix-pkidir
@@ -34,16 +34,14 @@ postfix-ssl-key:
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 600
-    - source: salt://files/postfix/ssl/{{ grains['id'] }}/privkey.pem
+    - contents_pillar: postfix:ssl:privkey.pem
     - show_diff: false
     - require:
       - file: postfix-pkidir
     - watch_in:
       - service: postfix
 
-{% set master_files = salt['cp.list_master']() %}
-{% set dhparams_path = 'files/postfix/ssl/' ~ grains['id'] ~ '/dhparams.pem' %}
-{% set master_has_dhparams = dhparams_path in master_files %}
+{% set master_has_dhparams = salt['pillar.get']('postfix:ssl:dhparams.pem', none) is not none %}
 {% set dhparams = postfix_map.pkidir ~ '/' ~ postfix_map.dhparams %}
 postfix-ssl-dhparams:
   file.managed:
@@ -56,7 +54,7 @@ postfix-ssl-dhparams:
     - watch_in:
       - service: postfix
 {% if master_has_dhparams or params.get('master_dhparams', false) == true %}
-    - source: salt://{{ dhparams_path }}
+    - contents_pillar: postfix:ssl:dhparams.pem
     - show_diff: false
 {% else %}
     - require:

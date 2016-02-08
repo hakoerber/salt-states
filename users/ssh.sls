@@ -16,9 +16,9 @@ authorized-keys-{{ authorized_key.comment }}:
 {% endfor %}
 
 {% for authorized_user in user.get('ssh', {}).get('authorized_users', []) %}
-authorized-keys-{{ authorized_username }}
+authorized-keys-{{ authorized_user }}:
   ssh_auth.present:
+    - name: {{ salt['pillar.get']('userkeys:' + authorized_user + ':id_rsa.pub') }}
     - user: {{ username }}
-    - source: salt://users/{{ authorized_username }}/ssh/id_rsa.pub
 {% endfor %}
 {% endfor %}
