@@ -54,7 +54,7 @@ enable_influxdb09 = True
 # Comma separated list of server:ports
 # defaults to 127.0.0.1:8086 (:8087 if using SSL).
 {% set servers = [] %}
-{% for node in influxdb.cluster.nodes %}
+{% for node in influxdb.nodes %}
 {% do servers.append(node.name + ':' + node.get('port', '8086')) %}
 {% endfor %}
 influxdb_servers = {{ servers|join(',') }}
@@ -63,11 +63,11 @@ influxdb_servers = {{ servers|join(',') }}
 #influxdb_use_ssl = True
 
 # Database-name, defaults to nagios
-influxdb_db = {{ influxdb.database }}
+influxdb_db = {{ influxdb.common.database }}
 
 # Credentials (required)
-influxdb_user = {{ influxdb.user }}
-influxdb_password = {{ influxdb.password }}
+influxdb_user = {{ influxdb.common.user }}
+influxdb_password = {{ influxdb.common.password }}
 
 # Max metrics to send / request, defaults to 250
 influxdb_max_metrics = 500
