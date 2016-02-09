@@ -30,6 +30,14 @@ ping_levels += [
 
 service_descriptions = {}
 
+# initialization
+extra_service_conf["max_check_attempts"] = []
+extra_host_conf["max_check_attempts"] = []
+extra_service_conf["check_interval"] = []
+extra_host_conf["check_interval"] = []
+extra_service_conf["retry_interval"] = []
+extra_host_conf["retry_interval"] = []
+
 define_hostgroups = True
 host_groups = [
 {% for group in params.get('groups', []) %}
@@ -49,28 +57,6 @@ snmp_default_community = '{{ params.get('snmp', {}).get('community', 'public') }
 
 ignored_checktypes = [ "lnx_thermal" ]
 
-
-### check defaults
-extra_service_conf["max_check_attempts"] = [
-        ( "1", ALL_HOSTS, ALL_SERVICES ),
-]
-extra_host_conf["max_check_attempts"] = [
-        ( "1", ALL_HOSTS ),
-]
-
-extra_service_conf["check_interval"] = [
-        ( "1", ALL_HOSTS, ALL_SERVICES ),
-]
-extra_host_conf["check_interval"] = [
-        ( "1", ALL_HOSTS ),
-]
-
-extra_service_conf["retry_interval"] = [
-        ( "1", ALL_HOSTS, ALL_SERVICES ),
-]
-extra_host_conf["retry_interval"] = [
-        ( "1", ALL_HOSTS ),
-]
 ### check-specific settings
 
 # if
@@ -121,8 +107,9 @@ ntp_default_levels = (
     200.0, # critical offset ins ms
 )
 
+# give NTP some time to sync
 extra_service_conf["max_check_attempts"] += [
-        ( "20", ALL_HOSTS, ["NTP Time"] ),
+        ( "3", ALL_HOSTS, ["NTP Time"] ),
 ]
 
 # mem.used
@@ -130,3 +117,25 @@ memused_default_levels = (100.0, 150.0)
 
 only_hosts = [
   ( ['!offline', ], ALL_HOSTS, {'comment': u'Do not monitor hosts with the tag "offline"'} )]
+
+### check defaults
+extra_service_conf["max_check_attempts"] += [
+        ( "1", ALL_HOSTS, ALL_SERVICES ),
+]
+extra_host_conf["max_check_attempts"] += [
+        ( "1", ALL_HOSTS ),
+]
+
+extra_service_conf["check_interval"] += [
+        ( "1", ALL_HOSTS, ALL_SERVICES ),
+]
+extra_host_conf["check_interval"] += [
+        ( "1", ALL_HOSTS ),
+]
+
+extra_service_conf["retry_interval"] += [
+        ( "0.5", ALL_HOSTS, ALL_SERVICES ),
+]
+extra_host_conf["retry_interval"] += [
+        ( "0.5", ALL_HOSTS ),
+]
