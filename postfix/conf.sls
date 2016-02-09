@@ -15,6 +15,7 @@ postfix-main.cf:
 {% if params.listen_remote %}
     - source: salt://states/postfix/files/main.cf.server.jinja
     - defaults:
+        ssl: {{ params.get('ssl', false) }}
         hostname: {{ params.hostname }}
         domain: {{ params.domain }}
         relay: {{ params.get('relay') }}
