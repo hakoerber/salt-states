@@ -7,7 +7,7 @@ dev {{ vpn.devname }}
 dev-type {{ vpn.dev }}
 
 # files
-{% if keys_inline == true %}
+{% if keys_inline|default(false) == true %}
 <ca>
 {{ keys.ca }}
 </ca>
