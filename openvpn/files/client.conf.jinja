@@ -7,10 +7,31 @@ dev {{ vpn.devname }}
 dev-type {{ vpn.dev }}
 
 # files
+{% if keys_inline == true %}
+<ca>
+{{ keys.ca }}
+</ca>
+
+<cert>
+{{ keys.cert }}
+</cert>
+
+<key>
+{{ keys.key }}
+</key>
+
+# tls-auth direction
+key-direction 1
+
+<tls-auth>
+{{ tls-auths.tls-auth }}
+</tls-auth>
+{% else %}
 ca {{ openvpn_map.pkidir }}/{{ vpn.name }}/ca.crt
 cert {{ openvpn_map.pkidir }}/{{ vpn.name }}/client.crt
 key {{ openvpn_map.pkidir }}/{{ vpn.name }}/client.key
 tls-auth {{ openvpn_map.pkidir }}/{{ vpn.name }}/ta.key 1
+{% endif %}
 
 # mode and addressing
 client
