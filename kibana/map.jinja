@@ -1,0 +1,13 @@
+{% set kibana = salt['grains.filter_by']({
+    'default': {
+        'packages': [
+            'kibana',
+        ],
+        'service': 'kibana',
+        'ports': {
+            'web': {
+                'tcp': '5601',
+            },
+        },
+    },
+}, base='default') %}
