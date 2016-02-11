@@ -8,7 +8,9 @@ node.data: {{ params.get('data', true)|string|lower }}
 path.data: {{ elasticsearch_map.paths.data }}
 path.logs: {{ elasticsearch_map.paths.logs }}
 
-network.host: 0.0.0.0
+network.host: _local_
+
+http.host: {{ '_local_' if params.get('local', false) else '0.0.0.0' }}
 http.port: {{ elasticsearch_map.ports.query.tcp }}
 http.publish_port: {{ elasticsearch_map.ports.query.tcp }}
 http.compression: true
