@@ -1,0 +1,8 @@
+{% set acme = salt['grains.filter_by']({
+    'default': {
+        'package': 'letsacme',
+        'user': 'acme',
+        'home': '/var/lib/acme',
+        'webroot': '/srv/www/acme/',
+    }
+}, base='default') %}
