@@ -13,4 +13,3 @@ thruk-iptables-{{ proto }}:
     - match: comment
     - comment: thruk
 {% endfor %}
-

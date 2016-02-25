@@ -14,4 +14,3 @@ uwsgi:
     - enable: true
     - require:
       - pkg: uwsgi
-

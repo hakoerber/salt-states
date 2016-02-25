@@ -29,5 +29,3 @@ hostkey-{{ keytype }}-pub:
     - watch_in:
       - service: ssh-server
 {% endfor %}
-
-

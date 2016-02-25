@@ -24,6 +24,3 @@ dhcpd.conf:
       - service: dhcpd
     - defaults:
         params: {{ params }}
-
-
-

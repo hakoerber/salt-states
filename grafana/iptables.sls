@@ -13,4 +13,3 @@ grafana-iptables-{{ proto }}:
     - match: comment
     - comment: grafana
 {% endfor %}
-

@@ -30,5 +30,3 @@ murmur-iptables-udp-{{ family }}:
     - require:
       - iptables: chain_zone_public_ipv4
 {% endfor %}
-
-

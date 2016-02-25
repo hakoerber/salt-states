@@ -26,4 +26,3 @@ murmur-user:
     - home: {{ murmur_map.home }}
     - gid_from_name: True
     - shell: {{ defaults.nologin }}
-

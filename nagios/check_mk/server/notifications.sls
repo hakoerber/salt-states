@@ -20,4 +20,3 @@ notifications.mk:
       - pkg: check_mk-server
     - onchanges_in:
       - cmd: check_mk-update
-

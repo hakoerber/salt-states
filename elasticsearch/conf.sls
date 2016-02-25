@@ -20,4 +20,3 @@ elasticsearch.yml:
       - pkg: elasticsearch
     - watch_in:
       - service: elasticsearch
-

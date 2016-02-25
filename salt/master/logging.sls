@@ -8,4 +8,3 @@ salt-master-log:
       - {{ salt_map.master.logging }}
     - require_in:
       - file: rsyslog-applications
-

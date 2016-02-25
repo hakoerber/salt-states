@@ -19,4 +19,3 @@ ntp-iptables-ipv4-udp:
     - require:
       - iptables: chain_zone_local_ipv4
 {% endif %}
-

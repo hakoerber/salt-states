@@ -9,4 +9,3 @@ xinetd:
     - enable: true
     - require:
       - pkg: xinetd
-

@@ -7,4 +7,3 @@
 hostname:
   c_hostname.set:
     - name: {{ params.hostname }}
-
