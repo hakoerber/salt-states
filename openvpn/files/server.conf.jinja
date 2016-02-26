@@ -2,7 +2,11 @@
 {% from 'states/defaults.map.jinja' import defaults with context %}
 
 port {{ vpn.port|default(openvpn_map.default_port) }}
+{% if vpn.get('ipv6', false) %}
+proto {{ vpn.protocol }}6
+{% else %}
 proto {{ vpn.protocol }}
+{% endif %}
 dev {{ vpn.devname }}
 dev-type {{ vpn.dev }}
 
