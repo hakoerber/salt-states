@@ -42,7 +42,7 @@ graphios.cfg:
       - file: graphios-spooldir
       - pkg: graphios
     - watch_in:
-      - service: nagios
+      - service: graphios
 
 graphios-spooldir:
   file.directory:
@@ -54,6 +54,7 @@ graphios-spooldir:
       - pkg: nagios
     - watch_in:
       - service: nagios
+      - service: graphios
 
 graphios-commands.cfg:
   file.managed:
