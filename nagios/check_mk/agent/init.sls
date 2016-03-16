@@ -1,6 +1,9 @@
 {% from 'states/nagios/map.jinja' import nagios as nagios_map with context %}
 {% from 'states/defaults.map.jinja' import defaults with context %}
 
+include:
+  - states.xinetd
+
 check_mk-agent:
 {% if grains['os_family'] == 'FreeBSD' %}
   file.managed:
@@ -20,4 +23,5 @@ check_mk-agent:
 {% if grains['os_family'] != 'FreeBSD' %}
     - require:
       - pkg: check_mk-agent
+      - pkg: xinetd
 {% endif %}
