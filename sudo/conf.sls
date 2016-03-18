@@ -25,6 +25,7 @@ sudoers:
         group_nopw: {{ params.group_nopw }}
         secure_path: {{ sudo_map.secure_path }}
         logfile: {{ sudo_map.logfile }}
+        policies: {{ params.policies }}
     - require:
       - pkg: sudo
       - file: sudo-logfile

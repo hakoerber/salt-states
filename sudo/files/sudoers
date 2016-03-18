@@ -9,3 +9,7 @@ root ALL=(ALL) ALL
 
 %{{ group_nopw }} ALL=(ALL) NOPASSWD: ALL
 %{{ group }} ALL=(ALL) ALL
+
+{% for policy in policies %}
+{{ policy.name }} ALL=(ALL) {{ 'NOPASSWD: ' if policy.get('nopasswd') }}{{ policy.targets|join(' ') }}
+{% endfor %}
