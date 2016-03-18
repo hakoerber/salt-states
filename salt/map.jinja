@@ -47,6 +47,11 @@
                 'file_root': '/srv/salt/reactor',
             },
             'inventory': {
+                'reclass': {
+                    'packages': [
+                        'reclass',
+                    ],
+                },
                 'base': '/srv/salt/base/inventory',
                 'secrets': '/srv/salt/base/secrets',
             },

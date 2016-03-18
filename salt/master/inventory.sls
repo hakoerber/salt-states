@@ -16,3 +16,9 @@ salt-inventory-conf:
     - template: jinja
     - watch_in:
       - service: salt-master
+    - require:
+      - pkg: reclass
+
+reclass:
+  pkg.installed:
+    - pkgs: {{ salt_map.master.inventory.reclass.packages }}
