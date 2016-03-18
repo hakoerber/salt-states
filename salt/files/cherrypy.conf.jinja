@@ -1,0 +1,15 @@
+{% from 'states/salt/map.jinja' import salt as salt_map with context %}
+external_auth:
+  pam:
+{% for user in users %}
+    {{ user.name }}:
+{% for cap in user.capabilities %}
+      - '{{ cap }}'
+{% endfor %}
+{% endfor %}
+
+rest_cherrypy:
+  port: {{ salt_map.master.cherrypy.port }}
+  ssl_crt: {{ salt_map.master.cherrypy.cert_dir }}/certs/cherrypy.crt
+  ssl_key: {{ salt_map.master.cherrypy.cert_dir }}/certs/cherrypy.key
+

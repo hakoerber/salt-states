@@ -1,0 +1,14 @@
+{% from 'states/salt/map.jinja' import salt as salt_map with context %}
+reclass: &reclass
+  inventory_base_uri: {{ salt_map.master.inventory.base }}
+  storage_type: yaml_fs
+
+master_tops:
+  reclass: *reclass
+
+ext_pillar:
+  - reclass: *reclass
+  - file_tree:
+      root_dir: {{ salt_map.master.inventory.secrets }}
+      follow_dir_links: True
+      raw_data: True

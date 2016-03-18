@@ -18,6 +18,7 @@
         'master': {
             'service': 'salt-master',
             'conf_file': '/etc/salt/master',
+            'conf_dir': '/etc/salt/master.d',
             'conf_include': '/etc/salt/master.d/*.conf',
             'pidfile': '/var/run/salt-master.pid',
             'root_dir': '/',
@@ -35,15 +36,19 @@
                     'path': '/var/log/salt/master'
                 }]
             },
-            'pillar_roots': {
-                'base': [
-                    '/srv/salt/base/pillar',
+            'cherrypy': {
+                'packages': [
+                    'python-cherrypy',
                 ],
+                'cert_dir': '/etc/salt/pki/cherrypy',
+                'port': 8000,
             },
-            'file_roots': {
-                'base': [
-                    '/srv/salt/base',
-                ],
+            'reactor': {
+                'file_root': '/srv/salt/reactor',
+            },
+            'inventory': {
+                'base': '/srv/salt/base/inventory',
+                'secrets': '/srv/salt/base/secrets',
             },
         },
     },

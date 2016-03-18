@@ -1,0 +1,8 @@
+{% from 'states/salt/map.jinja' import salt as salt_map with context %}
+reactor:
+{% for event in events %}
+  - '{{ event.match }}':
+{% for sls in event.sls %}
+    - {{ salt_map.master.reactor.file_root }}/{{ sls }}
+{% endfor %}
+{% endfor %}

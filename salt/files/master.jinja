@@ -57,20 +57,13 @@ presence_events: False
 
 # fileserver
 fileserver_backend:
-    - roots
+  - git
 
-file_roots:
-{% for env, paths in salt_map.master.file_roots.items() %}
-    {{ env }}:
-{% for path in paths %}
-        - {{ path }}
-{% endfor %}
-{% endfor %}
-
-pillar_roots:
-{% for env, paths in salt_map.master.pillar_roots.items() %}
-    {{ env }}:
-{% for path in paths %}
-        - {{ path }}
-{% endfor %}
+gitfs_remotes:
+{% for repo in params.repos %}
+  - {{ repo.url }}:
+    - base: {{ repo.get('base', 'master') }}
+{% if repo.mount is defined %}
+    - mountpoint: salt://{{ repo.mount }}
+{% endif %}
 {% endfor %}

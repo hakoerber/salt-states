@@ -1,0 +1,4 @@
+nodegroups:
+{% for nodegroup in nodegroups %}
+  {{ nodegroup.name }}: '{{ nodegroup.match }}'
+{% endfor %}

@@ -6,15 +6,15 @@
     stateconf.set: []
 # --- end of state config ---
 
-salt-master-conf:
+salt-reactor-conf:
   file.managed:
-    - name: {{ salt_map.master.conf_file }}
+    - name: {{ salt_map.master.conf_dir }}/reactor.conf
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 640
-    - source: salt://states/salt/files/master.jinja
+    - source: salt://states/salt/files/reactor.conf.jinja
     - defaults:
-        params: {{ params }}
+        events: {{ params.events }}
     - template: jinja
     - watch_in:
       - service: salt-master
