@@ -1,0 +1,9 @@
+{% set nfs = salt['grains.filter_by']({
+    'default': {
+        'client': {
+            'packages': [
+                'nfs-utils',
+            ],
+        },
+    },
+}, base='default') %}
