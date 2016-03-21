@@ -31,4 +31,6 @@ nfs-mount-{{ name }}-mountpoint:
     - group: {{ defaults.rootgroup }}
     - mode: 700
     - makedirs: true
+    - unless:
+      - test -d {{ mount.path }}
 {% endfor %}
