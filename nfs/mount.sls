@@ -14,6 +14,12 @@ nfs-mount-{{ name }}:
     - device: {{ mount.server.name }}:{{ mount.server.path }}
     - fstype: nfs
     - persist: true
+    - opts:
+      - defaults
+      # vers is synonym to nfsvers, but because the mount command shows nfsvers
+      # as vers, salt thinks that mount versions changed every time the salt is
+      # executed when nfsvers is used
+      - vers={{ mount.get('version', '3') }}
     - mkmnt: False
     - require:
       - file: nfs-mount-{{ name }}-mountpoint
