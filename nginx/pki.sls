@@ -18,38 +18,39 @@ nginx-pkidir:
 {% set commoncert = false %}
 {% for domain in params.domains %}
 {% if domain.get('ssl_cert', false) %}
-nginx-pkidir-{{ domain.name }}:
+{% set main_name = domain.names[0] %}
+nginx-pkidir-{{ main_name }}:
   file.directory:
-    - name: {{ nginx_map.conf.confdir }}/{{ nginx_map.pki.pkidir }}/{{ domain.name }}
+    - name: {{ nginx_map.conf.confdir }}/{{ nginx_map.pki.pkidir }}/{{ main_name }}
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 700
     - require:
       - file: nginx-pkidir
 
-nginx-ssl-cert-{{ domain.name }}:
+nginx-ssl-cert-{{ main_name }}:
   file.managed:
-    - name: {{ nginx_map.conf.confdir }}/{{ nginx_map.pki.pkidir }}/{{ domain.name }}/{{ nginx_map.pki.cert }}
+    - name: {{ nginx_map.conf.confdir }}/{{ nginx_map.pki.pkidir }}/{{ main_name }}/{{ nginx_map.pki.cert }}
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 600
-    - contents_pillar: ssl:{{ domain.name }}:fullchain.pem
+    - contents_pillar: ssl:{{ main_name }}:fullchain.pem
     - show_diff: false
     - require:
-      - file: nginx-pkidir-{{ domain.name }}
+      - file: nginx-pkidir-{{ main_name }}
     - watch_in:
       - service: nginx
 
-nginx-ssl-key-{{ domain.name }}:
+nginx-ssl-key-{{ main_name }}:
   file.managed:
-    - name: {{ nginx_map.conf.confdir }}/{{ nginx_map.pki.pkidir }}/{{ domain.name }}/{{ nginx_map.pki.key }}
+    - name: {{ nginx_map.conf.confdir }}/{{ nginx_map.pki.pkidir }}/{{ main_name }}/{{ nginx_map.pki.key }}
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 600
-    - contents_pillar: ssl:{{ domain.name }}:privkey.pem
+    - contents_pillar: ssl:{{ main_name }}:privkey.pem
     - show_diff: false
     - require:
-      - file: nginx-pkidir-{{ domain.name }}
+      - file: nginx-pkidir-{{ main_name }}
     - watch_in:
       - service: nginx
 {% else %}
