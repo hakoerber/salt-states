@@ -1,0 +1,262 @@
+---
+# cobbler settings file
+# restart cobblerd and run "cobbler sync" after making changes
+# This config file is in YAML 1.0 format
+# see http://yaml.org
+# ==========================================================
+# if 1, cobbler will allow insertions of system records that duplicate
+# the --dns-name information of other system records.  In general,
+# this is undesirable and should be left 0.
+allow_duplicate_hostnames: 0
+
+# if 1, cobbler will allow insertions of system records that duplicate
+# the ip address information of other system records.  In general,
+# this is undesirable and should be left 0.
+allow_duplicate_ips: 0
+
+# if 1, cobbler will allow insertions of system records that duplicate
+# the mac address information of other system records.  In general,
+# this is undesirable.
+allow_duplicate_macs: 0
+
+# if 1, cobbler will allow settings to be changed dynamically without
+# a restart of the cobblerd daemon. You can only change this variable
+# by manually editing the settings file, and you MUST restart cobblerd
+# after changing it.
+allow_dynamic_settings: 0
+
+# by default, installs are *not* set to send installation logs to the cobbler
+# # # server.  With 'anamon_enabled', kickstart templates may use the pre_anamon
+# # # snippet to allow remote live monitoring of their installations from the
+# # # cobbler server.  Installation logs will be stored under
+# # # /var/log/cobbler/anamon/.  NOTE: This does allow an xmlrpc call to send logs
+# # # to this directory, without authentication, so enable only if you are
+# # # ok with this limitation.
+anamon_enabled: 0
+
+# If using authn_pam in the modules.conf, this can be configured
+# to change the PAM service authentication will be tested against.
+# The default value is "login".
+authn_pam_service: "login"
+
+# How long the authentication token is valid for, in seconds
+auth_token_expiration: 3600
+
+# Email out a report when cobbler finishes installing a system.
+# enabled: set to 1 to turn this feature on
+# sender: optional
+# email: which addresses to email
+# smtp_server: used to specify another server for an MTA
+# subject: use the default subject unless overridden
+build_reporting_enabled: 0
+
+# Cheetah-language kickstart templates can import Python modules.
+# while this is a useful feature, it is not safe to allow them to
+# import anything they want. This whitelists which modules can be
+# imported through Cheetah.  Users can expand this as needed but
+# should never allow modules such as subprocess or those that
+# allow access to the filesystem as Cheetah templates are evaluated
+# by cobblerd as code.
+cheetah_import_whitelist:
+ - "random"
+ - "re"
+ - "time"
+
+# Default createrepo_flags to use for new repositories. If you have
+# createrepo >= 0.4.10, consider "-c cache --update -C", which can
+# dramatically improve your "cobbler reposync" time.  "-s sha"
+# enables working with Fedora repos from F11/F12 from EL-4 or
+# EL-5 without python-hashlib installed (which is not available
+# on EL-4)
+createrepo_flags: "-c cache -s sha"
+
+# if no kickstart is specified to profile add, use this template
+default_kickstart: /var/lib/cobbler/kickstarts/default.ks
+
+# configure all installed systems to use these nameservers by default
+# unless defined differently in the profile.  For DHCP configurations
+# you probably do /not/ want to supply this.
+default_name_servers: []
+
+# if using the authz_ownership module (see the Wiki), objects
+# created without specifying an owner are assigned to this
+# owner and/or group.  Can be a comma seperated list.
+default_ownership:
+ - "admin"
+
+# cobbler has various sample kickstart templates stored
+# in /var/lib/cobbler/kickstarts/.  This controls
+# what install (root) password is set up for those
+# systems that reference this variable.  The factory
+# default is "cobbler" and cobbler check will warn if
+# this is not changed.
+# The simplest way to change the password is to run
+# openssl passwd -1
+# and put the output between the "" below.
+default_password_crypted: "{{ default_password }}"
+
+# the default template type to use in the absence of any
+# other detected template. If you do not specify the template
+# with '#template=<template_type>' on the first line of your
+# templates/snippets, cobbler will assume try to use the
+# following template engine to parse the templates.
+#
+# Current valid values are: cheetah, jinja2
+default_template_type: "cheetah"
+
+
+# enable gPXE booting? Enabling this option will cause cobbler
+# to copy the undionly.kpxe file to the tftp root directory,
+# and if a profile/system is configured to boot via gpxe it will
+# chain load off pxelinux.0.
+# Default: 0
+enable_gpxe: 0
+
+# controls whether cobbler will add each new profile entry to the default
+# PXE boot menu.  This can be over-ridden on a per-profile
+# basis when adding/editing profiles with --enable-menu=0/1.  Users
+# should ordinarily leave this setting enabled unless they are concerned
+# with accidental reinstalls from users who select an entry at the PXE
+# boot menu.  Adding a password to the boot menus templates
+# may also be a good solution to prevent unwanted reinstallations
+enable_menu: 1
+
+# change this port if Apache is not running plaintext on port
+# 80.  Most people can leave this alone.
+http_port: 80
+
+manage_dhcp: 0
+manage_dns: 0
+manage_rsync: 0
+
+# set to 1 to enable Cobbler's TFTP management features.
+# the choice of TFTP mangement engine is in /etc/cobbler/modules.conf
+manage_tftpd: 1
+
+# if this setting is set to 1, cobbler systems that pxe boot
+# will request at the end of their installation to toggle the
+# --netboot-enabled record in the cobbler system record.  This eliminates
+# the potential for a PXE boot loop if the system is set to PXE
+# first in it's BIOS order.  Enable this if PXE is first in your BIOS
+# boot order, otherwise leave this disabled.   See the manpage
+# for --netboot-enabled.
+pxe_just_once: 1
+
+# the templates used for PXE config generation are sourced
+# from what directory?
+pxe_template_dir: "/etc/cobbler/pxe"
+
+# Path to where system consoles are
+consoles: "/var/consoles"
+
+# if set to 1, allows /usr/bin/cobbler-register (part of the koan package)
+# to be used to remotely add new cobbler system records to cobbler.
+# this effectively allows for registration of new hardware from system
+# records.
+register_new_installs: 0
+
+# Flags to use for yum's reposync.  If your version of yum reposync
+# does not support -l, you may need to remove that option.
+reposync_flags: "-l -n -d"
+
+# install triggers are scripts in /var/lib/cobbler/triggers/install
+# that are triggered in kickstart pre and post sections.  Any
+# executable script in those directories is run.  They can be used
+# to send email or perform other actions.  They are currently
+# run as root so if you do not need this functionality you can
+# disable it, though this will also disable "cobbler status" which
+# uses a logging trigger to audit install progress.
+run_install_triggers: 1
+
+# enables a trigger which version controls all changes to /var/lib/cobbler
+# when add, edit, or sync events are performed.  This can be used
+# to revert to previous database versions, generate RSS feeds, or for
+# other auditing or backup purposes. "git" and "hg" are currently suported,
+# but git is the recommend SCM for use with this feature.
+scm_track_enabled: 0
+
+# this is the address of the cobbler server -- as it is used
+# by systems during the install process, it must be the address
+# or hostname of the system as those systems can see the server.
+# if you have a server that appears differently to different subnets
+# (dual homed, etc), you need to read the --server-override section
+# of the manpage for how that works.
+server: {{ grains['fqdn'] }}
+
+# If set to 1, all commands will be forced to use the localhost address
+# instead of using the above value which can force commands like
+# cobbler sync to open a connection to a remote address if one is in the
+# configuration and would traceback.
+client_use_localhost: 0
+
+# If set to 1, all commands to the API (not directly to the XMLRPC
+# server) will go over HTTPS instead of plaintext. Be sure to change
+# the http_port setting to the correct value for the web server
+client_use_https: 0
+
+# this is a directory of files that cobbler uses to make
+# templating easier.  See the Wiki for more information.  Changing
+# this directory should not be required.
+snippetsdir: /var/lib/cobbler/snippets
+
+# Normally if a kickstart is specified at a remote location, this
+# URL will be passed directly to the kickstarting system, thus bypassing
+# the usual snippet templating Cobbler does for local kickstart files. If
+# this option is enabled, Cobbler will fetch the file contents internally
+# and serve a templated version of the file to the client.
+template_remote_kickstarts: 0
+
+# should new profiles for virtual machines default to auto booting with the physical host when the physical host reboots?
+# this can be overridden on each profile or system object.
+virt_auto_boot: 1
+
+# cobbler's web directory.  Don't change this setting -- see the
+# Wiki on "relocating your cobbler install" if your /var partition
+# is not large enough.
+webdir: /var/www/cobbler
+
+# cobbler's public XMLRPC listens on this port.  Change this only
+# if absolutely needed, as you'll have to start supplying a new
+# port option to koan if it is not the default.
+xmlrpc_port: 25151
+
+# "cobbler repo add" commands set cobbler up with repository
+# information that can be used during kickstart and is automatically
+# set up in the cobbler kickstart templates.  By default, these
+# are only available at install time.  To make these repositories
+# usable on installed systems (since cobbler makes a very convient)
+# mirror, set this to 1.  Most users can safely set this to 1.  Users
+# who have a dual homed cobbler server, or are installing laptops that
+# will not always have access to the cobbler server may wish to leave
+# this as 0.  In that case, the cobbler mirrored yum repos are still
+# accessable at http://cobbler.example.org/cblr/repo_mirror and yum
+# configuration can still be done manually.  This is just a shortcut.
+yum_post_install_mirror: 1
+
+# the default yum priority for all the distros.  This is only used
+# if yum-priorities plugin is used.  1=maximum.  Tweak with caution.
+yum_distro_priority: 1
+
+# Flags to use for yumdownloader.  Not all versions may support
+# --resolve.
+yumdownloader_flags: "--resolve"
+
+# sort and indent JSON output to make it more human-readable
+serializer_pretty_json: 0
+
+# replication rsync options for distros, kickstarts, snippets set to override default value of "-avzH"
+replicate_rsync_options: "-avzH"
+
+# replication rsync options for repos set to override default value of "-avzH"
+replicate_repo_rsync_options: "-avzH"
+
+# always write DHCP entries, regardless if netboot is enabled
+always_write_dhcp_entries: 0
+
+# external proxy - used by: get-loaders, reposync, signature update
+# eg: proxy_url_ext: "http://192.168.1.1:8080"
+proxy_url_ext: ""
+
+# internal proxy - used by systems to reach cobbler for kickstarts
+# eg: proxy_url_int: "http://10.0.0.1:8080"
+proxy_url_int: ""

@@ -1,0 +1,25 @@
+{% set cobbler = salt['grains.filter_by']({
+    'default': {
+        'packages': [
+            'cobbler',
+            'cobbler-web',
+        ],
+        'service': 'cobblerd',
+        'conf_file': '/etc/cobbler/settings',
+        'ports': {
+            'cobbler-web': {
+                'tcp': [80, 443],
+            },
+            'tftp': {
+                'udp': [69],
+            },
+        },
+        'selinux': {
+            'httpd_can_network_connect_cobbler': '1',
+            'httpd_use_nfs': '1',
+            'httpd_can_network_connect': '1',
+            'httpd_serve_cobbler_files': '1',
+            'cobbler_use_nfs': '1',
+        },
+    },
+}, base='default') %}
