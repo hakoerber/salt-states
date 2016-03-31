@@ -1,5 +1,8 @@
 {% set subsonic = salt['grains.filter_by']({
     'default': {
+        'packages': [
+            'subsonic.i386',
+        ],
         'service': 'subsonic',
         'ports': {
             'tcp': [4040],
