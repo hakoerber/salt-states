@@ -1,0 +1,8 @@
+{% set syncrepo = salt['grains.filter_by']({
+    'default': {
+        'packages': [
+            'syncrepo',
+        ],
+        'conf_file': '/etc/syncrepo.conf',
+    }
+}, base='default') %}

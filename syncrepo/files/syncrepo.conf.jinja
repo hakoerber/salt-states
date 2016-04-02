@@ -1,0 +1,8 @@
+{
+    "base": "{{ params.base }}",
+    "repos": {
+{% for repo in params.repos %}
+        "{{ repo.path }}": "{{ repo.host }}"{{ ',' if not loop.last else '' }}
+{% endfor %}
+	}
+}
