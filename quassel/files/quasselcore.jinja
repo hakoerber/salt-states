@@ -1,0 +1,6 @@
+{% from 'states/quassel/map.jinja' import quassel as quassel_map with context %}
+CONFDIR={{ quassel_map.core.datadir }}
+LISTEN=::,0.0.0.0
+PORT={{ quassel_map.core.ports.tcp[0] }}
+SSL_CERT={{ quassel_map.core.pki.cert }}
+SSL_KEY={{ quassel_map.core.pki.key }}

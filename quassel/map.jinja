@@ -1,0 +1,21 @@
+{% set quassel = salt['grains.filter_by']({
+    'default': {
+        'core': {
+            'packages': [
+                'quassel-core',
+            ],
+            'service': 'quassel',
+            'user': 'quassel',
+            'conf_file': '/etc/sysconfig/quasselcore',
+            'datadir': '/var/lib/quasselcore',
+            'systemd_file': '/etc/systemd/system/quassel.service',
+            'pki': {
+                'cert': 'quasselCert.crt',
+                'key': 'quasselCert.key',
+            },
+            'ports': {
+                'tcp': [4242],
+            },
+        },
+    },
+}, base='default') %}
