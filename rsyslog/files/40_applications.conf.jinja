@@ -3,7 +3,15 @@ module(load="imfile")
 {% if accumulator is defined %}
 {% for application_name, application in accumulator|dictsort() %}
 {% set name = application_name|replace('-log', '') %}
-{% for file in application[0].files %}
+
+{% set application = application[0] %}
+{% if application.files is defined %}
+{% set files = application.files %}
+{% else %}
+{% set files = [{'path': application.file}] %}
+{% endif %}
+
+{% for file in files %}
 {% if file.tag is defined %}
 {% set identifier = name + '-' + file.tag %}
 {% else %}
