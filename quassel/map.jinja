@@ -16,6 +16,14 @@
             'ports': {
                 'tcp': [4242],
             },
+            'logging': {
+                'file': '/var/log/quasselcore.log',
+                'permissions': {
+                    'user': 'quassel',
+                    'group': 'quassel',
+                    'mode': '0600',
+                },
+            },
         },
     },
 }, base='default') %}

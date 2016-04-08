@@ -27,8 +27,6 @@ quassel-systemd:
     - group: {{ defaults.rootgroup }}
     - mode: 644
     - source: salt://states/quassel/files/quassel.service
-    - require_in:
-      - service: quassel-core
     - watch_in:
       - service: quassel-core
 
@@ -39,3 +37,5 @@ systemd-daemon-reload:
     - group: {{ defaults.rootgroup }}
     - onchanges:
       - file: quassel-systemd
+    - require_in:
+      - service: quassel-core

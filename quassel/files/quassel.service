@@ -7,7 +7,7 @@ Type=simple
 User=quassel
 Group=quassel
 EnvironmentFile=/etc/sysconfig/quasselcore
-ExecStart=/usr/bin/quasselcore --require-ssl --configdir=${CONFDIR} --listen=${LISTEN} --port=${PORT} --ssl-cert=${CONFDIR}/${SSL_CERT} --ssl-key=${CONFDIR}/${SSL_KEY}
+ExecStart=/usr/bin/quasselcore --require-ssl --configdir=${CONFDIR} --listen=${LISTEN} --port=${PORT} --ssl-cert=${CONFDIR}/${SSL_CERT} --ssl-key=${CONFDIR}/${SSL_KEY} --logfile=${LOGFILE}
 
 [Install]
 WantedBy=multi-user.target
