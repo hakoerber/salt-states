@@ -1,0 +1,91 @@
+{% from 'states/radicale/map.jinja' import radicale as radicale_map with context %}
+[server]
+
+hosts = 0.0.0.0:{{ radicale_map.ports.tcp[0] }}
+
+daemon = True
+ssl = False
+
+# Reverse DNS to resolve client address in logs
+dns_lookup = True
+
+# Root URL of Radicale (starting and ending with a slash)
+base_prefix = /
+
+# Possibility to allow URLs cleaned by a HTTP server, without the base_prefix
+can_skip_base_prefix = False
+
+# Message displayed in the client when a password is needed
+realm = Radicale - Password Required
+
+[encoding]
+
+# Encoding for responding requests
+request = utf-8
+
+# Encoding for storing local collections
+stock = utf-8
+
+[well-known]
+
+# Path where /.well-known/caldav/ is redirected
+caldav = '/%(user)s/caldav/'
+
+# Path where /.well-known/carddav/ is redirected
+carddav = '/%(user)s/carddav/'
+
+[auth]
+
+# Authentication method
+# Value: None | htpasswd | IMAP | LDAP | PAM | courier | http | remote_user | custom
+type = None
+
+[git]
+
+# Git default options
+committer = Radicale <radicale@example.com>
+
+[rights]
+
+# Rights backend
+# Value: None | authenticated | owner_only | owner_write | from_file | custom
+#type = None
+
+# Custom rights handler
+#custom_handler =
+
+# File for rights management from_file
+#file = ~/.config/radicale/rights
+file = /var/lib/radicale/rights
+
+[storage]
+
+# Storage backend
+# -------
+# WARNING: ONLY "filesystem" IS DOCUMENTED AND TESTED,
+#          OTHER BACKENDS ARE NOT READY FOR PRODUCTION.
+# -------
+# Value: filesystem | multifilesystem | database | custom
+#type = database
+type = filesystem
+
+# Folder for storing local collections, created if not present
+#filesystem_folder = ~/.config/radicale/collections
+filesystem_folder = /var/lib/radicale/collections
+
+[logging]
+
+# Logging configuration file
+# If no config is given, simple information is printed on the standard output
+# For more information about the syntax of the configuration file, see:
+# http://docs.python.org/library/logging.config.html
+config = /etc/radicale/logging
+# Set the default logging level to debug
+debug = False
+# Store all environment variables (including those set in the shell)
+full_environment = False
+
+[headers]
+
+# Additional HTTP headers
+#Access-Control-Allow-Origin = *

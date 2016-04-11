@@ -1,0 +1,25 @@
+{% set radicale = salt['grains.filter_by']({
+    'default': {
+        'packages': [
+            'radicale',
+        ],
+        'service': 'radicale',
+        'user': 'radicale',
+        'group': 'radicale',
+        'conf': {
+            'main_file': '/etc/radicale/config',
+            'logging_file': '/etc/radicale/logging',
+        },
+        'ports': {
+            'tcp': [5232],
+        },
+        'logging': {
+            'file': '/var/log/radicale/radicale.log',
+            'permissions': {
+                'user': 'radicale',
+                'group': 'radicale',
+                'mode': '0640',
+            },
+        },
+    },
+}, base='default') %}
