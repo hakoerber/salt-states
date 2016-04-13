@@ -1,0 +1,10 @@
+{% from 'states/dovecot/map.jinja' import dovecot as dovecot_map with context %}
+protocols = imap lmtp
+listen = *, ::
+
+base_dir = {{ dovecot_map.rundir }}
+instance_name = dovecot
+login_greeting = Dovecot ready.
+shutdown_clients = yes
+
+!include conf.d/*.conf

@@ -1,0 +1,38 @@
+{% from 'states/dovecot/map.jinja' import dovecot as dovecot_map with context %}
+mail_location = maildir:~/mail
+
+mail_uid = {{ dovecot_map.virtual_user }}
+mail_gid = {{ dovecot_map.virtual_user }}
+
+mail_full_filesystem_access = no
+
+maildir_copy_with_hardlinks = yes
+
+namespace inbox {
+  inbox = yes
+  type = private
+
+
+  mailbox Drafts {
+    special_use = \Drafts
+    auto = subscribe
+  }
+  mailbox Junk {
+    special_use = \Junk
+    auto = subscribe
+  }
+  mailbox Trash {
+    special_use = \Trash
+    auto = subscribe
+  }
+  mailbox Sent {
+    special_use = \Sent
+    auto = subscribe
+  }
+  mailbox All {
+    special_use = \All
+  }
+  mailbox Archive {
+    special_use = \Archive
+  }
+}

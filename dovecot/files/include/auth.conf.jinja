@@ -1,0 +1,15 @@
+{% from 'states/dovecot/map.jinja' import dovecot as dovecot_map with context %}
+disable_plaintext_auth = yes
+
+auth_mechanisms = plain
+
+passdb {
+  driver = passwd-file
+  args = username_format=%u {{ dovecot_map.conf.passwd_file }}
+}
+
+userdb {
+  driver = passwd-file
+  args = username_format=%u {{ dovecot_map.conf.passwd_file }}
+  default_fields = uid={{ dovecot_map.virtual_user }} gid={{ dovecot_map.virtual_user }} home={{ dovecot_map.virtual_home }}/%d/%u
+}

@@ -1,0 +1,13 @@
+{% from 'states/dovecot/map.jinja' import dovecot as dovecot_map with context %}
+ssl = required
+
+ssl_cert = <{{ dovecot_map.pkidir }}/{{ dovecot_map.pki.cert }}
+ssl_key =  <{{ dovecot_map.pkidir }}/{{ dovecot_map.pki.key }}
+
+ssl_dh_parameters_length = 2048
+
+ssl_verify_client_cert = no
+
+ssl_protocols = !SSLv2 !SSLv3
+ssl_cipher_list = ALL:!LOW:!SSLv2:!SSLv3:!EXP:!aNULL
+ssl_prefer_server_ciphers = yes

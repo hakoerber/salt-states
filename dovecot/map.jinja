@@ -1,0 +1,37 @@
+{% set dovecot = salt['grains.filter_by']({
+    'default': {
+        'packages': [
+            'dovecot',
+        ],
+        'service': 'dovecot',
+        'user': 'dovecot',
+        'login_user': 'dovenull',
+        'rundir': '/var/run/dovecot',
+        'conf': {
+            'main_file': '/etc/dovecot/dovecot.conf',
+            'passwd_file': '/etc/dovecot/passwd',
+            'includedir': '/etc/dovecot/conf.d',
+            'include': [
+                'auth',
+                'imap',
+                'lmtp',
+                'logging',
+                'mailbox',
+                'master',
+                'ssl',
+            ],
+        },
+        'pkidir': '/etc/dovecot/pki',
+        'pki': {
+            'cert': 'dovecot.crt',
+            'key': 'dovecot.key',
+        },
+        'virtual_user': 'vmail',
+        'virtual_home': '/var/spool/vmail',
+        'ports': {
+            'imap': {
+               'tcp': [143],
+            },
+        },
+    },
+}, base='default') %}

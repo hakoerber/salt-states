@@ -1,0 +1,37 @@
+{% from 'states/dovecot/map.jinja' import dovecot as dovecot_map with context %}
+default_login_user    = {{ dovecot_map.login_user }}
+default_internal_user = {{ dovecot_map.user }}
+
+service imap-login {
+  inet_listener imap {
+    port = {{ dovecot_map.ports.imap.tcp[0] }}
+  }
+  service_count = 1
+  process_min_avail = 0
+}
+
+service lmtp {
+  unix_listener /var/run/lmtp.sock {
+    user  = {{ lmtp_socket.user }}
+    group = {{ lmtp_socket.group }}
+    mode  = 0600
+  }
+}
+
+service imap {
+}
+
+service auth {
+  unix_listener auth-userdb {
+  }
+
+  unix_listener /var/run/dovecot-auth {
+    user  = {{ auth_socket.user }}
+    group = {{ auth_socket.group }}
+    mode = 0600
+  }
+}
+
+service auth-worker {
+  user = root
+}
