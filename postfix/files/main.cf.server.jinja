@@ -39,6 +39,10 @@ alias_database =
 virtual_mailbox_maps = hash:{{ postfix_map.virtual_mailbox_file }}
 virtual_alias_maps   = hash:{{ postfix_map.virtual_aliases_file }}
 
+{% if lmtp is not none %}
+# delivery
+virtual_transport = lmtp:unix:{{ lmtp.socket }}
+{% endif %}
 
 # handlers
 daemon_table_open_error_is_fatal = yes

@@ -20,6 +20,7 @@ postfix-main.cf:
         domain: {{ params.domain }}
         relay: {{ params.get('relay', 'null') }}
         domain_authorative: {{ params.domain_authorative }}
+        lmtp: {{ params.get('lmtp_relay', 'null') }}
 {% else %}
     - source: salt://states/postfix/files/main.cf.local.jinja
 {% endif %}
