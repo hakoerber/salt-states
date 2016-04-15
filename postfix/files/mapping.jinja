@@ -1,0 +1,4 @@
+{% for mapping in map %}
+{% set key, values = mapping.items()[0] %}
+{{ key }}	{{ values|join(', ') }}
+{% endfor %}

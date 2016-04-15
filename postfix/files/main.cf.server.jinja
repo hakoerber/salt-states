@@ -8,17 +8,21 @@ inet_interfaces = $myhostname, localhost
 inet_protocols  = all
 
 # receiving
+mydestination = localhost
 {% if domain_authorative %}
-mydestination        = $myhostname, localhost.$mydomain, localhost, $mydomain
+virtual_mailbox_domains = $myhostname, $mydomain
 {% else %}
-mydestination        = $myhostname, localhost.$mydomain, localhost
+virtual_mailbox_domains = $myhostname
 {% endif %}
-local_recipient_maps = $alias_maps
 
 # hostnames
 myhostname = {{ hostname }}
 mydomain   = {{ domain }}
 myorigin   = $mydomain
+
+# incoming rewriting
+append_at_myorigin = yes
+append_dot_mydomain = yes
 
 # misc
 allow_mail_to_commands =
@@ -29,10 +33,12 @@ smtp_cname_overrides_servername = no
 smtp_tls_block_early_mail_reply = yes
 strict_rfc821_envelopes = yes
 smtpd_helo_required = yes
+# users
+alias_maps     =
+alias_database =
+virtual_mailbox_maps = hash:{{ postfix_map.virtual_mailbox_file }}
+virtual_alias_maps   = hash:{{ postfix_map.virtual_aliases_file }}
 
-# lookups
-alias_maps     = hash:{{ postfix_map.aliasesfile }}
-alias_database = hash:{{ postfix_map.aliasesfile }}
 
 # handlers
 daemon_table_open_error_is_fatal = yes

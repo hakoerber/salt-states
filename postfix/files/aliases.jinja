@@ -1,4 +1,0 @@
-{% for alias in aliases %}
-{% set name, aliases = alias.items()[0] %}
-{{ name }}:	{{ aliases|join(', ') }}
-{% endfor %}

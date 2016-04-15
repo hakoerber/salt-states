@@ -44,20 +44,45 @@ postfix-master.cf:
     - require:
       - pkg: postfix
 
-postfix-aliases:
+postfix-virtual-mailboxes:
   file.managed:
-    - name: {{ postfix_map.aliasesfile }}
+    - name: {{ postfix_map.virtual_mailbox_file }}
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 644
-    - source: salt://states/postfix/files/aliases.jinja
+    - source: salt://states/postfix/files/mapping.jinja
     - template: jinja
     - defaults:
-        aliases: {{ postfix_map.aliases + params.get('aliases', []) }}
-    - watch_in:
-      - cmd: postfix-aliases
+        map:
+{% for accept in params.accept %}
+          - '{{ accept }}': _
+{% endfor %}
+    - onchanges_in:
+      - cmd: postfix-virtual-mailboxes
     - require:
       - pkg: postfix
 
-  cmd.wait:
-    - name: newaliases
+  cmd.run:
+    - name: postmap {{ postfix_map.virtual_mailbox_file }}
+    - user: root
+    - group: {{ defaults.rootgroup }}
+
+postfix-virtual-aliases:
+  file.managed:
+    - name: {{ postfix_map.virtual_aliases_file }}
+    - user: root
+    - group: {{ defaults.rootgroup }}
+    - mode: 644
+    - source: salt://states/postfix/files/mapping.jinja
+    - template: jinja
+    - defaults:
+        map: {{ postfix_map.aliases + params.get('aliases', []) }}
+    - onchanges_in:
+      - cmd: postfix-virtual-aliases
+    - require:
+      - pkg: postfix
+
+  cmd.run:
+    - name: postmap {{ postfix_map.virtual_aliases_file }}
+    - user: root
+    - group: {{ defaults.rootgroup }}

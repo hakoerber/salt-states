@@ -27,7 +27,8 @@
         'user': 'postfix',
         'group': 'postdrop',
 
-        'aliasesfile': '/etc/aliases',
+        'virtual_aliases_file': '/etc/postfix/virtual',
+        'virtual_mailbox_file': '/etc/postfix/vmailbox',
 
         'main_cf': '/etc/postfix/main.cf',
         'master_cf': '/etc/postfix/master.cf',
