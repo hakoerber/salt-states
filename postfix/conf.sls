@@ -48,6 +48,25 @@ postfix-master.cf:
     - require:
       - pkg: postfix
 
+postfix-login-map:
+  file.managed:
+    - name: {{ postfix_map.login_map }}
+    - user: root
+    - group: {{ defaults.rootgroup }}
+    - mode: 644
+    - contents: '/^(.+)$/ $1'
+    - watch_in:
+      - service: postfix
+    - onchanges_in:
+      - cmd: postfix-login-map
+    - require:
+      - pkg: postfix
+
+  cmd.run:
+    - name: postmap {{ postfix_map.login_map }}
+    - user: root
+    - group: {{ defaults.rootgroup }}
+
 postfix-virtual-mailboxes:
   file.managed:
     - name: {{ postfix_map.virtual_mailbox_file }}
