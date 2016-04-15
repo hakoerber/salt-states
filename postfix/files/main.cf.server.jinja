@@ -33,6 +33,9 @@ smtp_cname_overrides_servername = no
 smtp_tls_block_early_mail_reply = yes
 strict_rfc821_envelopes = yes
 smtpd_helo_required = yes
+smtpd_delay_reject = yes
+smtpd_reject_unlisted_recipient = yes
+
 # users
 alias_maps     =
 alias_database =
@@ -49,8 +52,7 @@ daemon_table_open_error_is_fatal = yes
 
 {% if ssl %}
 # tls
-smtpd_tls_security_level = may
-smtpd_tls_auth_only = yes
+smtpd_tls_received_header = yes
 smtpd_tls_key_file          = {{ postfix_map.pkidir }}/{{ postfix_map.key }}
 smtpd_tls_cert_file         = {{ postfix_map.pkidir }}/{{ postfix_map.cert }}
 smtpd_tls_dh1024_param_file = {{ postfix_map.pkidir }}/{{ postfix_map.dhparams }}

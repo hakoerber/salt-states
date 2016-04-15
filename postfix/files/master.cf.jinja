@@ -2,12 +2,41 @@
 # service  type  private unpriv  chroot  wakeup  maxproc command + args
 #                (yes)   (yes)   (yes)   (never) (100)
 # ==========================================================================
+# helo #reject_unknown_helo_hostname,permit
+# sender #reject_unknown_sender_domain,permit
 
 {% if listen_remote %}
 # listeners
 smtp       inet  n       -       n       -       -       smtpd
+{% if ssl %}
+  -o smtpd_tls_security_level=may
+  -o smtpd_sasl_auth_enable=no
 
 {% endif %}
+  -o smtpd_client_restrictions=permit
+  -o smtpd_helo_restrictions=reject_invalid_helo_hostname,reject_non_fqdn_helo_hostname
+  -o smtpd_sender_restrictions=reject_non_fqdn_sender
+  -o smtpd_relay_restrictions=reject_unauth_destination
+  -o smtpd_recipient_restrictions=reject_non_fqdn_recipient,reject_unlisted_recipient
+  -o smtpd_data_restrictions=reject_unauth_pipelining
+{% endif %}
+{% if auth is not none %}
+
+submission inet  n       -       n       -       -       smtpd
+  -o smtpd_tls_security_level=encrypt
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_sasl_type={{ auth.type }}
+  -o smtpd_sasl_path={{ auth.socket }}
+  -o smtpd_sasl_security_options=noanonymous
+
+  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+  -o smtpd_helo_restrictions=reject_invalid_helo_hostname,reject_non_fqdn_helo_hostname
+  -o smtpd_sender_restrictions=reject_non_fqdn_sender
+  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject_unauth_destination
+  -o smtpd_recipient_restrictions=reject_non_fqdn_recipient,reject_unknown_recipient_domain
+  -o smtpd_data_restrictions=reject_unauth_pipelining
+{% endif %}
+
 # internal
 pickup     unix  n       -       n       60      1       pickup
 cleanup    unix  n       -       n       -       0       cleanup
