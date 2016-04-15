@@ -18,7 +18,7 @@ postfix-main.cf:
         ssl: {{ params.get('ssl', false) }}
         hostname: {{ params.hostname }}
         domain: {{ params.domain }}
-        relay: {{ params.get('relay') }}
+        relay: {{ params.get('relay', 'null') }}
         domain_authorative: {{ params.domain_authorative }}
 {% else %}
     - source: salt://states/postfix/files/main.cf.local.jinja
