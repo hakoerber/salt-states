@@ -3,8 +3,9 @@
 
 {% include 'states/postfix/files/main.cf.common.jinja' with context %}
 
+
 # listening
-inet_interfaces = $myhostname, localhost
+inet_interfaces = all
 inet_protocols  = all
 
 # receiving
