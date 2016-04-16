@@ -20,13 +20,13 @@ smtp       inet  n       -       n       -       -       smtpd
   -o smtpd_recipient_restrictions=reject_non_fqdn_recipient,reject_unlisted_recipient
   -o smtpd_data_restrictions=reject_unauth_pipelining
 {% endif %}
-{% if auth is not none %}
+{% if submit is not none %}
 
 submission inet  n       -       n       -       -       smtpd
   -o smtpd_tls_security_level=encrypt
   -o smtpd_sasl_auth_enable=yes
-  -o smtpd_sasl_type={{ auth.type }}
-  -o smtpd_sasl_path={{ auth.socket }}
+  -o smtpd_sasl_type={{ submit.auth.type }}
+  -o smtpd_sasl_path={{ submit.auth.socket }}
   -o smtpd_sasl_security_options=noanonymous
 
   -o smtpd_client_restrictions=permit_sasl_authenticated,reject

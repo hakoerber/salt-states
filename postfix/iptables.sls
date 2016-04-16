@@ -20,11 +20,15 @@ postfix-iptables-{{ family }}-receive:
     - require:
       - iptables: chain_zone_public_ipv4
 
-{% if params.get('auth', none) is not none %}
+{% if params.get('submit', none) is not none %}
 postfix-iptables-{{ family }}-submit:
   iptables.append:
     - table: filter
+{% if params.submit.get('public', false) %}
     - chain: ZONE_PUBLIC
+{% else %}
+    - chain: ZONE_LOCAL
+{% endif %}
     - proto: tcp
     - jump: ACCEPT
     - dport: {{ postfix_map.ports.submit }}

@@ -21,7 +21,7 @@ postfix-main.cf:
         relay: {{ params.get('relay', 'null') }}
         domain_authorative: {{ params.domain_authorative }}
         lmtp: {{ params.get('lmtp_relay', 'null') }}
-        auth: {{ params.get('auth', 'null') }}
+        submit: {{ params.get('submit', 'null') }}
 {% else %}
     - source: salt://states/postfix/files/main.cf.local.jinja
 {% endif %}
@@ -41,7 +41,7 @@ postfix-master.cf:
     - template: jinja
     - defaults:
         ssl: {{ params.get('ssl', false) }}
-        auth: {{ params.get('auth', 'null') }}
+        submit: {{ params.get('submit', 'null') }}
         listen_remote: {{ params.listen_remote }}
     - watch_in:
       - service: postfix
