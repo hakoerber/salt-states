@@ -15,10 +15,11 @@ nginx-pkidir:
     - require:
       - pkg: nginx
 
-{% set commoncert = false %}
+{% set no_commoncert = [] %}
 {% for domain in params.domains %}
 {% if domain.get('ssl_cert', false) %}
 {% set main_name = domain.names[0] %}
+{% do no_commoncert.append(1) %}
 nginx-pkidir-{{ main_name }}:
   file.directory:
     - name: {{ nginx_map.conf.confdir }}/{{ nginx_map.pki.pkidir }}/{{ main_name }}
@@ -53,12 +54,10 @@ nginx-ssl-key-{{ main_name }}:
       - file: nginx-pkidir-{{ main_name }}
     - watch_in:
       - service: nginx
-{% else %}
-{% set commoncert = true %}
 {% endif %}
 {% endfor %}
 
-{% if commoncert %}
+{% if not no_commoncert %}
 nginx-ssl-cert:
   file.managed:
     - name: {{ nginx_map.conf.confdir }}/{{ nginx_map.pki.pkidir }}/{{ nginx_map.pki.cert }}
