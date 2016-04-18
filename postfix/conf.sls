@@ -21,7 +21,8 @@ postfix-main.cf:
         relay: {{ params.get('relay', 'null') }}
         domain_authorative: {{ params.domain_authorative }}
         lmtp: {{ params.get('lmtp_relay', 'null') }}
-        submit: {{ params.get('submit', 'null') }}
+        relay_subnet: {{ params.get('relay_subnet', 'null') }}
+        trusted_networks: {{ params.get('trusted_networks', 'null') }}
 {% else %}
     - source: salt://states/postfix/files/main.cf.local.jinja
 {% endif %}

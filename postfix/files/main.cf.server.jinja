@@ -66,13 +66,11 @@ smtpd_tls_received_header = yes
 {% endif %}
 
 # relaying
+{% if trusted_networks %}
+mynetworks = {{ trusted_networks|join(' ') }}
+{% elif relay_subnet %}
+mynetworks_style = subnet
+{% else %}
 mynetworks_style = host
-relay_domains =
-{% if relay is not none %}
-relayhost = [{{ relay.server }}]:{{ relay.port|default(postfix_map.ports.submit) }}
-smtp_use_tls = yes
-smtp_sasl_auth_enable = yes
-smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
-smtp_sasl_security_options = noanonymous
-smtp_tls_CAfile = {{ postfix_map.ca_file }}
 {% endif %}
+relay_domains =
