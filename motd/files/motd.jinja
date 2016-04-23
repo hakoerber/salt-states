@@ -1,0 +1,19 @@
+Master:     : {{ grains.get('master', 'unknown') }}
+Minion ID   : {{ grains.get('id', 'unknown') }}
+
+FQDN        : {{ grains.get('fqdn', 'unknown') }}
+
+Domains:
+{% for domain in domains %}
+- {{ domain }}
+{% endfor %}
+
+Networks:
+{% for network in networks %}
+- {{ network }}
+{% endfor %}
+
+Configured roles:
+{% for role in roles %}
+- {{ role }}
+{% endfor -%}

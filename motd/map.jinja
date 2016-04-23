@@ -1,0 +1,5 @@
+{% set motd = salt['grains.filter_by']({
+    'default': {
+        'path': '/etc/motd',
+    }
+}, base='default') %}
