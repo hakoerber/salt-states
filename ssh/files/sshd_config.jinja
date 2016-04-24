@@ -9,7 +9,7 @@ AuthorizedKeysFile .ssh/authorized_keys
 PasswordAuthentication no
 ChallengeResponseAuthentication no
 UsePAM yes
-PrintMotd no
+PrintMotd yes
 SyslogFacility LOCAL2
 {# OpenSSH before 5.9 do not support sandboxing #}
 {% if grains['os_family'] == 'RedHat' and grains['osmajorrelease']|int < 7 %}
