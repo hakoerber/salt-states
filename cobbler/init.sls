@@ -13,7 +13,7 @@ cobbler:
 
 cobbler-sync:
   cmd.run:
-    - name: cobbler sync
+    - name: 'sleep 1 ; cobbler sync'
     - user: root
     - group: {{ defaults.rootgroup }}
     - onchanges:
