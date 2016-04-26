@@ -1,0 +1,7 @@
+This state is deprecated because of the following issues with seafile:
+
+* Very strange file format and setup process that makes it very hard to automate
+* Security concerns (e.g. https://github.com/haiwen/seafile/issues/350)
+* Lacking android client
+
+Instead, owncloud will be used.
