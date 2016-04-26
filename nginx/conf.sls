@@ -107,5 +107,5 @@ nginx-{{ name }}.conf-absent:
 {{ include_conf(name, include, context, include_states) }}
 
 {% set name = '30_local_status' %}
-{% set include = True %}
+{% set include = params.get('local_status', True) %}
 {{ include_conf(name, include) }}
