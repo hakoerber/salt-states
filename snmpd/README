@@ -1,0 +1,10 @@
+# Supported Platforms
+
+* CentOS 7
+
+# Parameters
+
+* conf:
+    sysinfo:
+      location(string): Location to report for the host
+      contact(string): Contact to report for the host

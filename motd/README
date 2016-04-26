@@ -1,0 +1,12 @@
+# Supported Platforms
+
+* CentOS 7
+* Ubuntu 14.04
+* FreeBSD 10
+
+# Parameters
+
+* init:
+    domains(list of strings optional): Domains the node belongs to
+    networks(list of strings optional): Networks the node belongs to
+    roles(list of strings optional): Roles applied to the node

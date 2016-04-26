@@ -1,0 +1,10 @@
+# Supported Platforms
+
+* CentOS 7
+* Ubuntu 14.04
+
+# Parameters
+
+* server.conf:
+    listen_address(list of string): Hostnames or Addresses to listen on, or
+        'all' to listen on all interfaces

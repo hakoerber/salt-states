@@ -1,0 +1,9 @@
+# Supported Platforms
+
+* CentOS 7
+
+# Parameters
+
+* init:
+    search(list of string): Search list for lookup, see resolv.conf(5)
+    nameservers(list of strings): IP of nameservers to use

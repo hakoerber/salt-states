@@ -1,0 +1,31 @@
+# Supported Platforms
+
+* CentOS 7
+* FreeBSD 10
+* Ubuntu 14.04
+
+# Parameters
+
+* init:
+    users(string):
+      groups(list, optional): The groups the user belongs to
+      uid(int, optional): User ID, automatically assigned if missing
+      shell(string, optional): Shell of the user
+      home(string, optional): Home directory of the user
+      dotfiles(list):
+        name(string): Name of the application to configure dotfiles for
+        packages(list of string): Packages required for the application
+        files(list):
+          template(bool, False): Render file as a jinja template
+          name(string): filename relative to the user's home directory, without
+              the leading dot
+      ssh(optional):
+        authorized_keys(list, optional):
+          key(string): SSH public key to allow connections from
+          comment(string): Commend to apply to the key
+          type(string): Type of the key, see 'enc' at https://docs.saltstack.com/en/latest/ref/states/all/salt.states.ssh_auth.html#salt.states.ssh_auth.present
+        authorized_users(list of string, optional): Users whose public keys are
+            allowed to connect to this user
+
+* dotfiles: See init
+* ssh: See init

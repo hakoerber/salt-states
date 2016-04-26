@@ -1,0 +1,33 @@
+# Supported Platforms
+
+* CentOS 7
+* Ubuntu 14.04
+* FreeBSD 10
+
+# Parameters
+
+* master.conf:
+    repos(list):
+      url(string): URL of the git repo
+      base(string, 'master'): Branch to use
+      mount(string, optional): Subdirectory to mount the repo at, if omitted,
+          will be mounted at the root (salt://)
+
+* master.nodegroups:
+    nodegroups(list):
+      name(string): Name of the nodegroup
+      match(string): Criteria to assign nodes to the group (see https://docs.saltstack.com/en/latest/topics/targeting/nodegroups.html)
+
+* master.reactor:
+    events(list):
+      match(string): Event tags to match (see https://docs.saltstack.com/en/latest/topics/reactor/)
+      sls(list of string): SLS to execute on match
+
+* master.cherrypy:
+    users(list):
+      name(string): Username
+      password(string): Hashed password to use for authentication
+      capabilities(list of string): Capabilities of the user (see https://docs.saltstack.com/en/latest/topics/eauth/index.html#access-control-system)
+
+* minion.conf:
+    master(string): Hostname or IP of the salt master

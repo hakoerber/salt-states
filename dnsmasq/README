@@ -1,0 +1,11 @@
+# Supported Platforms
+
+* CentOS 7
+
+# Parameters
+
+* conf.local:
+    domain(string): Lookups for this domain will be redirected to the specified
+        nameservers
+    reverse_domain(string): Reverse domain (ending with '.in-addr.arpa')
+    nameservers(list of string): IP addresses of the nameservers

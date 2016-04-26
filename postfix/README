@@ -1,0 +1,35 @@
+# Supported Platforms
+
+* CentOS 7
+
+# Parameters
+
+* conf:
+    listen_remote(bool): Act as a mail relay, only listen locally otherwise
+    ssl(bool, False): Use SSL when receiving mail via SMTP
+    hostname(string): Hostname of the mail server
+    domain(string): Domain of the mail server
+    relay(string, None):
+    domain_authorative(bool): Receive mail from the whole domain
+    lmtp_relay(optional):
+      socket(string): Socket to deliver mail to via LMTP
+    relay_subnet(string, None): Relay mail from the local subnet, overridable
+        by trusted_networks
+    trusted_networks(list of strings, None): Networks to relay mail from
+    submit(optional):
+      auth:
+        type: Plugin to use for submission authentication, see 'postconf -a'
+            for list of available options
+        socket: The socket to use for authentication
+    accept(list of string): List of users to receive mail for
+    aliases(list, optional):
+      name(string): Address to forward from
+        to(list of string): Addresses to forward to
+
+* iptables:
+    submit(string, None): see conf:submit
+    public(bool, False): Listen on the PUBLIC zone instead of LOCAL
+
+* pki:
+    master_dhparams(bool, False): Use 'dhparams.pem' from the 'postfix:ssl'
+        pillar, otherwise the dhparams file is created automatically

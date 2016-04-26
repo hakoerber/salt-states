@@ -1,0 +1,9 @@
+# Supported Platforms
+
+* CentOS 7
+* Ubuntu 14.04
+
+# Parameters
+
+* init:
+    hostname(string): The hostname to set.

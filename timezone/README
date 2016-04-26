@@ -1,0 +1,10 @@
+# Supported Platforms
+
+* CentOS 7
+* Ubuntu 14.04
+* FreeBSD 10
+
+# Parameters
+
+* init:
+    timezone(string): The timezone to set

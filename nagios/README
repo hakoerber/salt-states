@@ -1,0 +1,42 @@
+# Supported Platforms
+
+* CentOS 7
+* FreeBSD 10
+
+# Parameters
+
+* check_mk.agent.conf:
+    port(int, optional): Port to listen on
+    servers(list):
+      ip(string): IP address of the nagios server
+
+* check_mk.agent.iptables:
+    see check_mk.agent.conf
+
+* check_mk.server.livestatus.export:
+    allow_from(list of string, optional): List of IP addresses to accept
+        connections from. If omitted, no connections will be accepted.
+
+* check_mk.server.conf:
+    hosts(list):
+      name(string): hostname of node to monitor
+      groups(list of string): Groups to apply to the host
+      use_ip(bool, False): Monitor by IP instead of hostname
+      ip(string, required if use_ip): host IP
+      snmp:
+        community(string, 'public'): SNMP community to use by default
+
+* check_mk.server.notifications:
+    contactgroups(list):
+      name(string): Group name
+      description(string, name): Group description
+    contacts(list):
+      name(string): Contact name
+      groups(list of string, empty): Contactgroups this contact belongs to
+      email(string): Email address of the contact
+    notifications(list):
+      users(list of string, empty): Users to apply to the notification rule
+      groups(list of string, empty): Groups to apply to the notification rule
+      type(string): Type of notification rule
+        available:
+          'mail': Email notification

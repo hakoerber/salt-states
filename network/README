@@ -1,0 +1,22 @@
+# Supported Platforms
+
+* CentOS 7
+* Ubuntu 14.04
+
+# Parameters
+
+* init:
+    hostname(string): Hostname of the node
+    interfaces(list):
+      name(string): Interface name
+      type(string): Interface type
+      mac(string): MAC address of the interface
+      mode(string): Configuration mode of the interface
+        available:
+          'dhcp': Configure interface with DHCP
+          'static': Configure the interface explicitly
+      # required if mode == 'static':
+      address(string): IP address to assign
+      netmask(string): Netmask to use (dot-decimal notation)
+      nameservers(list of string): IP addresses of DNS servers to use
+      gateway(string): IP address of gateway to use

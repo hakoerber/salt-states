@@ -1,0 +1,12 @@
+# Supported Platforms
+
+* CentOS 7
+
+# Parameters
+
+* conf:
+    hostname(string, optional): FQDN of the node
+    domain(string): Domain of the node
+    cluster(optional):
+      nodes(list):
+        name(string): Hostname of the cluster node

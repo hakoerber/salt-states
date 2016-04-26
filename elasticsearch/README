@@ -1,0 +1,20 @@
+# Supported Platforms
+
+* CentOS 7
+
+# Parameters
+
+* conf:
+    cluster(dict or None): If None, do not join cluster
+      name(string, 'elasticsearch'): Name of the cluster
+      nodes(list):
+        name(string): name of the cluster node
+        min_masters(int): Minimum amount of potential masters to reach quorum.
+                          If omitted, a sensible default will be used.
+    nodename(string, '${HOSTNAME}'): name of the node in the cluster
+    master(bool, True): Act as master node
+    data(bool, True): Act as data node
+    local(bool, False): Allow query only from localhost
+
+* iptables:
+    local(bool, False): Allow query only from localhost

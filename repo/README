@@ -1,0 +1,14 @@
+# Supported Platforms
+
+* CentOS 7
+
+# Parameters
+
+* repo.local:
+    localrepos:
+      repo(string): Name of the repo
+        mirrors(list):
+          name: Hostname of the mirror server
+          domain: Domain of the mirror server
+          url: Path to the mirror on the server
+          gpg(bool, True): Check GPG signatures for the server

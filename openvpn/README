@@ -1,0 +1,49 @@
+# Supported Platforms
+
+* CentOS 7
+* Ubuntu 14.04
+
+# Parameters
+
+* cilent.init:
+    vpns(list):
+      name(string): Name of the VPN
+      port(int): Port of the VPN server
+      proto(string): Protocol to use, either 'tcp' or 'udp'
+      devname(string): Name of the VPN network interface
+      dev(string): Type of VPN network interface, either 'tun' or 'tap'
+      compress(bool): Use LZO compression
+      cipher(string): Cipher to use for the VPN
+      digest(string): MAC digest to use
+      tls_ciphers(list of string): Available ciphers for the TLS connection
+      ipv6(bool, False): Use IPv6 additionally
+      gateway(string): Gateway address of the VPN
+      netmask(string): Gateway netmask of the VPN
+      dhcp_pool(optional):
+        start(string): First IP address of the DHCP pool
+        end(string): Last IP address of the DHCP pool
+      server:
+        ip(string): IP or hostname of the VPN server
+      client:
+        options:
+          ip(string, 'dhcp'): Static IP address for the client or 'dhcp'
+          allow_forward(list of string, 'all'): IPs to allow connections to,
+              or 'all' to forward all connections
+          advertise_subnet(optional):
+            ip(string): IP of the subnet to advertise
+            mask(string): Subnet mask of the subnet to advertise
+      clients(list):
+        See vpns:client
+
+
+* client.conf: See client.init
+* client.pki: See client.init
+* client.logging: See client.init
+* client.iptables: See client.init
+* client.routing: See client.init
+
+* server.init: See client.init
+* server.conf: See client.init
+* server.pki: See client.init
+* server.logging: See client.init
+* server.iptables: See client.init

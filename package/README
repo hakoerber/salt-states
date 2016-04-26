@@ -1,0 +1,10 @@
+# Supported Platforms
+
+* CentOS 7
+* Ubuntu 14.04
+
+# Parameters
+
+* autoupdate.conf:
+    mode(string): Autoupdate mode, 'all' to apply all updates, only security
+        updates otherwise

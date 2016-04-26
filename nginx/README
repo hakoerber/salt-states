@@ -1,0 +1,49 @@
+# Supported Platforms
+
+* CentOS 7
+
+# Parameters
+
+* conf:
+    user(string, optional): User to run nginx as, distro default will be used
+        if missing
+    group(string, optional): Group to run nginx as, distro default will be used
+        if missing
+    reverse_proxy(optional):
+      force_https(bool, False): Redirect all HTTP requests to HTTPS
+      protocol(list of strings): Protocols to use, available: 'http', 'https'
+      ssl:
+        simple(bool, False): Use simple SSL config (no HSTS, OCSP)
+      upstream:
+        servernames(list of strings): Server names to listen on
+        url(string): URL to proxy to
+        protocols(list of strings, optional): Override reverse_proxy:protocol
+            per server
+        redirect_from(list of strings, optional): Additional server names to
+            redirect from
+    static_content(string, False):
+      protocol(string): Protocol to use, either 'http' or 'https'
+      server_name(string): The servername for the server
+      autoindex(bool, False): Generate auto index for directories
+    ipv6(bool, False): Also use IPv6
+    acme_backend(optional):
+      ip(string): IP address of the acme backend
+    acme(bool, False): Act as an ACME backend
+    cgi(optional):
+      socket(string): Path to local CGI socket to use
+      params(dict string => string): Additional CGI params to use
+    local_status(bool, True): Expose nginx status to localhost
+
+* iptables:
+    ipv6(bool, False): See conf:ipv6
+    public(bool, False): Listen on the PUBLIC zone instead of LOCAL
+
+* pki:
+    domains(list):
+      names(list of strings): SSL domain names, first one is primary name
+      ssl_cert(bool, False): Use domain specific cert
+      master_dhparams(bool, False): Use 'dhparams.pem' from the 'ssl' pillar
+
+* selinux:
+    network_connect(bool, False): Allow nginx to connect to the network (most
+        likely needed for reverse proxying)

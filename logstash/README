@@ -1,0 +1,21 @@
+# Supported Platforms
+
+* CentOS 7
+
+# Parameters
+
+* conf:
+    listeners(list):
+      protocol(string): listener protocol (https://www.elastic.co/guide/en/logstash/current/input-plugins.html)
+      type(string): type to apply to the listener
+      port(int): port to listen on
+      codec(string): codec to apply to the listener
+    outputs(list):
+      type(string): type of outputter (https://www.elastic.co/guide/en/logstash/current/output-plugins.html)
+      args(dict): Arbitrary parameters to pass to the output plugin
+
+* iptables:
+    listeners(list):
+      protocol: see conf:listeners
+      type: see conf:listeners
+      port: see conf:listeners

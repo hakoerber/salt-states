@@ -1,0 +1,15 @@
+# Supported Platforms
+
+* CentOS 7
+* Ubuntu 14.04
+* FreeBSD 10
+
+# Parameters
+
+* conf:
+    group(string): Group for users that may execute commands as root via sudo
+    group_nopw(string): Like group, but without password
+    policies(list):
+      name(string): Username or group the policy applies to
+      nopasswd(bool, False): Do not require a password
+      targets(list of string): Allowed commands

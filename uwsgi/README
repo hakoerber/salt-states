@@ -1,0 +1,10 @@
+# Supported Platforms
+
+* CentOS 7
+
+# Parameters
+
+* conf:
+    user(string): User the socket belongs to
+    group(string): Groups the socket belongs to
+    backend(string): Path to the backend

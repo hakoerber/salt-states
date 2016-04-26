@@ -1,0 +1,40 @@
+# Supported Platforms
+
+* CentOS 7
+
+# Parameters
+
+* conf:
+    networks(list of strings): IP addresses of networks to serve
+    listen(string): IP address to listen on
+    dnssec(bool, False): Enable DNSSEC
+    forwarders(list of strings): IP addresses of upstream servers
+    role(string): either 'master' or 'slave', defining server role
+    domain(string): Domain this server is authorative for
+    domain_reverse(string): Reverse domain (ending with '.in-addr.arpa')
+    slaves(list):
+      ip(string): IP addresses of slave servers
+    master:
+      ip(string): IP address of the master server
+    zoneinfo:
+      ttl(int):
+      class(string):
+      hostmaster(string):
+      refresh(int):
+      retry(int):
+      expire(int):
+      nameservers(list):
+        name(string): Hostname of nameserver
+        domain(string): Domain of nameserver
+      mailservers(list):
+        name(string): Hostname of mailserver
+        domain(string): Domain of mailserver
+        priority(int): Mailserver priority
+      records(list):
+        dns:
+          arecords(list of strings): A Records for the host
+          subdmains(list of strings, optional): Subdomains for each A Record
+          cnames(list of strings, optional): Additional CNAMEs for the host
+        ip: IP address of the host
+
+* zones: See conf

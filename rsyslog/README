@@ -1,0 +1,15 @@
+# Supported Platforms
+
+* CentOS 7
+* Ubuntu 14.04
+* FreeBSD 10
+
+# Parameters
+
+* conf.client:
+    servers(list):
+      listeners(list):
+        name(string): Hostname of the log server
+        domain(string): Domain of the log server
+        port(int): Port to connect to
+        protocol(string): Protocol to use

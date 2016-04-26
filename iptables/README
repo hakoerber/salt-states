@@ -1,0 +1,11 @@
+# Supported Platforms
+
+* CentOS 7
+* Ubuntu 14.04
+
+# Parameters
+
+* zones:
+    zones(list):
+      name(string): Name of the zone
+      sources(list of string): List of source IPs that make up the zone

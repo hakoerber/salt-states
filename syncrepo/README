@@ -1,0 +1,15 @@
+# Supported Platforms
+
+* CentOS 7
+
+# Parameters
+
+* conf:
+    base(string): Local path to sync to
+    repos(list):
+      path(string): Remote path to mirror
+      host(string): Hostname of the mirror
+
+* cron:
+    minute(string): minute part of the cron job
+    hour(string): hour part of the cron job

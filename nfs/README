@@ -1,0 +1,16 @@
+# Supported Platforms
+
+* CentOS 7
+
+# Parameters
+
+* mount:
+    mounts(list):
+      path(string): Path to the mountpoint
+      server:
+        name(string): Server to connect to
+        path(string): Remove path to mount
+      version(int, 3): NFS version to use
+
+* selinux:
+    homedirs_on_nfs(bool, False): Allow home directories over NFS

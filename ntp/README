@@ -1,0 +1,19 @@
+# Supported Platforms
+
+* CentOS 7
+* Ubuntu 14.04
+
+# Parameters
+
+* conf:
+    is_server(bool): Act as NTP server
+    external_servers(list of string, none): External NTP servers to use
+    authorative(bool): If False, use other local servers instead of external
+        ones
+    authorative_servers(list): Authorative local timeservers
+      ip(string): IP of the local server
+    servers(list): All local timeservers
+      ip(string): IP of the local server
+    network:
+      ip(string): IP of the network to serve
+      netmask(string): Netmask of the network to serve, in dot-decimal format

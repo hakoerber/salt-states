@@ -1,7 +1,25 @@
-Supported platforms:
+# Supported Platforms
 
 * CentOS 7
 
-Supported ownCloud versions:
+# Supported ownCloud versions
 
 * 8.1
+
+# Parameters
+
+* conf:
+    trusted_domains(list of string): FQDNs to accept connections as
+    salt(string): Salt to use for storing passwords
+    secret(string): Used for various purposes, cannot be changed without data
+        loss
+    version(string): Owncloud version
+    db:
+      type(string): Database connection type, see https://doc.owncloud.org/server/8.1/admin_manual/configuration_server/config_sample_php_parameters.html#default-parameters)
+      name(string): Database name
+      host(string): Database host
+      user(string): Database user
+      password(string): Database password
+    instance_id(string): Owncloud instance ID
+    host(string): Hostname of the owncloud instance
+    webroot(string): Webroot of owncloud, e.g. '/owncloud'

@@ -1,0 +1,13 @@
+# Supported Platforms
+
+* CentOS 7
+
+# Parameters
+
+* conf:
+    lmtp_socket(string): socket provided for LMTP delivery
+    auth_socket(string): socket provided for authentication
+    users:
+      name(string): username
+      password_scheme(string): see http://wiki.dovecot.org/Authentication/PasswordSchemes
+      password: user password hashed according to password_scheme

@@ -1,0 +1,9 @@
+# Supported Platforms
+
+* CentOS 7
+
+# Parameters
+
+* conf:
+
+    default_password(string): hash of the root password used for new installs

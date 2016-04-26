@@ -1,0 +1,33 @@
+# Supported Platforms
+
+* CentOS 7
+
+# Parameters
+
+* conf:
+    domain(string): Domain to serve
+    role(string): Either 'primary' or 'secondary', detemining server role
+    primary:
+      ip(string): IP address of the primary server
+      port(int, optional): Primary server port for failover communications
+    secondary:
+      ip(string): IP address of the secondary server
+      port(int, optional): Secondary server port for failover communications
+    nameservers(list):
+      name(string): Hostname of the nameserver
+    ntpservers(list):
+      name(string): Hostname of the timeserver
+    network:
+      ip(string): IP address of the network to serve
+      netmask(string): Network mask of the network to serve (dot-decimal)
+      default_gateway(string): Default gateway of the network
+      dhcpoptions(dict): additional options to set (key => value)
+    range:
+      start(string): First IP address in the DHCP pool
+      end(string): Last IP address in the DHCP pool
+    reservations(list):
+      name(string): Hostname of the reserved host
+      mac(string): MAC address of the host to reserve
+      ip(string): IP address to assign to the reserved host
+
+* iptables: See conf

@@ -1,0 +1,8 @@
+# Supported Platforms
+
+* CentOS 7
+
+# Parameters
+
+* conf:
+    password(string): Server password
