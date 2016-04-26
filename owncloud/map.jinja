@@ -1,0 +1,29 @@
+{% set owncloud = salt['grains.filter_by']({
+    'default': {
+        'packages': [
+            'httpd',
+            'owncloud',
+            'owncloud-postgresql',
+            'php-pecl-apcu',
+        ],
+        'service': 'httpd',
+        'conf_file': '/etc/owncloud/config.php',
+        'user': 'apache',
+        'group': 'apache',
+        'datadir': '/var/lib/owncloud',
+        'logging': {
+            'file': '/var/log/owncloud.log',
+            'permissions': {
+                'user': 'apache',
+                'group': 'apache',
+                'mode': '0640',
+            },
+        },
+        'selinux': {
+            'booleans': {
+                'httpd_can_network_connect_db': '1',
+                'httpd_use_nfs': '1',
+            },
+        },
+    }
+}, base='default') %}

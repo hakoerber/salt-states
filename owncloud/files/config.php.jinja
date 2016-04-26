@@ -1,0 +1,65 @@
+{% from 'states/owncloud/map.jinja' import owncloud as owncloud_map with context %}
+{% set trusted_domains = params.get('trusted_domains', []) %}
+<?php
+$CONFIG = array (
+  'passwordsalt' => '{{ params.salt }}',
+  'secret' => '{{ params.secret }}',
+  'trusted_domains' =>
+    array (
+      'localhost',
+{% for domain in trusted_domains %}
+      '{{ domain }}',
+{% endfor %}
+    ),
+  'datadirectory' => '{{ owncloud_map.datadir }}',
+  'dbtype' => '{{ params.db.type }}',
+  'version' => '{{ params.version }}',
+  'dbname' => '{{ params.db.name }}',
+  'dbhost' => '{{ params.db.host }}',
+  'dbtableprefix' => 'oc_',
+  'dbuser' => '{{ params.db.user }}',
+  'dbpassword' => '{{ params.db.password }}',
+  'logtimezone' => 'UTC',
+  'installed' => true,
+  'instanceid' => '{{ params.instance_id }}',
+  'memcache.local' => '\OC\Memcache\APCu',
+
+  'default_language' => 'en',
+  'defaultapp' => 'files',
+  'knowledgebaseenabled' => false,
+  'enable_avatars' => true,
+  'allow_user_to_change_display_name' => true,
+  'remember_login_cookie_lifetime' => 60 * 60 * 24 * 30,
+  'session_lifetime' => 60 * 60 * 24,
+  'session_keepalive' => true,
+
+  'overwritehost' => '{{ params.host }}',
+  'overwriteprotocol' => 'https',
+  'overwritewebroot' => '{{ params.webroot }}',
+  'overwrite.cli.url' => 'https://{{ params.host }}{{ params.webroot }}',
+
+  'trashbin_retention_obligation' => 30,
+  'trashbin_auto_expire' => true,
+
+  'updatechecker' => false,
+  'has_internet_connection' => false,
+  'check_for_working_webdav' => false,
+  'check_for_working_htaccess' => true,
+  'config_is_read_only' => false,
+
+  'log_type' => 'owncloud',
+  'logfile' => '{{ owncloud_map.logging.file }}',
+  'loglevel' => 2,
+  'cron_log' => true,
+
+  'appstoreenabled' => false,
+
+  'enable_previews' => true,
+
+  'maintenance' => false,
+  'singleuser' => false,
+
+  'cipher' => 'AES-256-CFB',
+
+  'filesystem_check_changes' => 1,
+);
