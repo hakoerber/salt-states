@@ -65,7 +65,7 @@ nginx-{{ name }}.conf-absent:
 {% endmacro %}
 
 {% set name = '10_force_https' %}
-{% set include = params.get('reverse_proxy', {}).get('protocol', []) == ['https'] %}
+{% set include = params.get('reverse_proxy', {}).get('force_https', False) %}
 {% set context = {'ipv6': params.get('ipv6', False)} %}
 {{ include_conf(name, include, context) }}
 
