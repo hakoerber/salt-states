@@ -2,10 +2,6 @@
 {% from 'states/ssh/map.jinja' import ssh as ssh_map with context %}
 {% from 'states/defaults.map.jinja' import defaults with context %}
 
-.params:
-    stateconf.set: []
-# --- end of state config ---
-
 {% for keytype in ssh_map.server.keytypes %}
 hostkey-{{ keytype }}:
   file.managed:

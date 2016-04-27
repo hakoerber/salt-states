@@ -1,10 +1,5 @@
-#!stateconf
 {% from 'states/salt/map.jinja' import salt as salt_map with context %}
 {% from 'states/defaults.map.jinja' import defaults with context %}
-
-.params:
-    stateconf.set: []
-# --- end of state config ---
 
 salt-inventory-conf:
   file.managed:

@@ -1,9 +1,4 @@
-#!stateconf
 {% from 'states/bind/map.jinja' import bind as bind_map with context %}
-
-.params:
-    stateconf.set: []
-# --- end of state config ---
 
 bind:
   pkg.installed:

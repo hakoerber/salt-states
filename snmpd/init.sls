@@ -1,9 +1,4 @@
-#!stateconf
 {% from 'states/snmpd/map.jinja' import snmpd as snmpd_map with context %}
-
-.params:
-    stateconf.set: []
-# --- end of state config ---
 
 snmpd:
   pkg.installed:

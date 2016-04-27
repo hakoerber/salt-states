@@ -1,9 +1,3 @@
-#!stateconf
-
-.params:
-    stateconf.set: []
-# --- end of state config ---
-
 ip_forward:
   sysctl.present:
     - name: net.ipv4.ip_forward

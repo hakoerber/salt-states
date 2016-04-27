@@ -1,9 +1,4 @@
-#!stateconf
 {% from 'states/uwsgi/map.jinja' import uwsgi as uwsgi_map with context %}
-
-.params:
-    stateconf.set: []
-# --- end of state config ---
 
 uwsgi:
   pkg.installed:
