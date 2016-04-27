@@ -31,7 +31,7 @@ openvpn-server-{{ vpn.name }}-ccd:
     - group: {{ defaults.rootgroup }}
     - mode: 755
 
-{% for client in vpn.get('clients', {}) %}
+{% for client in vpn.get('clients', []) %}
 {% set client_options = client.get('options', {}) %}
 {% if client.options.get('ip', 'dhcp') != 'dhcp' or client.options.advertise_subnet is defined %}
 openvpn-server-{{ vpn.name }}-ccd-{{ client.name }}:
