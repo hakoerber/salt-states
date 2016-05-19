@@ -1,10 +1,30 @@
-{% from 'states/defaults.map.jinja' import defaults with context %}
-user={{ defaults.nobody }}
-group={{ defaults.nogroup }}
+{% from 'states/dnsmasq/map.jinja' import dnsmasq as dnsmasq_map with context %}
+user={{ dnsmasq_map.user }}
+group={{ dnsmasq_map.group }}
 
 listen-address=127.0.0.1
+bind-interfaces
+
+{% for domain_override in domain_overrides %}
+{% for server in domain_override.nameservers %}
+server=/{{ domain_override.domain }}/{{ server }}
+server=/{{ domain_override.reverse_domain }}/{{ server }}
+{% endfor %}
+{% endfor %}
 
 {% for nameserver in nameservers %}
-server=/{{ domain }}/{{ nameserver }}
-server=/{{ reverse_domain }}/{{ nameserver }}
+server={{ nameserver }}
 {% endfor %}
+
+{%- if not read_hostsfile %}
+no-hosts
+{% endif -%}
+
+{%- if not read_resolv %}
+no-resolv
+{% endif -%}
+
+domain-needed
+
+# do not cache NXDOMAIN
+no-negcache

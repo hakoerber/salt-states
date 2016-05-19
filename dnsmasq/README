@@ -5,7 +5,11 @@
 # Parameters
 
 * conf.local:
-    domain(string): Lookups for this domain will be redirected to the specified
-        nameservers
-    reverse_domain(string): Reverse domain (ending with '.in-addr.arpa')
-    nameservers(list of string): IP addresses of the nameservers
+    domain_overrides(list):
+      domain(string): Lookups for this domain will be redirected to the
+          specified nameservers
+      reverse_domain(string): Reverse domain (ending with '.in-addr.arpa')
+      nameservers(list of string): IP addresses of the nameservers
+    nameservers(list of strings, optional): Nameservers to forward requests to
+    read_resolv(bool, True): Read /etc/resolv.conf
+    read_hostsfile(bool, True): Read /etc/hosts

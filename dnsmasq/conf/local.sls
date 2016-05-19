@@ -15,9 +15,10 @@ dnsmasq.conf:
     - source: salt://states/dnsmasq/files/dnsmasq.conf.local.jinja
     - template: jinja
     - defaults:
-        domain: {{ params.domain }}
-        reverse_domain: {{ params.reverse_domain }}
-        nameservers: {{ params.nameservers }}
+        domain_overrides: {{ params.get('domain_overrides', []) }}
+        nameservers: {{ params.get('nameservers', []) }}
+        read_resolv: {{ params.get('read_resolv', true) }}
+        read_hostsfile: {{ params.get('read_hostsfile', true) }}
     - watch_in:
       - service: dnsmasq
     - require:
