@@ -49,7 +49,8 @@ server {
     {{ ssl(target, proto)|indent }}
 
     location / {
-        proxy_pass {{ target.url }};
+        set $upstream "{{ target.url }}";
+        proxy_pass $upstream;
     }
 
 {% for key, value in target.get('additional_params', {}).items() %}
