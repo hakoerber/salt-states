@@ -64,6 +64,11 @@ nginx-{{ name }}.conf-absent:
 {% endif %}
 {% endmacro %}
 
+{% set name = '10_resolver' %}
+{% set include = params.get('resolver', none) is not none %}
+{% set context = {'resolver': params.get('resolver')} %}
+{{ include_conf(name, include, context) }}
+
 {% set name = '10_force_https' %}
 {% set include = params.get('reverse_proxy', {}).get('force_https', False) %}
 {% set context = {'ipv6': params.get('ipv6', False)} %}
