@@ -21,6 +21,7 @@
             per server
         redirect_from(list of strings, optional): Additional server names to
             redirect from
+        additional_params(dict): additional options to set (key => value)
     static_content(string, False):
       protocol(string): Protocol to use, either 'http' or 'https'
       server_name(string): The servername for the server
