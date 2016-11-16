@@ -15,6 +15,8 @@ http.port: {{ elasticsearch_map.ports.query.tcp }}
 http.publish_port: {{ elasticsearch_map.ports.query.tcp }}
 http.compression: true
 
+bootstrap.memory_lock: true
+
 transport.host: 0.0.0.0
 transport.tcp.port: {{ elasticsearch_map.ports.transport.tcp }}
 transport.publish_port: {{ elasticsearch_map.ports.transport.tcp }}

@@ -6,6 +6,9 @@
         ],
         'service': 'elasticsearch',
         'conf': '/etc/elasticsearch/elasticsearch.yml',
+        'sysconfig': '/etc/sysconfig/elasticsearch',
+        'systemd_override': '/etc/systemd/system/elasticsearch.service.d/elasticsearch.conf',
+        'security_limits': '/etc/security/limits.d/50-elasticsearch.conf',
         'ports': {
             'query': {
                 'tcp': '9200',
