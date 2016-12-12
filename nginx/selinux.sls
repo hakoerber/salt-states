@@ -1,5 +1,5 @@
 #!stateconf
-{% from 'states/nagios/map.jinja' import nagios as nagios_map with context %}
+{% from 'states/nginx/map.jinja' import nginx as nginx_map with context %}
 {% from 'states/defaults.map.jinja' import defaults with context %}
 
 .params:
