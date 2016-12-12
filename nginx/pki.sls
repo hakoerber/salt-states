@@ -36,7 +36,7 @@ nginx-ssl-cert-{{ main_name }}:
     - group: {{ defaults.rootgroup }}
     - mode: 600
     - contents_pillar: ssl:{{ main_name }}:fullchain.pem
-    - show_diff: false
+    - show_changes: false
     - require:
       - file: nginx-pkidir-{{ main_name }}
     - watch_in:
@@ -49,7 +49,7 @@ nginx-ssl-key-{{ main_name }}:
     - group: {{ defaults.rootgroup }}
     - mode: 600
     - contents_pillar: ssl:{{ main_name }}:privkey.pem
-    - show_diff: false
+    - show_changes: false
     - require:
       - file: nginx-pkidir-{{ main_name }}
     - watch_in:
