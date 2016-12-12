@@ -3,7 +3,7 @@ server {
     listen 80;
     server_name _;
     add_header Content-Type text/plain;
-    location /acme/ {
+    location / {
         alias {{ acme_map.webroot }};
         try_files $uri =404;
     }

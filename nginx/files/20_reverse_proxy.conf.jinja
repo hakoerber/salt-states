@@ -59,7 +59,8 @@ server {
 
 {% if acme_backend %}
     location /.well-known/acme-challenge/ {
-        proxy_pass http://{{ acme_backend.ip }}/acme/$host$uri;
+        set $upstream "{{ acme_backend }}";
+        proxy_pass $upstream;
     }
 {% endif %}
 }
