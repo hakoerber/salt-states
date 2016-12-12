@@ -84,7 +84,7 @@ nginx-{{ name }}.conf-absent:
 {% set context = {
   'content': params.get('static_content'),
   'ipv6': params.get('ipv6', False),
-  'acme_backend': params.get('acme_backend', False)} %}
+  'acme_backend': params['acme_backend']} %}
 {{ include_conf(name, include, context) }}
 
 {% set name = '20_reverse_proxy' %}
@@ -93,7 +93,7 @@ nginx-{{ name }}.conf-absent:
   'upstream': params.get('reverse_proxy', {}).get('upstream'),
   'ipv6': params.get('ipv6', False),
   'protocol': params.get('reverse_proxy', {}).get('protocol'),
-  'acme_backend': params.get('acme_backend', False)} %}
+  'acme_backend': params['acme_backend']} %}
 {{ include_conf(name, include, context) }}
 
 {% set name = '20_acme_backend' %}
