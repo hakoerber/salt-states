@@ -1,6 +1,9 @@
 {% set jenkins = salt['grains.filter_by']({
     'default': {
-        'package': 'jenkins',
+        'packages': [
+            'jenkins',
+            'java-1.8.0-openjdk',
+        ],
         'service': 'jenkins',
         'ports': {
             'tcp': [8080],
