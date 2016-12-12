@@ -38,7 +38,7 @@ openvpn-ca-cert-{{ vpn.name }}:
     - group: {{ defaults.rootgroup }}
     - mode: 600
     - contents_pillar: openvpn:{{ vpn.name }}:shared:ca.crt
-    - show_diff: false
+    - show_changes: false
     - require:
       - file: openvpn-keydir-{{ vpn.name }}
     - watch_in:
@@ -51,7 +51,7 @@ openvpn-tls-auth-key-{{ vpn.name }}:
     - group: {{ defaults.rootgroup }}
     - mode: 600
     - contents_pillar: openvpn:{{ vpn.name }}:shared:ta.key
-    - show_diff: false
+    - show_changes: false
     - require:
       - file: openvpn-keydir-{{ vpn.name }}
     - watch_in:
@@ -66,7 +66,7 @@ openvpn-client-cert-{{ vpn.name }}:
     - group: {{ defaults.rootgroup }}
     - mode: 600
     - contents_pillar: openvpn:{{ vpn.name }}:client:client.crt
-    - show_diff: false
+    - show_changes: false
     - require:
       - file: openvpn-keydir-{{ vpn.name }}
     - watch_in:
@@ -79,7 +79,7 @@ openvpn-client-key-{{ vpn.name }}:
     - group: {{ defaults.rootgroup }}
     - mode: 600
     - contents_pillar: openvpn:{{ vpn.name }}:client:client.key
-    - show_diff: false
+    - show_changes: false
     - require:
       - file: openvpn-keydir-{{ vpn.name }}
     - watch_in:

@@ -65,7 +65,7 @@ nginx-ssl-cert:
     - group: {{ defaults.rootgroup }}
     - mode: 600
     - contents_pillar: ssl:fullchain.pem
-    - show_diff: false
+    - show_changes: false
     - require:
       - file: nginx-pkidir
     - watch_in:
@@ -78,7 +78,7 @@ nginx-ssl-key:
     - group: {{ defaults.rootgroup }}
     - mode: 600
     - contents_pillar: ssl:privkey.pem
-    - show_diff: false
+    - show_changes: false
     - require:
       - file: nginx-pkidir
     - watch_in:
@@ -98,7 +98,7 @@ nginx-ssl-dhparams:
       - service: nginx
 {% if params.get('master_dhparams', false) == true %}
     - contents_pillar: ssl:dhparams.pem
-    - show_diff: false
+    - show_changes: false
 {% else %}
     - require:
       - cmd: nginx-ssl-dhparams-create

@@ -20,7 +20,7 @@ murmur-ssl-cert:
     - group: {{ murmur_map.group }}
     - mode: 600
     - contents_pillar: murmur:pki:fullchain.pem
-    - show_diff: false
+    - show_changes: false
     - require:
       - file: murmur-pkidir
     - watch_in:
@@ -33,7 +33,7 @@ murmur-ssl-key:
     - group: {{ murmur_map.group }}
     - mode: 600
     - contents_pillar: murmur:pki:privkey.pem
-    - show_diff: false
+    - show_changes: false
     - require:
       - file: murmur-pkidir
     - watch_in:

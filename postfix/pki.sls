@@ -22,7 +22,7 @@ postfix-ssl-cert:
     - group: {{ defaults.rootgroup }}
     - mode: 600
     - contents_pillar: postfix:ssl:fullchain.pem
-    - show_diff: false
+    - show_changes: false
     - require:
       - file: postfix-pkidir
     - watch_in:
@@ -35,7 +35,7 @@ postfix-ssl-key:
     - group: {{ defaults.rootgroup }}
     - mode: 600
     - contents_pillar: postfix:ssl:privkey.pem
-    - show_diff: false
+    - show_changes: false
     - require:
       - file: postfix-pkidir
     - watch_in:
@@ -55,7 +55,7 @@ postfix-ssl-dhparams:
       - service: postfix
 {% if master_has_dhparams or params.get('master_dhparams', false) == true %}
     - contents_pillar: postfix:ssl:dhparams.pem
-    - show_diff: false
+    - show_changes: false
 {% else %}
     - require:
       - cmd: postfix-ssl-dhparams-create

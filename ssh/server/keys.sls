@@ -10,7 +10,7 @@ hostkey-{{ keytype }}:
     - user: root
     - group: {{ defaults.rootgroup }}
     - contents_pillar: ssh:hostkeys:ssh_host_{{ keytype }}_key
-    - show_diff: false
+    - show_changes: false
     - watch_in:
       - service: ssh-server
 
@@ -21,7 +21,7 @@ hostkey-{{ keytype }}-pub:
     - user: root
     - group: {{ defaults.rootgroup }}
     - contents_pillar: ssh:hostkeys:ssh_host_{{ keytype }}_key.pub
-    - show_diff: false
+    - show_changes: false
     - watch_in:
       - service: ssh-server
 {% endfor %}
