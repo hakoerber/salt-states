@@ -1,19 +1,19 @@
-$TTL {{ params.zoneinfo.ttl }}
-@	{{ params.zoneinfo.class }}	SOA	{{ params.master.name }}. {{ params.zoneinfo.hostmaster }}.{{ params.domain }}. (
+$TTL {{ zone.ttl }}
+@	{{ zone.class }}	SOA	{{ zone.master.name }}. {{ zone.hostmaster }}.{{ zone.domain }}. (
         {{ serial }}	;Serial
-        {{ params.zoneinfo.refresh }}	;Refresh
-        {{ params.zoneinfo.retry }}	;Retry
-        {{ params.zoneinfo.expire }}	;Expire
-        {{ params.zoneinfo.ttl }}	;Minimum TTL
+        {{ zone.refresh }}	;Refresh
+        {{ zone.retry }}	;Retry
+        {{ zone.expire }}	;Expire
+        {{ zone.ttl }}	;Minimum TTL
 )
 
 ; nameservers
-@	IN	NS	{{ params.master.name }}.
+@	IN	NS	{{ zone.master.name }}.
 
-@	IN	PTR	{{ params.domain }}.
+@	IN	PTR	{{ zone.domain }}.
 
-{% for record in params.zoneinfo.records|sort() %}
+{% for record in zone.records|sort() %}
 {% for arecord in record['dns'].arecords %}
-{{ record['reverse'] }}	IN	PTR	{{ arecord }}.{{ params.domain }}.
+{{ record['reverse'] }}	IN	PTR	{{ arecord }}.{{ zone.domain }}.
 {% endfor %}
 {% endfor %}

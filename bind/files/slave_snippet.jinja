@@ -1,15 +1,18 @@
-        zone "{{ params.domain }}" IN {
+{% for zone in params.zones %}
+
+        zone "{{ zone.domain }}" IN {
                 type slave;
                 masters {
-                        {{ params.master.ip }};
+                        {{ zone.master.ip }};
                 };
-                file "slaves/forward.{{ params.domain }}";
+                file "slaves/forward.{{ zone.domain }}";
         };
 
-        zone "{{ params.domain_reverse }}" IN {
+        zone "{{ zone.domain_reverse }}" IN {
                 type slave;
                 masters {
-                        {{ params.master.ip }};
+                        {{ zone.master.ip }};
                 };
-                file "slaves/reverse.{{ params.domain }}";
+                file "slaves/reverse.{{ zone.domain }}";
         };
+{% endfor %}

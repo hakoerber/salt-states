@@ -10,13 +10,15 @@
                 {{ slave.ip }};
 {% endfor %}
         };
+{% for zone in params.zones %}
 
-        zone "{{ params.domain }}" IN {
+        zone "{{ zone.domain }}" IN {
                 type master;
-                file "forward.{{ params.domain }}";
+                file "forward.{{ zone.domain }}";
         };
 
-        zone "{{ params.domain_reverse }}" IN {
+        zone "{{ zone.domain_reverse }}" IN {
                 type master;
-                file "reverse.{{ params.domain }}";
+                file "reverse.{{ zone.domain }}";
         };
+{% endfor %}

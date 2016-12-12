@@ -10,10 +10,11 @@ reload_zones:
   cmd.wait:
     - name: rndc reload
 
-{% for direction in ['forward', 'reverse'] %}
 
 {% if params.role == 'master' %}
-{% set grain = 'bind_zone_serial_' ~ direction ~ '_' ~ params.domain %}
+{% for zone in params.zones %}
+{% for direction in ['forward', 'reverse'] %}
+{% set grain = 'bind_zone_serial_' ~ direction ~ '_' ~ zone.domain %}
 {% set newserial_date = salt['cmd.run']('date +%Y%m%d') %}
 {% set oldserial = grains.get(grain, none) %}
 {% if oldserial is none %}
@@ -31,38 +32,38 @@ reload_zones:
 {% endif %}
 {% endif %}
 
-zone-{{ params.domain }}-{{ direction }}-store-serial-grain:
+zone-{{ zone.domain }}-{{ direction }}-store-serial-grain:
   grains.present:
-    - name: bind_zone_serial_{{ direction }}_{{ params.domain }}
+    - name: bind_zone_serial_{{ direction }}_{{ zone.domain }}
     - value: {{ newserial }}
     - force: true
 
-zone-{{ params.domain }}-{{ direction }}-check:
+zone-{{ zone.domain }}-{{ direction }}-check:
   file.managed:
-    - name: {{ bind_map.main_directory }}/{{ direction }}.{{ params.domain }}
+    - name: {{ bind_map.main_directory }}/{{ direction }}.{{ zone.domain }}
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 644
     - source: 'salt://states/bind/files/{{ direction }}.zone.jinja'
     - template: jinja
     - defaults:
-        params: {{ params }}
+        zone: {{ zone }}
         serial: {{ oldserial }}
     - require:
       - pkg: bind
     - onchanges_in:
-      - grains: zone-{{ params.domain }}-{{ direction }}-store-serial-grain
+      - grains: zone-{{ zone.domain }}-{{ direction }}-store-serial-grain
 
-zone-{{ params.domain }}-{{ direction }}:
+zone-{{ zone.domain }}-{{ direction }}:
   file.managed:
-    - name: {{ bind_map.main_directory }}/{{ direction }}.{{ params.domain }}
+    - name: {{ bind_map.main_directory }}/{{ direction }}.{{ zone.domain }}
     - user: root
     - group: {{ defaults.rootgroup }}
     - mode: 644
     - source: 'salt://states/bind/files/{{ direction }}.zone.jinja'
     - template: jinja
     - defaults:
-        params: {{ params }}
+        zone: {{ zone }}
         serial: {{ newserial }}
     - require_in:
       - file: named.conf
@@ -71,6 +72,7 @@ zone-{{ params.domain }}-{{ direction }}:
     - require:
       - pkg: bind
     - onchanges:
-      - file: zone-{{ params.domain }}-{{ direction }}-check
-{% endif %}
+      - file: zone-{{ zone.domain }}-{{ direction }}-check
 {% endfor %}
+{% endfor %}
+{% endif %}

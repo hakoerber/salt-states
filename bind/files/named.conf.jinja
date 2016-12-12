@@ -13,7 +13,7 @@ options {
 
         listen-on port 53 {
                 127.0.0.1;
-                {{ params.listen }};
+                {{ params.listen_ip }};
         };
 
         listen-on-v6 port 53 {
@@ -51,6 +51,10 @@ logging {
         category default {
                 default_file;
                 default_debug;
+        };
+
+        category queries {
+                default_file;
         };
 };
 
