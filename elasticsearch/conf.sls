@@ -10,8 +10,8 @@ elasticsearch.yml:
   file.managed:
     - name: {{ elasticsearch_map.conf }}
     - user: root
-    - group: {{ defaults.rootgroup }}
-    - mode: 644
+    - group: {{ elasticsearch_map.group }}
+    - mode: 660
     - source: salt://states/elasticsearch/files/elasticsearch.yml.jinja
     - template: jinja
     - defaults:
