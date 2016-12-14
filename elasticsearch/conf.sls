@@ -21,6 +21,24 @@ elasticsearch.yml:
     - watch_in:
       - service: elasticsearch
 
+{% set memory_default = (grains.mem_total / 2)|int %}
+{% set memory = params.get('memory', memory_default)|string %}
+
+elasticsearch-jvm-config:
+  file.managed:
+    - name: {{ elasticsearch_map.jvm_config }}
+    - user: root
+    - group: {{ elasticsearch_map.group }}
+    - mode: 660
+    - source: salt://states/elasticsearch/files/jvm.options.jinja
+    - template: jinja
+    - defaults:
+        memory: {{ memory }}
+    - require:
+      - pkg: elasticsearch
+    - watch_in:
+      - service: elasticsearch
+
 elasticsearch-sysconfig:
   file.managed:
     - name: {{ elasticsearch_map.sysconfig }}
