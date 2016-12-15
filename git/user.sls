@@ -1,4 +1,9 @@
+#!stateconf
 {% from 'states/git/map.jinja' import git as git_map with context %}
+
+.params:
+    stateconf.set: []
+# --- end of state config ---
 
 git-group:
   group.present:
@@ -17,3 +22,14 @@ git-user:
     - require:
       - pkg: git
       - group: git-group
+
+{% for user in params.allowed_users %}
+git-{{ user.name }}:
+  ssh_auth.present:
+    - name: {{ user.key }}
+    - user: {{ git_map.user }}
+    - enc: {{ user.keytype }}
+    - comment: {{ user.name }}
+    - require:
+      - user: git-user
+{% endfor %}
