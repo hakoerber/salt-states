@@ -11,7 +11,7 @@ service imap-login {
 }
 
 service lmtp {
-  unix_listener /var/run/lmtp.sock {
+  unix_listener lmtp {
     user  = {{ lmtp_socket.user }}
     group = {{ lmtp_socket.group }}
     mode  = 0600
@@ -25,7 +25,7 @@ service auth {
   unix_listener auth-userdb {
   }
 
-  unix_listener /var/run/dovecot-auth {
+  unix_listener auth-client {
     user  = {{ auth_socket.user }}
     group = {{ auth_socket.group }}
     mode = 0600
