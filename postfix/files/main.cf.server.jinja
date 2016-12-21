@@ -59,8 +59,10 @@ smtpd_tls_received_header = yes
 smtpd_tls_key_file          = {{ postfix_map.pkidir }}/{{ postfix_map.key }}
 smtpd_tls_cert_file         = {{ postfix_map.pkidir }}/{{ postfix_map.cert }}
 smtpd_tls_dh1024_param_file = {{ postfix_map.pkidir }}/{{ postfix_map.dhparams }}
-smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3
-smtpd_tls_protocols = !SSLv2, !SSLv3
+smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1
+smtpd_tls_protocols = !SSLv2, !SSLv3, !TLSv1
+smtpd_tls_mandatory_ciphers = high
+smtpd_tls_ciphers = high
 smtpd_tls_loglevel = 1
 smtpd_tls_received_header = yes
 {% endif %}
