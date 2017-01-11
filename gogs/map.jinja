@@ -1,0 +1,12 @@
+{% set gogs = salt['grains.filter_by']({
+    'default': {
+        'packages': [
+            'gogs',
+        ],
+        'service': 'gogs',
+        'conf_file': '/etc/gogs/app.ini',
+        'user': 'git',
+        'repo': '/var/lib/git-repos/gogs-repositories',
+        'port': '3000',
+    },
+}, base='default') %}
