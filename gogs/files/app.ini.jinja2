@@ -147,7 +147,7 @@ DSA     = 1024
 
 [database]
 ; Either "mysql", "postgres" or "sqlite3", it's your choice
-DB_TYPE = {{ params.database }}
+DB_TYPE = {{ params.database.type }}
 HOST = {{ params.database.host }}
 NAME = {{ params.database.name }}
 USER = {{ params.database.user }}
