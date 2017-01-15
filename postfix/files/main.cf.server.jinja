@@ -53,8 +53,15 @@ virtual_transport = lmtp:unix:{{ lmtp.socket }}
 # handlers
 daemon_table_open_error_is_fatal = yes
 
+# client TLS
+smtp_tls_security_level = may
+smtp_tls_mandatory_protocols = !SSLv2, !SSLv3
+smtp_tls_protocols = !SSLv2, !SSLv3
+smtp_tls_mandatory_ciphers = export
+smtp_tls_ciphers = export
+
 {% if ssl %}
-# tls
+# server TLS
 smtpd_tls_received_header = yes
 smtpd_tls_key_file          = {{ postfix_map.pkidir }}/{{ postfix_map.key }}
 smtpd_tls_cert_file         = {{ postfix_map.pkidir }}/{{ postfix_map.cert }}
