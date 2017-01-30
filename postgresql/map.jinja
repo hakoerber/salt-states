@@ -8,7 +8,13 @@
         },
 
         'dbroot': '/var/lib/pgsql/data/',
+        'conf': 'postgresql.conf',
+        'hba_conf': 'pg_hba.conf',
+        'ident_conf': 'pg_ident.conf',
         'locale': 'en_US.UTF8',
         'encoding': 'UTF8',
+        'user': 'postgres',
+        'group': 'postgres',
+        'adminuser': 'postgres',
     },
 }, base='default') %}
